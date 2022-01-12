@@ -15,12 +15,9 @@ const apiKey = "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"
 export default class GPT3_playground extends Component {
     constructor(props) {
         super(props);
-        let languageModel = new LangModelAttributes(props.HumanModel, props.FirstName )
-        this.languageModel = languageModel
-        this.firstName = languageModel.firstName 
-        console.log(languageModel)
-        console.log(languageModel.firstName)
-        this.staticPrompt = languageModel.staticPrompt(undefined)
+        this.languageModel = new LangModelAttributes(props.HumanModel, props.FirstName )
+        this.firstName = this.languageModel.firstName 
+        this.staticPrompt = this.languageModel.staticPrompt(undefined)
         this.state = {
             response: '',
             previous_prompts: [],
