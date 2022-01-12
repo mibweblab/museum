@@ -43,15 +43,23 @@ class NavBar extends Component {
         <div className="NavBar-title u-inlineBlock">Museum</div>
         <div className="NavBar-linkContainer u-inlineBlock">
             <Link to="/" className="NavBar-link"></Link>
-          {this.props.userId && (<Link to="/shakespeare/" className="NavBar-link">
-            Shakespeare
-          </Link>)}
-          {this.props.userId && (<Link to="/einstein/" className="NavBar-link">
-            Einstein
-          </Link>)}
-          {this.props.userId && (<Link to="/musk/" className="NavBar-link">
-            Musk
-          </Link>)}
+          {this.props.userId && (
+          <>
+            <Link to="/shakespeare/" className="NavBar-link">
+              Shakespeare
+            </Link>
+            <Link to="/einstein/" className="NavBar-link">
+              Einstein
+            </Link>
+            <Link to="/musk/" className="NavBar-link">
+              Musk
+            </Link>
+            <Link to="/3d/" className="NavBar-link">
+              Ideation
+            </Link>
+          </>)}
+
+          
           {this.props.userId ? (
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
