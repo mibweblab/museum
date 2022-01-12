@@ -9,7 +9,7 @@ import {
 
 
 import {
-    BoxBufferGeometry,
+    BoxGeometry,
     Color,
     Mesh,
     MeshBasicMaterial,
@@ -26,42 +26,29 @@ import "./graphics.css";
 
 export default class Graphics extends Component{
     componentDidMount(){
-
-      this.scene = new Scene()  
-      this.scene.background = new Color('skyblue');
-
       const width = this.mount.clientWidth
       const height = this.mount.clientHeight
-      const fov = 35;
-      const aspect = width / height;
-      const near = 0.1
-      const far = 100
-
-      
+      //ADD SCENE
+      this.scene = new Scene()
+      //ADD CAMERA
       this.camera = new PerspectiveCamera(
-        fov,
-        aspect,
-        near,
-        far
+        75,
+        width / height,
+        0.1,
+        1000
       )
-
-      this.camera.position.set(0, 0, 10);
-      const geometry = new BoxBufferGeometry(2, 2, 2)
-      const material = new MeshBasicMaterial()
-      this.cube = new Mesh(geometry, material)
-
-      this.scene.add(this.cube)
-
-      this.renderer = new WebGLRenderer()
+      this.camera.position.z = 4
+      //ADD RENDERER
+      this.renderer = new WebGLRenderer({ antialias: true })
+      this.renderer.setClearColor('#000000')
       this.renderer.setSize(width, height)
-      this.renderer.setPixelRatio(window.devicePixelRatio);
       this.mount.appendChild(this.renderer.domElement)
       //ADD CUBE
-      
-      
-      
-      
-        this.start()
+      const geometry = new BoxGeometry(1, 1, 1)
+      const material = new MeshBasicMaterial({ color: '#433F81'     })
+      this.cube = new Mesh(geometry, material)
+      this.scene.add(this.cube)
+  this.start()
     }
   componentWillUnmount(){
       this.stop()
@@ -86,8 +73,10 @@ export default class Graphics extends Component{
   }
   render(){
       return(
-        <div id="scene-container" ref={(mount) => { this.mount = mount }}>          
-        </div>
+        <div
+          style={{ width: '400px', height: '400px' }}
+          ref={(mount) => { this.mount = mount }}
+        />
       )
     }
   }
