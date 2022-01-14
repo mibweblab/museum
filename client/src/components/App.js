@@ -47,6 +47,7 @@ const App = () => {
 
   return (
     <>
+    
       <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
