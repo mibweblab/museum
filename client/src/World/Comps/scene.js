@@ -1,9 +1,10 @@
-import { Color, Scene } from 'three';
+import { Color, Scene, Fog } from 'three';
 
 function createScene() {
   const scene = new Scene();
-
-  scene.background = new Color('blue');
+  const backgroundColor = 0xf1f1f1;
+  scene.background = new Color(backgroundColor);
+  scene.fog = new Fog(backgroundColor, 60, 100);
 
   return scene;
 }

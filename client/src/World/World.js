@@ -32,11 +32,11 @@ class World extends Component{
       this.controls = createControls(this.camera, this.renderer.domElement);
 
       
-      
-      const { ambientLight, mainLight } = createLights();
+      // , , 
+      const { mainLight, ambientLight, ambientLight2 } = createLights();
 
       this.loop.updatables.push(this.controls);
-      this.scene.add(ambientLight, mainLight);
+      this.scene.add(mainLight, ambientLight, ambientLight2);
       
      
       
@@ -47,11 +47,11 @@ class World extends Component{
 
   init = async() => {
     // const { parrot, flamingo, stork } = await loadBirds();
-    const shakespeare = await createShakespeare()
+    const {shakespeare, floor, sphere} = await createShakespeare()
     // move the target to the center of the front bird
     this.controls.target.copy(shakespeare.position);
 
-    this.scene.add(shakespeare);
+    this.scene.add(shakespeare, floor, sphere);
     
   }
   componentWillUnmount(){

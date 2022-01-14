@@ -24,7 +24,7 @@ function helper () {
 
   function init() {
     console.log('HEY')
-    const MODEL_PATH = '/stacy.glb';
+    const MODEL_PATH = '/special.glb';
     const canvas = document.querySelector('#c');
     const backgroundColor = 0xf1f1f1;
 
@@ -48,13 +48,13 @@ function helper () {
     camera.position.x = 0;
     camera.position.y = -3;
 
-    let stacy_txt = new THREE.TextureLoader().load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1376484/stacy.jpg');
+    let stacy_txt = new THREE.TextureLoader().load('/material0_baseColor.jpeg');
     stacy_txt.flipY = false;
 
     const stacy_mtl = new THREE.MeshPhongMaterial({
       map: stacy_txt,
-      color: 0xffffff,
-      skinning: true });
+      color: '0xffffff',
+      skinning: false });
 
 
 
@@ -82,8 +82,8 @@ function helper () {
         }
       });
 
-      model.scale.set(7, 7, 7);
-      model.position.y = -11;
+      // model.scale.set(7, 7, 7);
+      // model.position.y = -11;
 
       scene.add(model);
 

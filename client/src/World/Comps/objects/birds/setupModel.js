@@ -8,9 +8,10 @@ function setupModel(data, material) {
   model.traverse(o => {
 
     // console.log('traversing')
-    o.material = material
-    o.castShadow = true;
-    o.receiveShadow = true;
+    // o.material = material
+    o.material = material;
+    o.castShadow = false;
+    o.receiveShadow = false;
   });
   // const clip = data.animations[0];
 
