@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { World} from "../modules/World/World.js" ;  
+import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
 import { Shakespeare, Einstein, Musk } from "../../LangModel.js";
 
-import "../modules/World/World.css";
+import "../modules/RoomScenes/RoomScenes.css";
 
 export default class Rooms extends Component{
   constructor(props) {
@@ -14,14 +14,14 @@ export default class Rooms extends Component{
   } 
 
   componentDidMount(){
-    this.help()
+    this.initWorld()
   }
 
   componentDidUpdate(){
-    this.help()
+    this.initWorld()
   }
-  help = async() => {
-    // Get a reference to the container element
+
+  initWorld = async() => {
     this.world = new World({mount:this.mount, visibilityToggle: this.visibilityToggle})
     await this.world.init()
     this.world.start()

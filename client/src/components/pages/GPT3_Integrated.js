@@ -21,7 +21,7 @@ export default class GPT3_Integrated extends Component {
         this.state = {
             response: '',
             previous_prompts: [],
-            prompt: '-1',
+            prompt: '',
         }
     }
 
@@ -74,7 +74,6 @@ export default class GPT3_Integrated extends Component {
         this.setState({
             prompt:  this.languageModel.polishedInput(promptVal),
             response: undefined,
-            
         }, () => this.props.onResponse('A passage about ' + promptVal + ':'));
     }
 
@@ -85,7 +84,7 @@ export default class GPT3_Integrated extends Component {
 
     render () {
         return (
-            <div className="form-block w-form" style={{visibility:this.props.visibility}}>
+            <div className="room form-block w-form" style={{visibility:this.props.visibility}}>
                 <p>{(this.state.response == undefined) ? 
                                 (<OpenAIAPI
                                 apiKey={apiKey}
@@ -95,10 +94,10 @@ export default class GPT3_Integrated extends Component {
                                 />) 
                                 : ""
                             }</p>
-                <label for='name' className='field-label'>Receive Shakespeare&#x27;s writings on any topic.</label>
+                <label className='field-label'>Receive Shakespeare&#x27;s writings on any topic.</label>
                 <div className='div-block'>
-                    <input type='text' class='text-field w-input' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
-                    <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='submit-button w-button'>Enter</button>
+                    <input type='text' className='text-field w-input row' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
+                    <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='submit-button w-button row'>Enter</button>
                     <br></br>
 
                 
