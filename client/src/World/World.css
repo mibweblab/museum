@@ -2,22 +2,10 @@ body {
     /* remove margins and scroll bars */
     margin: 0;
     overflow: hidden;
-  
-    /* style text */
-    text-align: center;
-    font-size: 12px;
-    font-family: Sans-Serif;
-  
-    /* color text */
     color: #444;
   }
   
   h1 {
-    /* position the heading */
-    position: absolute;
-    width: 100%;
-  
-    /* make sure that the heading is drawn on top */
     z-index: 1;
   }
   
@@ -28,10 +16,80 @@ body {
     height: 100%;
     display: block;
   
-    /*
-      Set the container's background color to the same as the scene's
-      background to prevent flashing on load
-    */
-    background-color: blue;
+
   }
   
+canvas {
+   position: relative;
+}
+
+.form-block {
+  margin-bottom: 0px;
+  margin-left: 10px;
+  margin-right:10px;
+  padding-top:10px;
+  position:absolute;
+  width: 100%;
+  height: 10%;
+  bottom:5px;
+
+}
+
+.div-block {
+  padding-top:5px;
+  display: flex;
+
+}
+
+.text-field::placeholder  {
+  padding: 10px;
+}
+.text-field::target-text {
+  padding: 10px;
+}
+
+
+.text-field {
+  padding:2px;
+  width: 70%;
+  margin-right: 5px;
+  margin-left: 0px;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  border-style:solid;
+  border-width:0.5px;
+  border-color:rgba(110, 151, 155, 0.47);
+  border-radius: 20px;
+  background-color: #e9e7f4;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(133, 190, 197, 0.28)), color-stop(93%, #ededed), color-stop(96%, #f5f5f5), to(#fff));
+  background-image: linear-gradient(0deg, rgba(133, 190, 197, 0.28), #ededed 93%, #f5f5f5 96%, #fff);
+  box-shadow: 2px 2px 0 0 #6d8b97;
+  color: #000;
+  cursor: pointer;
+  mix-blend-mode: normal;
+
+}
+
+.field-label {
+
+  padding: 5px;
+  padding-bottom:10px;
+  font-family: Lato, sans-serif;
+}
+
+.submit-button {
+  height:100%;
+  width: 10%;
+  margin-left: 0px;
+  border-radius: 20px;
+  border-color:rgba(61, 98, 98, 0.47);
+  background-color: #f4f4f4;
+  font-family: Lato, sans-serif;
+  color:rgb(56, 88, 107);
+  border-width:0.5px;
+
+}
+
+
+

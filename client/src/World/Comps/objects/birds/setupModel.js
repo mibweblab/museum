@@ -1,18 +1,27 @@
-import { AnimationMixer } from 'three';
+import { AnimationMixer, MathUtils } from 'three';
 
-function setupModel(data, material) {
+function setupModel(data, material, name) {
   const model = data.scene;
   // model = shakespeareData.scene
   console.log(model)
+
   // const material = createMaterial()
   model.traverse(o => {
 
     // console.log('traversing')
     // o.material = material
     o.material = material;
-    o.castShadow = false;
-    o.receiveShadow = false;
+    o.name = name
+    // o.castShadow = false;
+    // o.receiveShadow = false;
+    
+    
+
+   
   });
+
+
+  
   // const clip = data.animations[0];
 
   // const mixer = new AnimationMixer(model);
