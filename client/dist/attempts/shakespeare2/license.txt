@@ -1,0 +1,11 @@
+Model Information:
+* title:	Southwark Cathedral Shakespeare Memorial
+* source:	https://sketchfab.com/3d-models/southwark-cathedral-shakespeare-memorial-1892b2ff6ffb430cbd50a813e666b3fe
+* author:	artfletch (https://sketchfab.com/artfletch)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Southwark Cathedral Shakespeare Memorial" (https://sketchfab.com/3d-models/southwark-cathedral-shakespeare-memorial-1892b2ff6ffb430cbd50a813e666b3fe) by artfletch (https://sketchfab.com/artfletch) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
