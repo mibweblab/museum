@@ -15,7 +15,7 @@ function createCamera(width, height, humanModel) {
       far
     )
 
-    camera.position.set(10, 5, 50);
+    camera.position.set(10, 5, -50);
 
 
     return camera;

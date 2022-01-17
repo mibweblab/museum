@@ -59,7 +59,8 @@ class World extends Component{
         this.scene.add(this.gptText);
         break
       case Einstein:
-        const {group2} = await createEinstein()
+        const {group2, group1} = await createEinstein()
+        this.loop.updatables.push(group1);
         this.scene.add(group2);
         break
       case Musk:
