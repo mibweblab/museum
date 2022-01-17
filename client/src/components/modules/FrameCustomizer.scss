@@ -1,0 +1,27 @@
+.FrameCustomizer
+{
+   display: flex;
+   width: 40vw;
+   height: 28vw;
+   padding: 24px;
+   background-color: #fff;
+   border-radius: 6px;
+
+   &-group
+   {
+    display: flex;
+    padding: 16px;
+
+   }
+
+   &-input
+   {
+    width: 100%;
+
+   }
+
+   &-button
+   {
+     
+   }
+}
