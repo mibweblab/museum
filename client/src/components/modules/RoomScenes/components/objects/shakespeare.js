@@ -7,6 +7,7 @@ import {
   TextureLoader,
   DoubleSide,
   MeshPhongMaterial,
+  Group,
   RepeatWrapping,
 } from 'three';
 
@@ -57,11 +58,16 @@ async function createShakespeare() {
     map: book_txt});
 
 
+  let window_txt = new TextureLoader().load('/shakespeareScene/window/textures/material_0_baseColor.jpeg');
+  window_txt.flipY = false;
+  const window_mtl = new MeshPhongMaterial({
+    map: window_txt});  
   const loader = new GLTFLoader();
   
-  const [shakespeareData, bookData] = await Promise.all([
+  const [shakespeareData, bookData, windowData] = await Promise.all([
     loader.loadAsync('/shakespeareScene/shakespeare2/scene.gltf'),
-    loader.loadAsync('/shakespeareScene/shakespeare_book/scene.gltf')
+    loader.loadAsync('/shakespeareScene/shakespeare_book/scene.gltf'),
+    loader.loadAsync('/shakespeareScene/window/scene.gltf'),
   ]);
 
   const shakespeare = setupModel(shakespeareData, shakespeare_mtl, "shakespeare");
@@ -71,9 +77,13 @@ async function createShakespeare() {
   const book = setupModel(bookData, book_mtl, "book");
   book.scale.set(0.15, 0.15, 0.15)
 
+  const window = setupModel(windowData, window_mtl, "window");
+  window.scale.set(7, 7, 7)
 
   shakespeare.position.set(0, 3, 2.5);
   book.position.set(.5, 0, 14.5);
+  window.position.set(-14, 14, 7.5)
+
   book.rotation.y = MathUtils.degToRad(-45);
   book.rotation.x = MathUtils.degToRad(-25);
   book.rotation.z = MathUtils.degToRad(-25);
@@ -95,7 +105,14 @@ async function createShakespeare() {
   const coordinates = {x: 0, y: 12.5, z:10}
   const text = await createText('A Shakespeare Read Aloud', coordinates, true, "/fonts/opt.json")
 
-  return {shakespeare, book, floor, cylinder, text};
+  const group = new Group();
+  group.add(shakespeare)
+  group.add(book)
+  group.add(window)
+  group.add(floor)
+  group.add(cylinder)
+  group.add(text)
+  return {group, book};
 }
 
 export { createShakespeare };

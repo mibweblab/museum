@@ -54,7 +54,8 @@ const App = () => {
         <GPT3_playground path="/shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
         <GPT3_playground path="/einstein/" FirstName={firstName} HumanModel={Einstein}/> 
         <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk}/> 
-        <Rooms path="/3d/" FirstName={firstName} /> 
+        <Rooms path="/room_shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
+        <Rooms path="/room_einstein/" FirstName={firstName} HumanModel={Einstein}/> 
         <NotFound default />
       </Router>
     </>

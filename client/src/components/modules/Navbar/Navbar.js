@@ -54,9 +54,15 @@ class NavBar extends Component {
             <Link to="/musk/" className="NavBar-link">
               Musk
             </Link>
-            <Link to="/3d/" className="NavBar-link">
+            <Link to="/room_shakespeare/" className="NavBar-link">
               Shakespeare Scene
             </Link>
+            <Link to="/room_einstein/" className="NavBar-link" trial='0'>
+              Einstein Scene 0
+            </Link>       
+            <Link to="/room_einstein/" className="NavBar-link" trial='1'>
+              Einstein Scene 1
+            </Link>           
           </>)}
 
           

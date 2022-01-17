@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from 'three';
 
-function createCamera(width, height) {
+function createCamera(width, height, humanModel) {
 
     const fov = 50;
     const aspect = width / height;
@@ -15,8 +15,8 @@ function createCamera(width, height) {
       far
     )
 
-    // move the camera back so we can view the scene
-    camera.position.set(0, 5, 50);
+    camera.position.set(10, 5, 50);
+
 
     return camera;
 }

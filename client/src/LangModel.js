@@ -1,9 +1,23 @@
+import { Vector3 } from 'three';
+
 const Shakespeare = 0
 const Einstein = 1
 const Musk = 2
 
 const HumanModels = [Shakespeare, Einstein, Musk]
 
+const getCameraPosition = (humanModel, trialNum) => {
+    switch(humanModel) {
+        case Shakespeare:
+            return (new Vector3(0, 5, 50))
+        case Einstein:
+            if (trialNum == 0) { return (new Vector3(250, 300, 800)) }
+            else { return (new Vector3(0, 5, 50)) }
+        case Musk:
+            return `man`
+        
+    }
+}
 
 class LangModelAttributes {
     constructor(humanModel, optionalFirstName) {
@@ -25,6 +39,8 @@ class LangModelAttributes {
                 return "Elon Musk"
         }
     }
+
+
 
     defaultFirstName = (humanModel, firstName) => {
         if (firstName != undefined) { return firstName }
@@ -117,4 +133,4 @@ class LangModelAttributes {
 
 }
 
-export {Shakespeare, Einstein, Musk, HumanModels, LangModelAttributes }
+export {Shakespeare, Einstein, Musk, HumanModels, LangModelAttributes, getCameraPosition }

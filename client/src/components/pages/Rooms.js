@@ -22,7 +22,7 @@ export default class Rooms extends Component{
   }
 
   initWorld = async() => {
-    this.world = new World({mount:this.mount, visibilityToggle: this.visibilityToggle})
+    this.world = new World({mount:this.mount, visibilityToggle: this.visibilityToggle, HumanModel:this.props.HumanModel, trial:this.props.trial})
     await this.world.init()
     this.world.start()
   }
