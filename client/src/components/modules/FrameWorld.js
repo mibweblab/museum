@@ -37,6 +37,7 @@ import Frame from "./Frame";
 import Controls from "./Controls";
 import FrameCustomizer from "./FrameCustomizer";
 import { addFrameToQueue } from "../action";
+import APIInterface from "../../api"
 
 const GOLDENRATIO = 1.61803398875;
 
@@ -172,6 +173,8 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
                    dispatch(addFrame(queuedFrame));
                    dispatch(dequeueFrame(false));
                    dispatch(addFrameToQueue(null));
+                   APIInterface.addFrame({queuedFrame});
+                   
                 }
               }}
             >

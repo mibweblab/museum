@@ -57,7 +57,7 @@ const images = [
 const App = (props) => {
   const [userId, setUserId] = useState(undefined);
   const [firstName, setFirstName] = useState(undefined);
-  console.log("these are my props", props);
+  // console.log("these are my props", props);
   // const [Modal, open, close, isOpen] = useModal("root", {
   //   preventScroll: true,
   //   closeOnOverlayClick: false,
@@ -70,6 +70,9 @@ const App = (props) => {
         setFirstName(user.firstname);
       }
     });
+
+
+    
   }, []);
 
   const handleLogin = (res) => {
