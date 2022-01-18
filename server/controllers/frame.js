@@ -45,7 +45,7 @@ async function editFrame(frameId,data){
 async function getAllFrames(userId){
     try {
         let framesFound = await Frame.find({userId: userId})
-        console.log(framesFound);
+        // console.log(framesFound);
         return framesFound;
     } catch (error) {
         return false;

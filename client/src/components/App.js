@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
-import NavBar from "./modules/NavBar.js";
+import NavBar from "./modules/NavBar";
 
 import World from "../components/modules/World";
 
@@ -10,7 +10,7 @@ import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
 
-import FrameWorld from "./modules/FrameWorld.js";
+import FrameWorld from "./modules/FrameWorld";
 import { connect } from "react-redux";
 
 import "../utilities.css";
