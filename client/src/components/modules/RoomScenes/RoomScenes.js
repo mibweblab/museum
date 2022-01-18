@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Shakespeare, Einstein, Musk, UserUpload } from "../../../HumanModel"
 import { createControls } from './systems/controls.js';
 import { createCamera } from "./components/camera.js"
@@ -33,11 +32,11 @@ class World extends Component{
       
       this.controls = createControls(this.camera, this.renderer.domElement);
  
-      const { spotLight, group3 } = createLights(this.props.HumanModel);
+      const { group3 } = createLights(this.props.HumanModel);
       // this.spotLight = spotLight
       this.loop.updatables.push(this.controls);
       this.scene.add(group3);
-      this.scene.add(spotLight.target)
+
       
       const resizer = new Resizer(props.mount, this.camera, this.renderer);
 
@@ -47,6 +46,7 @@ class World extends Component{
       this.textCoordinates = {x:15, y:8.5, z:10}
       this.fontString = "/fonts/gent.json"
     }
+
 
   init = async() => {
     switch (this.props.HumanModel) {
@@ -103,33 +103,30 @@ class World extends Component{
         break
     }
   }  
+
+ 
   onClick = (e) => {
-    switch (this.props.HumanModel) {
-      case Shakespeare:
-        let mouse = {};
-        mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
-        mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
-        
-          // update the picking ray with the camera and mouse position
-        this.raycaster.setFromCamera(mouse, this.camera);
+    let mouse = {};
+    mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
+    mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
+    
+      // update the picking ray with the camera and mouse position
+    this.raycaster.setFromCamera(mouse, this.camera);
+  
+      // calculate objects intersecting the picking ray
+    var intersects = this.raycaster.intersectObjects(this.scene.children, true);
+  
+    if (intersects[0]) {
+      let object = intersects[0].object;
+      const shakeSpeareClicked = (object.parent.name === 'door') 
+      this.props.navigate('/')
+
       
-          // calculate objects intersecting the picking ray
-        var intersects = this.raycaster.intersectObjects(this.scene.children, true);
-      
-        if (intersects[0]) {
-          let object = intersects[0].object;
-          const shakeSpeareClicked = (object.parent.name === 'shakespeare') 
-          this.props.visibilityToggle(shakeSpeareClicked);
-        }
-        break
-      case Einstein:
-        break
-      case Musk:
-      case UserUpload:
-        break
     }
 
   }
+
+  
 
   renderScene = () => {
     this.renderer.render(this.scene, this.camera)

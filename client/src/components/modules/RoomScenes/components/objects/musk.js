@@ -13,7 +13,7 @@ import {
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
   import { setupModel } from './setupModel.js';
   import { getFloorDir, Musk} from '../../../../../HumanModel.js'
-  import { createFloor} from '../floor.js'
+  import { createFloor, createDoor} from '../sharedObjects.js'
 
   
   async function createMusk() {
@@ -32,7 +32,7 @@ import {
     musk.scale.set(35, 35, 35)
     
 
-  
+    const door = await createDoor(false)
     const floor = createFloor(getFloorDir(Musk))
     const geometry = new BoxGeometry( 16, 24, 1 );
     const geometry2 = new BoxGeometry( 20, 28, 1 );
@@ -57,8 +57,8 @@ import {
 
     let y = 20
 
-    const cube5 = new Mesh( geometry4, material2 );
-    const cube6 = new Mesh( geometry4, material2 );
+    const cube5 = new Mesh( geometry4, material1 );
+    const cube6 = new Mesh( geometry4, material1 );
 
     musk.position.set(0, y, 0)
     // musk.rotation.y = Math.PI / 3
@@ -80,7 +80,6 @@ import {
 
     let sign = 4
  
-    console.log(group.position)
     group.tick = (delta) => {
     if (group.position.y >= 5) {
       sign = -4
@@ -95,7 +94,7 @@ import {
     muskGroup.add(group)
     muskGroup.add(floor)
     muskGroup.add(musk)
-
+    muskGroup.add(door)
     return {muskGroup};
   }
   

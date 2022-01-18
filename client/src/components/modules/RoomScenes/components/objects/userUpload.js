@@ -14,7 +14,7 @@ import {
   import { setupModel } from './setupModel.js';
   import { createText } from './textObject'
   import { getFloorDir, UserUpload} from '../../../../../HumanModel.js'
-  import { createFloor} from '../floor.js'
+  import { createFloor, createDoor} from '../sharedObjects.js'
   
 
   
@@ -25,13 +25,14 @@ import {
 
     const loader = new GLTFLoader();
 
+    const door = await createDoor(true)
     const floor = createFloor(getFloorDir(UserUpload))
     const geometryImage = new BoxGeometry( 16, 24, 1 );
     const geometryFrameBacking = new BoxGeometry( 20, 28, 1 );
     
     const imageMaterial = new MeshBasicMaterial( {map: txt} );
   
-    const color = new Color('red')
+    const color = new Color('dark green')
 
     const geometryFrameLong = new BoxGeometry( 2, 28, 1 );
     const geometryFrameShort = new BoxGeometry( 16, 2, 1 );
@@ -76,6 +77,7 @@ import {
     const userUploadGroup = new Group();
     userUploadGroup.add(UUMovableGroup)
     userUploadGroup.add(floor)
+    userUploadGroup.add(door)
 
     return { userUploadGroup, UUMovableGroup };
   }

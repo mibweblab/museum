@@ -17,7 +17,7 @@ import {
   import { setupModel } from './setupModel.js';
   import { createText } from './textObject'
   import { getFloorDir, Shakespeare} from '../../../../../HumanModel.js'
-  import { createFloor} from '../floor.js'
+  import { createFloor, createDoor} from '../sharedObjects.js'
   
   async function createShakespeare() {
 
@@ -34,7 +34,7 @@ import {
     const shakespeare = setupModel(shakespeareData, undefined, "shakespeare");
     shakespeare.scale.set(3, 3, 3)
     
-  
+    const door = await createDoor(false)
     const floor = createFloor(getFloorDir(Shakespeare))
     const geometry = new BoxGeometry( 16, 24, 1 );
     const geometry2 = new BoxGeometry( 20, 28, 1 );
@@ -59,8 +59,8 @@ import {
 
     let y = 20
 
-    const cube5 = new Mesh( geometry4, material2 );
-    const cube6 = new Mesh( geometry4, material2 );
+    const cube5 = new Mesh( geometry4, material1 );
+    const cube6 = new Mesh( geometry4, material1 );
 
     shakespeare.position.set(-11.5, y, -5)
     shakespeare.rotation.y = Math.PI / 3
@@ -97,6 +97,7 @@ import {
     group0.add(group)
     group0.add(floor)
     group0.add(shakespeare)
+    group0.add(door)
 
     return {group0};
   }

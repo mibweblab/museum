@@ -7,8 +7,6 @@ class LangModelAttributes {
 
 
         this.firstName = this.defaultFirstName(humanModel, optionalFirstName)
-        console.log('make way')
-        console.log(this.firstName)
     }
 
     humanModelName = () => {

@@ -39,43 +39,45 @@ function createLights(humanModel) {
   // group3.add(ambientLight2)
 
   // todo: move this functionality
-  const spotLight = new SpotLight( 0xffffff, 2 );
-  switch (humanModel) {
-    case Shakespeare:
-      spotLight.position.set( -2, 0, 22.5 );
-      spotLight.angle = 0.9;
-      spotLight.penumbra = 0;
-      spotLight.decay = 1;
-      spotLight.distance = 200;
-      spotLight.power = 20
-      spotLight.target.position.set(2, 5, 0)
-      group3.add(spotLight)
-      break
-    case Einstein:
-      spotLight.position.set( 0, 0, 0 );
-      spotLight.angle = 0.9;
-      spotLight.penumbra = 0;
-      spotLight.decay = 1;
-      spotLight.distance = 200;
-      spotLight.power = 0
-      spotLight.target.position.set(0, 0, 10)
-      group3.add(spotLight)
-      break
-    case Musk:
-    case UserUpload:
-      break
-  }
+  // const spotLight = new SpotLight( 0xffffff, 2 );
+  // spotLight.position.set( -2, 0, 22.5 );
+  // spotLight.position.targest et( -2, 0, 22.5 );
+  // switch (humanModel) {
+  //   case Shakespeare:
+  //     spotLight.position.set( -2, 0, 22.5 );
+  //     spotLight.angle = 0.9;
+  //     spotLight.penumbra = 0;
+  //     spotLight.decay = 1;
+  //     spotLight.distance = 200;
+  //     spotLight.power = 20
+  //     spotLight.target.position.set(2, 5, 0)
+  //     group3.add(spotLight)
+  //     break
+  //   case Einstein:
+  //     spotLight.position.set( 0, 0, 0 );
+  //     spotLight.angle = 0.9;
+  //     spotLight.penumbra = 0;
+  //     spotLight.decay = 1;
+  //     spotLight.distance = 200;
+  //     spotLight.power = 0
+  //     spotLight.target.position.set(0, 0, 10)
+  //     group3.add(spotLight)
+  //     break
+  //   case Musk:
+  //   case UserUpload:
+  //     break
+  // }
 
 
 
 
 
-  const lightHelper = new SpotLightHelper( spotLight );
-  group3.add(lightHelper)
+  // const lightHelper = new SpotLightHelper( spotLight );
+  // group3.add(lightHelper)
   
 
   
-  return { spotLight, group3 }
+  return { group3 }
 
 }
 

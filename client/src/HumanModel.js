@@ -15,7 +15,7 @@ const getCameraPosition = (humanModel, trialNum) => {
         case Musk:
             return (new Vector3(20, 35, 80));
         case UserUpload:
-            return (new Vector3(10, 5, -50));
+            return (new Vector3(10, 35, -80));
             
     }
 }
