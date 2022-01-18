@@ -28,7 +28,7 @@ router.post("/", [isUserLoggedIn],async (req, res) => {
 router.get("/",[isUserLoggedIn] ,async (req, res) => {
   let userId = req.session.user._id;
 
-  console.log(userId, "I'm hitting this end point");
+  // console.log(userId, "I'm hitting this end point");
   let allFrames = await getAllFrames(userId);
   if (allFrames) {
     res.send(allFrames);
