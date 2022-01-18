@@ -1,0 +1,31 @@
+.World {
+  height: 100%;
+}
+
+.World-parts {
+  position: absolute;
+  top: 120px;
+  left: 60px;
+  font-weight: 900;
+  font-size: 32px;
+  margin: 0;
+  color: #f1f1f1;
+  letter-spacing: -2px;
+  text-align: left;
+  z-index: 999;
+  background-color: black;
+  padding: 32px;
+  border-radius: 6px;
+  opacity: 0.8;
+}
+
+.World-partsBody {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.World-part {
+  margin-left: 8px;
+}
