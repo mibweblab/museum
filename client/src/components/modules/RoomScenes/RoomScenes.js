@@ -118,8 +118,10 @@ class World extends Component{
   
     if (intersects[0]) {
       let object = intersects[0].object;
-      const shakeSpeareClicked = (object.parent.name === 'door') 
-      this.props.navigate('/')
+      const doorClicked = (object.parent.name === 'door') 
+      if (doorClicked) {
+        this.props.navigate('/')
+      }
 
       
     }
