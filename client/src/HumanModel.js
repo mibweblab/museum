@@ -25,7 +25,6 @@ const getFloorDir = (humanModel) => {
         case Shakespeare:
             return '/floors/shakespeare_floor.png'
         case Einstein:
-            return '/floors/einstein_floor.png'
         case Musk:
             return '/floors/musk_floor.png'
         case UserUpload:
