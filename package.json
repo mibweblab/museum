@@ -51,10 +51,14 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
     "three": "^0.136.0",
+<<<<<<< HEAD
     "url-loader": "^4.1.1",
     "uuid-by-string": "^3.0.5",
     "valtio": "^1.2.8",
     "wouter": "^2.8.0-alpha.2"
+=======
+    "url-loader": "^4.1.1"
+>>>>>>> jpearl-shakespeare
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

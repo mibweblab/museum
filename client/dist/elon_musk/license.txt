@@ -1,0 +1,11 @@
+Model Information:
+* title:	Elon Musk
+* source:	https://sketchfab.com/3d-models/elon-musk-9e9fe76611d344558275c2c3cafe39f6
+* author:	thekeisipyhi4 (https://sketchfab.com/thekeisipyhi4)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Elon Musk" (https://sketchfab.com/3d-models/elon-musk-9e9fe76611d344558275c2c3cafe39f6) by thekeisipyhi4 (https://sketchfab.com/thekeisipyhi4) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

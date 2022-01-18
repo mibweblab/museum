@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
-import NavBar from "../components/modules/Navbar";
-import World from "../components/modules/World";
+// import NavBar from "../components/modules/Navbar";
+// import World from "../components/modules/World";
 
 import GPT3_playground from "./pages/GPT3_playground.js";
-import { Shakespeare, Einstein, Musk } from "../LangModel.js";
+// import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
+import NavBar from "./modules/Navbar/NavBar.js";
+import Rooms from "./pages/Rooms.js"; 
+import GPT3_playground from "./pages/GPT3_playground.js";
+import { Shakespeare, Einstein, Musk, UserUpload } from '../HumanModel';
 
 import FrameWorld from "./modules/FrameWorld";
 import { connect } from "react-redux";
@@ -85,15 +89,24 @@ class App extends React.Component{
 
     render(){
 
+
       return (
         <>
-      <Route path="/">
-        <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId} />
-        {this.props.frames && <FrameWorld images={this.props.frames} />}
-      </Route>
-      <Route path="/scene/:id">{<World />}</Route>
-    </>    
-      )
+        
+          <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+          <Router>
+            <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+            <GPT3_playground path="/shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
+            <GPT3_playground path="/einstein/" FirstName={firstName} HumanModel={Einstein}/> 
+            <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk}/> 
+            <Rooms path="/room_shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
+            <Rooms path="/room_einstein/" FirstName={firstName} HumanModel={Einstein}/> 
+            <Rooms path="/room_musk/" FirstName={firstName} HumanModel={Musk}/> 
+            <Rooms path="/room_user_upload/" FirstName={firstName} HumanModel={UserUpload}/> 
+            <NotFound default />
+          </Router>
+        </>
+      );
     }
 
 
