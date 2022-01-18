@@ -8,7 +8,7 @@ import {
   } from 'three';
 
 function createFloor(floorDir) {
-    let floorGeometry = new PlaneGeometry(1000, 1000, 10, 10);
+    let floorGeometry = new PlaneGeometry(150, 150, 5, 5);
     let floorTexture = new TextureLoader().load(floorDir);
     floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping; 
     floorTexture.repeat.set( 10, 10 );

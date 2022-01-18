@@ -1,4 +1,5 @@
 import { PerspectiveCamera } from 'three';
+import { getCameraPosition } from './../../../../HumanModel.js'
 
 function createCamera(width, height, humanModel) {
 
@@ -15,7 +16,8 @@ function createCamera(width, height, humanModel) {
       far
     )
 
-    camera.position.set(10, 5, -50);
+    const coordinates = getCameraPosition(humanModel)
+    camera.position.set(coordinates.x, coordinates.y, coordinates.z);
 
 
     return camera;

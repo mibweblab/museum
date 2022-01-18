@@ -15,49 +15,33 @@ import {
   
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
   import { setupModel } from './setupModel.js';
-  import { createText } from './oldScenes/textObject.js'
-  
-  function createEinsteinFloor() {
-    let floorGeometry = new PlaneGeometry(1000, 1000, 10, 10);
-    let floorTexture = new TextureLoader().load( '/shakespeareScene/floor.png' );
-    floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping; 
-    floorTexture.repeat.set( 10, 10 );
-    let floorMaterial = new MeshBasicMaterial( { map: floorTexture, side: DoubleSide } );
-  
-    let floor = new Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -0.5 * Math.PI;
-    floor.receiveShadow = true;
-    floor.position.y = -4;
-  
-    return floor;
-  }
-  
-
+  import { createText } from './textObject'
+  import { getFloorDir, Shakespeare} from '../../../../../HumanModel.js'
+  import { createFloor} from '../floor.js'
   
   async function createShakespeare() {
 
     let txt = new TextureLoader().load('/anim.png');
-    let txt2 = new TextureLoader().load('/framme.png');
+    let txt2 = new TextureLoader().load('/frame.png');
 
     const loader = new GLTFLoader();
 
     const [shakespeareData] = await Promise.all([
-      loader.loadAsync('/shakespeareScene/shakespeare0/scene.gltf'),
+      loader.loadAsync('/shakespeare/scene.gltf'),
 
     ]);
   
     const shakespeare = setupModel(shakespeareData, undefined, "shakespeare");
     shakespeare.scale.set(3, 3, 3)
     
-    // desk.name = 'desk'
   
-    const floor = createEinsteinFloor()
+    const floor = createFloor(getFloorDir(Shakespeare))
     const geometry = new BoxGeometry( 16, 24, 1 );
     const geometry2 = new BoxGeometry( 20, 28, 1 );
     const material = new MeshBasicMaterial( {map: txt} );
   
-    const color = new Color('pink')
-    const color2 = new Color('red')
+    const color = new Color('grey')
+
 
     const geometry3 = new BoxGeometry( 2, 28, 1 );
 
@@ -66,12 +50,12 @@ import {
 
 
     const material1 = new MeshBasicMaterial( {color:  color, map: txt2} );
-    const material2 = new MeshBasicMaterial( {color:  color2, map: txt2} );
+
     
     const cube = new Mesh( geometry, material );
     const cube2 = new Mesh( geometry2, material1 );
-    const cube3 = new Mesh( geometry3, material2 );
-    const cube4 = new Mesh( geometry3, material2 );
+    const cube3 = new Mesh( geometry3, material1 );
+    const cube4 = new Mesh( geometry3, material1 );
 
     let y = 20
 

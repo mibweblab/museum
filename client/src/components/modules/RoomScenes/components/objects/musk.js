@@ -38,8 +38,8 @@ import {
     const geometry2 = new BoxGeometry( 20, 28, 1 );
     const material = new MeshBasicMaterial( {map: txt} );
   
-    const color = new Color('pink')
-    const color2 = new Color('red')
+    const color = new Color('black')
+
 
     const geometry3 = new BoxGeometry( 2, 28, 1 );
 
@@ -48,12 +48,12 @@ import {
 
 
     const material1 = new MeshBasicMaterial( {color:  color, map: txt2} );
-    const material2 = new MeshBasicMaterial( {color:  color2, map: txt2} );
+
     
     const cube = new Mesh( geometry, material );
     const cube2 = new Mesh( geometry2, material1 );
-    const cube3 = new Mesh( geometry3, material2 );
-    const cube4 = new Mesh( geometry3, material2 );
+    const cube3 = new Mesh( geometry3, material1 );
+    const cube4 = new Mesh( geometry3, material1 );
 
     let y = 20
 

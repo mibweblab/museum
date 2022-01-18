@@ -1,3 +1,4 @@
+import { Vector3 } from 'three';
 
 const Shakespeare = 0
 const Einstein = 1
@@ -8,29 +9,27 @@ const HumanModels = [Shakespeare, Einstein, Musk, UserUpload]
 
 const getCameraPosition = (humanModel, trialNum) => {
     switch(humanModel) {
-        case Shakespeare:
-            return (new Vector3(0, 5, 50))
         case Einstein:
-            if (trialNum == 0) { return (new Vector3(250, 300, 800)) }
-            else { return (new Vector3(0, 5, 50)) }
+            return (new Vector3(-20, 35, 80));
+        case Shakespeare:
         case Musk:
-            return `man`
+            return (new Vector3(20, 35, 80));
         case UserUpload:
-            return (new Vector3(0, 5, 50))
-        
+            return (new Vector3(10, 5, -50));
+            
     }
 }
 
 const getFloorDir = (humanModel) => {
     switch(humanModel) {
         case Shakespeare:
-            return '/floor.png'
+            return '/floors/shakespeare_floor.png'
         case Einstein:
-            return '/einstein_floor.png'
+            return '/floors/einstein_floor.png'
         case Musk:
-            return '/musk_floor.png'
+            return '/floors/musk_floor.png'
         case UserUpload:
-            return '/einsteinScene1/floor/floor1.png'
+            return '/floors/floor1.png'
         
     }
 }

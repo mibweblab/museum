@@ -7,7 +7,7 @@ import { createShakespeare } from "./components/objects/shakespeare2"
 import { createMusk } from "./components/objects/musk"
 import { createEinstein } from "./components/objects/einstein2"
 import { createUserUpload } from "./components/objects/userUpload"
-import { createText } from "./components/objects/oldScenes/textObject"
+import { createText } from './components/objects/textObject.js'
 import { createScene } from "./components/scene" ;  
 import {createRenderer} from "./systems/renderer" ;  
 import { createLights } from './components/lights.js';
@@ -56,7 +56,7 @@ class World extends Component{
         this.scene.add(group0);
         // this.spotLight.target = shakespeare
         this.scene.add(this.spotLight)
-        this.gptText = await createText('', this.textCoordinates, false, this.fontString)
+        // this.gptText = await createText('', this.textCoordinates, false, this.fontString)
         this.scene.add(this.gptText);
         break
       case Einstein:
@@ -92,7 +92,7 @@ class World extends Component{
     switch (this.props.HumanModel) {
       case Shakespeare:
         this.scene.remove(this.gptText)
-        this.gptText = await createText(text, this.textCoordinates, false, this.fontString)
+        // this.gptText = await createText(text, this.textCoordinates, false, this.fontString)
         this.scene.add(this.gptText);
         break
       case Einstein:
