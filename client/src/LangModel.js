@@ -1,6 +1,33 @@
 import { Vector3 } from 'three';
 import { Shakespeare, Einstein, Musk, UserUpload } from './HumanModel.js';
 
+const getIntro = (humanModel) => {
+    switch(humanModel) {
+        case Shakespeare:
+            return "Please tell me a topic, and I shall read you something from my works."
+        case Einstein:
+            return "Welcome to Einstein's room. Feel free to start a conversation"
+        case Musk:
+            return "Welcome to Musk's room. Feel free to start a conversation"
+        case UserUpload:
+            return "Welcome to your uploaded room. Feel free to start a conversation" // todo: receive upload info and replace
+    }
+}
+
+const getTextAreaDescription = (humanModel) => {
+    switch(humanModel) {
+        case Shakespeare:
+            return "Receive Shakespeare&#x27;s writings on any topic."
+        case Einstein:
+            return "Converse with Einstein"
+        case Musk:
+            return "Chat with Elon."
+        case UserUpload:
+            return "Chat with your uploaded figure." // todo: receive upload info and replace
+    }
+}
+
+
 class LangModelAttributes {
     constructor(humanModel, optionalFirstName) {
         this.humanModel = humanModel
@@ -123,4 +150,4 @@ class LangModelAttributes {
 
 }
 
-export {LangModelAttributes }
+export {LangModelAttributes, getIntro, getTextAreaDescription }

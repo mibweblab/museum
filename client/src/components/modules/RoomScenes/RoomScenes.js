@@ -22,7 +22,6 @@ import "./RoomScenes.css"
 class World extends Component{
     constructor(props) {
       super(props);
-      
       this.raycaster = new Raycaster()
       this.camera = createCamera(props.mount.clientWidth, props.mount.clientHeight, props.HumanModel)
       this.renderer = createRenderer(props.mount.clientWidth, props.mount.clientHeight)

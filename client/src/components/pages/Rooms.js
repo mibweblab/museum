@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
 import { Shakespeare, Einstein, Musk } from "../../HumanModel.js";
-
+import { getIntro} from '../../LangModel.js'
 import "../modules/RoomScenes/RoomScenes.css";
 
 export default class Rooms extends Component{
@@ -10,9 +10,13 @@ export default class Rooms extends Component{
     super(props); 
     this.state = {
       isTextBoxVisible: "visible",
+      conversation: []
     };
   } 
 
+  intro() {
+    return getIntro(this.props.HumanModel)
+  }
   componentDidMount(){
     this.initWorld()
   }
@@ -37,15 +41,32 @@ export default class Rooms extends Component{
 
 
   onResponse = async(responseText) => {
-    await this.world.gptHasSpoken(responseText)
+    const reactElArray = this.newlineText(responseText)
+    this.setState({ conversation: this.state.conversation.concat(reactElArray)})
+
+  }
+
+  newlineText = (res) => {
+    const newText = res.split('\n').map(str => <p className='conversation-label'>{str}</p>);
+    
+    return newText.concat(<br></br>);
   }
   
   render(){
       return(
-        <>
-         <div id="scene-container" ref={(mount) => { this.mount = mount }}></div>
-         <GPT3_Integrated FirstName={this.props.FirstName} HumanModel={Shakespeare} visibility={this.state.isTextBoxVisible} onResponse={this.onResponse}/> 
-        </>
+        <div className='room-main'>
+          {/* <div id="scene-container" ></div> */}
+         <div className = 'main' id="scene-container" ref={(mount) => { this.mount = mount }}></div>
+         <div id="sidebar"> 
+          <div id='item1'>
+            <p className='conversation-label'>{this.intro()} </p>
+            {this.state.conversation}
+            <p></p>
+          </div>
+           <GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onResponse={this.onResponse}/> 
+         </div>
+        
+        </div>
       )
     }
   }
