@@ -58,7 +58,7 @@ const sizes = {
 function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() }) {
 
 
-  console.log("I got these images",images)
+  // console.log("I got these images",images)
   const ref = useRef();
   const clicked = useRef();
   const [, params] = useRoute("/item/:id");
@@ -89,8 +89,10 @@ function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() })
     <group
       ref={ref}
       onClick={(e) => (
-        e.stopPropagation(),
-        setLocation(clicked.current === e.object ? "/" : "/scene/" + e.object.name)
+        e.stopPropagation()
+        // ,
+        // console.log("this s the id",e.object)
+        // setLocation(clicked.current === e.object ? "/" : "/scene/" + e.object._id)
       )}
       onPointerMissed={() => setLocation("/")}
     >

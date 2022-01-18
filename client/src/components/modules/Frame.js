@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import React, { useRef, useState } from "react";
-
+import { useRoute, useLocation } from "wouter";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useCursor,
@@ -16,13 +16,14 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
   const [hovered, hover] = useState(false);
   const [rnd] = useState(() => Math.random());
   const image = useRef();
+  const [, setLocation] = useLocation();
   const frame = useRef();
   // const name = getUuid(url);
   // console.log("this is the color", typeof color, color)
 
   // console.log("I'm up and this is my color", color)
 
-  console.log("this is the name", name)
+  // console.log("this is the name", name)
 
   useCursor(hovered);
   useFrame((state) => {
@@ -46,10 +47,12 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
     <group {...props}>
       <mesh
         name={name}
+        // data-id={props._id}
         onPointerOver={(e) => (e.stopPropagation(), hover(true))}
         onPointerOut={() => hover(false)}
         scale={[1, GOLDENRATIO, 0.05]}
         position={[0, GOLDENRATIO / 2, 0]}
+        onClick={(e)=>(e.stopPropagation(), setLocation("/scene/" + props._id) ,console.log("this s the id",props._id))}
       >
         <boxGeometry />
         <meshStandardMaterial color={color}  metalness={0.5} roughness={0.5} envMapIntensity={2} />

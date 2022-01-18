@@ -92,7 +92,7 @@ class App extends React.Component{
         <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId} />
         {this.props.frames && <FrameWorld images={this.props.frames} />}
       </Route>
-      {/* <Route path="/scene/:id">{<World />}</Route> */}
+      <Route path="/scene/:id">{<World />}</Route>
     </>    
       )
     }
