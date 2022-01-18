@@ -2,17 +2,11 @@ import * as THREE from "three";
 import React, { useRef, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  useCursor,
-  Image,
-  Text,
-} from "@react-three/drei";
+import { useCursor, Image, Text } from "@react-three/drei";
 
 const GOLDENRATIO = 1.61803398875;
 
-const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
-
-
+const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
   const [hovered, hover] = useState(false);
   const [rnd] = useState(() => Math.random());
   const image = useRef();
@@ -52,10 +46,18 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
         onPointerOut={() => hover(false)}
         scale={[1, GOLDENRATIO, 0.05]}
         position={[0, GOLDENRATIO / 2, 0]}
-        onClick={(e)=>(e.stopPropagation(), setLocation("/scene/" + props._id) ,console.log("this s the id",props._id))}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (type==="scene"){
+            setLocation("/scene/" + props._id);
+          }else{
+            setLocation("/room/" + props._id);
+          }
+          // console.log("this s the id", props._id);
+        }}
       >
         <boxGeometry />
-        <meshStandardMaterial color={color}  metalness={0.5} roughness={0.5} envMapIntensity={2} />
+        <meshStandardMaterial color={color} metalness={0.5} roughness={0.5} envMapIntensity={2} />
         <mesh ref={frame} raycast={() => null} scale={[0.9, 0.93, 0.9]} position={[0, 0, 0.2]}>
           <boxGeometry />
           <meshBasicMaterial toneMapped={false} fog={false} />
@@ -73,7 +75,6 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
       </Text>
     </group>
   );
-}
-
+};
 
 export default Frame;

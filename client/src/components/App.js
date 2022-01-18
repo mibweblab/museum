@@ -24,6 +24,7 @@ import "./App.scss";
 import { useLocation, Switch, Route } from "wouter";
 import APIInterface from "../api.js";
 import { addInitialFrames } from "./action";
+import World from "./modules/World";
 
 const mapStateToProps = (state) => {
   return {
@@ -32,8 +33,6 @@ const mapStateToProps = (state) => {
     isThereQueuedFrame: state.isThereQueuedFrame,
   };
 };
-
-
 
 class App extends React.Component{
     constructor(props){
@@ -94,17 +93,27 @@ class App extends React.Component{
         <>
         
           <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId}/>
-          <Router>
-            {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} /> */}
+
+          <Route path="/">
+            {frames && <FrameWorld images={frames} />}
+          </Route> 
+          <Route path="/scene/:id">{<World />}</Route>   
+          {this.state.firstName &&
+            <Route path="/room/:id">{<Rooms FirstName={this.state.firstName} />}</Route> 
+          }
+
+          {/* <Router>
+            <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
             <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
             <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
             <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
+
             <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
             <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
             <Rooms path="/room_musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
             <Rooms path="/room_user_upload/" FirstName={this.state.firstName} HumanModel={UserUpload}/> 
             <NotFound default />
-          </Router>
+          </Router> */}
         </>
       );
     }
