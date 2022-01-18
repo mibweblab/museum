@@ -6,8 +6,9 @@ import "./NavBar.css";
 
 
 // This identifies your web application to Google's authentication service
-const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
-
+// const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.googleusercontent.com"
+// 486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.googleusercontent.com
 
 class NavBar extends Component {
   constructor(props) {
@@ -52,6 +53,8 @@ class NavBar extends Component {
           {this.props.userId && (<Link to="/musk/" className="NavBar-link">
             Musk
           </Link>)}
+
+          
           {this.props.userId ? (
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}

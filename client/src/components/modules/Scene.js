@@ -3,10 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import { HexColorPicker } from "react-colorful";
 import { proxy, useSnapshot } from "valtio";
 
-
-
 import Model from "./Ploid";
-import "./World.scss";
+import "./Scene.scss";
 import {
   MeshReflectorMaterial,
   Environment,
@@ -28,79 +26,13 @@ const state = proxy({
   },
 });
 
-function Picker() {
-  const snap = useSnapshot(state);
-  return (
-    <>
-      <HexColorPicker
-        className="picker"
-        color={snap.items[snap.current]}
-        onChange={(color) => {
-          state.items[snap.current] = color;
-          // console.log("current color: ", snap.current, state.items[snap.current], color);
-        }}
-      />
-      <h1>{snap.current}</h1>
-    </>
-  );
-}
 
-function ToggleColor() {
-  return (
-    <div className="World-parts">
-      <div className="World-partsHeader">
-        <span
-          onClick={() => {
-            state.current = "clothes";
-            console.log("current is clothes", state.current);
-          }}
-          className="World-part"
-        >
-          Clothes
-        </span>
-        <span
-          onClick={() => {
-            state.current = "body";
-            console.log("current is body", state.current);
-          }}
-          className="World-part"
-        >
-          Body
-        </span>
-        <span
-          onClick={() => {
-            state.current = "chest";
-            console.log("current is chest", state.current);
-          }}
-          className="World-part"
-        >
-          Chest
-        </span>
-        <span
-          onClick={() => {
-            state.current = "eyes";
-            console.log("current is eyes", state.current);
-          }}
-          className="World-part"
-        >
-          Eyes
-        </span>
-      </div>
-      <div className="World-partsBody">
-        <Picker />
-      </div>
-    </div>
-  );
-}
-
-
-const World = () => {
+const Scene = () => {
   const control = useRef();
   const camera = useRef()
-  const snap = useSnapshot(state);
+//   const snap = useSnapshot(state);
   return (
-    <div className="World">
-      <ToggleColor />
+    <div className="Scene">
       <Canvas dpr={[1, 2]} shadows>
         <ambientLight intensity={0.5} />
         <color attach="background" args={["#d25578"]} />
@@ -109,10 +41,10 @@ const World = () => {
           <Environment preset="city" />
           <group position={[0, -0.5, 0]}>
             <Model
-              clothes={snap.items.clothes}
-              body={snap.items.body}
-              chest={snap.items.chest}
-              eyes={snap.items.eyes}
+            //   clothes={snap.items.clothes}
+            //   body={snap.items.body}
+            //   chest={snap.items.chest}
+            //   eyes={snap.items.eyes}
               scale={0.5}
               position={[0, 0, 0]}
               controls={control}
@@ -166,4 +98,4 @@ const World = () => {
     </div>
   );
 };
-export default World;
+export default Scene;

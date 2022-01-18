@@ -21,6 +21,7 @@ const router = express.Router();
 //initialize socket
 const socketManager = require("./server-socket");
 
+
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
@@ -45,9 +46,9 @@ router.get("/user", (req, res) => {
 });
 
 // anything else falls to this "not found" case
-router.all("*", (req, res) => {
-  console.log(`API route not found: ${req.method} ${req.url}`);
-  res.status(404).send({ msg: "API route not found" });
-});
+// router.all("*", (req, res) => {
+//   console.log(`API route not found: ${req.method} ${req.url}`);
+//   res.status(404).send({ msg: "API route not found" });
+// });
 
 module.exports = router;
