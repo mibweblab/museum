@@ -8,7 +8,7 @@ import Skeleton from "./pages/Skeleton.js";
 // import GPT3_playground from "./pages/GPT3_playground.js";
 // import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
-import NavBar from "./modules/Navbar/NavBar.js";
+import NavBar from "./modules/Navbar/Navbar.js";
 import Rooms from "./pages/Rooms.js"; 
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk, UserUpload } from '../HumanModel';
@@ -103,10 +103,10 @@ class App extends React.Component{
           } */}
 
           <Router>
-            <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+            {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
             <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
             <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
-            <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
+            <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/>  */}
 
             <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
             <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
