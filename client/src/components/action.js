@@ -17,4 +17,10 @@ const dequeueFrame= (payload) => ({
     payload: payload,
   });
 
-export { addFrame, addFrameToQueue, dequeueFrame };
+
+const addInitialFrames = (payload) => ({
+  type: "ADD_INITIAL_FRAMES",
+  payload: payload,
+});
+
+export { addFrame, addFrameToQueue, dequeueFrame, addInitialFrames };

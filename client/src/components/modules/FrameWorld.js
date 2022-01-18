@@ -54,10 +54,11 @@ const sizes = {
 };
 
 
-const pexel = (id) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
 
 function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() }) {
+
+
+  console.log("I got these images",images)
   const ref = useRef();
   const clicked = useRef();
   const [, params] = useRoute("/item/:id");
@@ -94,7 +95,7 @@ function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() })
       onPointerMissed={() => setLocation("/")}
     >
       {images.map(
-        (props,index) => <Frame key={index + '-frame' } name={props.name} {...props} /> /* prettier-ignore */
+        (props,index) => <Frame key={index + '-frame' } position={props.position} rotation={props.rotation} url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
       )}
     </group>
   );
@@ -119,7 +120,6 @@ const ModalViewer = ({ Modal, open, close, isOpen, modalType }) => {
 
 const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame }) => {
   // console.log("I'm inside frames",frames)
-
   const control = useRef();
   const camera = useRef();
   const ref = useRef();
@@ -156,7 +156,9 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
               controls={control}
               camera={camera}
             />
+            { 
             <Frames camera={camera} images={frames} />
+            }
             <mesh
               rotation={[-Math.PI / 2, 0, 0]}
               position={[0, 0, 0]}
@@ -170,10 +172,14 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
                 queuedFrame.position = [x,y,z]
                 queuedFrame.rotation = [0,0,0]
                 if (isThereQueuedFrame){
+
+                  //  console.log()
                    dispatch(addFrame(queuedFrame));
                    dispatch(dequeueFrame(false));
                    dispatch(addFrameToQueue(null));
-                   APIInterface.addFrame({queuedFrame});
+
+                   let {type, name, url, text, color, position, rotation} = queuedFrame;
+                   APIInterface.addFrame(type, name, url, text, color, position, rotation);
                    
                 }
               }}

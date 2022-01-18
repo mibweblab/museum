@@ -4,7 +4,7 @@ import App from "./components/App.js";
 import {Provider} from "react-redux"
 import {createStore} from "redux"
 import framesReducer from "./components/reducer.js";
-
+import 'semantic-ui-css/semantic.min.css'
 
 const store = createStore(framesReducer);
 

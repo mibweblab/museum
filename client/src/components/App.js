@@ -13,19 +13,14 @@ import { Suspense } from "react";
 import FrameWorld from "./modules/FrameWorld.js";
 import { connect } from "react-redux";
 
-import { useModal } from "react-hooks-use-modal";
-
 import "../utilities.css";
-
 import { socket } from "../client-socket.js";
-
 import { get, post } from "../utilities";
 import "./App.scss";
 
-import { useLocation, Switch, Route } from "wouter"
-
-const pexel = (id) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
+import { useLocation, Switch, Route } from "wouter";
+import APIInterface from "../api.js";
+import { addInitialFrames } from "./action";
 
 const mapStateToProps = (state) => {
   return {
@@ -35,87 +30,132 @@ const mapStateToProps = (state) => {
   };
 };
 
-const images = [
-  // Front
-  { url: pexel(1103970) },
-  // Back
-  // { position: [-0.8, 0, -0.6], rotation: [0, 0, 0], url: pexel(416430) },
-  // { position: [0.8, 0, -0.6], rotation: [0, 0, 0], url: pexel(310452) },
-  // // Left
-  // { position: [-1.75, 0, 0.25], rotation: [0, Math.PI / 2.5, 0], url: pexel(327482) },
-  // { position: [-2.15, 0, 1.5], rotation: [0, Math.PI / 2.5, 0], url: pexel(325185) },
-  // { position: [-2, 0, 2.75], rotation: [0, Math.PI / 2.5, 0], url: pexel(358574) },
-  // // Right
-  // { position: [1.75, 0, 0.25], rotation: [0, -Math.PI / 2.5, 0], url: pexel(227675) },
-  // { position: [2.15, 0, 1.5], rotation: [0, -Math.PI / 2.5, 0], url: pexel(911738) },
-  // { position: [2, 0, 2.75], rotation: [0, -Math.PI / 2.5, 0], url: pexel(1738986) }
-];
 
-/**
- * Define the "App" component
- */
-const App = (props) => {
-  const [userId, setUserId] = useState(undefined);
-  const [firstName, setFirstName] = useState(undefined);
-  // console.log("these are my props", props);
-  // const [Modal, open, close, isOpen] = useModal("root", {
-  //   preventScroll: true,
-  //   closeOnOverlayClick: false,
-  // });
-  useEffect(() => {
-    get("/api/whoami").then((user) => {
-      if (user._id) {
-        // they are registed in the database, and currently logged in.
-        setUserId(user._id);
-        setFirstName(user.firstname);
+
+class App extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+          userId: null,
+          firstName: null,
+        }
+     
+    }
+
+    async getAllFrames() {
+      let allFrames = await APIInterface.getAllFrames();
+      if (allFrames) {
+        console.log("these are my frames", allFrames);
+        this.props.dispatch(addInitialFrames(allFrames.data));
       }
-    });
+    }
 
+    async componentDidMount(){
 
-    
-  }, []);
+      get("/api/whoami").then(async (user) => {
+        if (user._id) {
+          // they are registed in the database, and currently logged in.
+          this.setState({userId: user._id})
+          // setUserId(user._id);
+          this.setState({firstName: user.firstname})
+          await this.getAllFrames();
+        }
+      });
 
-  const handleLogin = (res) => {
-    console.log(`Logged in as ${res.profileObj.name}`);
-    const userToken = res.tokenObj.id_token;
-    post("/api/login", { token: userToken }).then((user) => {
-      setUserId(user._id);
-      setFirstName(user.firstname);
-      post("/api/initsocket", { socketid: socket.id });
-    });
-  };
+    }
 
-  const handleLogout = () => {
-    setUserId(undefined);
-    post("/api/logout");
-  };
+     handleLogin = (res) => {
+      console.log(`Logged in as ${res.profileObj.name}`);
+      const userToken = res.tokenObj.id_token;
+      post("/api/login", { token: userToken }).then(async (user) => {
 
-  return (
-    <>
-      {/* <World /> */}
-      {/* <div className="btn"> 
-        <p>Modal is Open? {isOpen ? "Yes" : "No"}</p>
-        <button onClick={open}>OPEN</button>
-      </div> */}
+        this.setState({userId: user._id})
+        // setUserId(user._id);
+        this.setState({firstName: user.firstname})
+        // setFirstName(user.firstname);
+        await this.getAllFrames();
+        post("/api/initsocket", { socketid: socket.id });
+      });
+    };
+  
+     handleLogout = () => {
+      // setUserId(undefined);
+      this.setState({userId:null})
+      post("/api/logout");
+    };
 
+    render(){
+
+      return (
+        <>
       <Route path="/">
-        <FrameWorld images={props.frames} />
+        <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId} />
+        {this.props.frames && <FrameWorld images={this.props.frames} />}
       </Route>
-      <Route path="/scene/world">
-        <World />
-      </Route>
-      {/* <Route>
-        <FrameWorld images={props.frames} />
-      </Route> */}
-      {/* <Modal>
-        <div className="hello">
-          <h1>Title</h1>
-          <p>This is a customizable modal.</p>
-          <button onClick={close}>CLOSE</button>
-        </div>
-      </Modal> */}
-    </>
-  );
-};
+      {/* <Route path="/scene/:id">{<World />}</Route> */}
+    </>    
+      )
+    }
+
+
+}
+
+
+// /**
+//  * Define the "App" component
+//  */
+// const App = ({ frames, dispatch }) => {
+//   const [userId, setUserId] = useState(undefined);
+//   const [firstName, setFirstName] = useState(undefined);
+
+//   console.log("frames changes", frames)
+
+//   async function getAllFrames() {
+//     let allFrames = await APIInterface.getAllFrames();
+//     if (allFrames) {
+//       console.log("these are my frames", allFrames);
+//       dispatch(addInitialFrames(allFrames.data));
+//     }
+//   }
+
+//   useEffect(() => {
+//     get("/api/whoami").then((user) => {
+//       if (user._id) {
+//         // they are registed in the database, and currently logged in.
+//         setUserId(user._id);
+//         setFirstName(user.firstname);
+//         getAllFrames();
+//       }
+//     });
+
+//     getAllFrames();
+//   }, []);
+
+//   const handleLogin = (res) => {
+//     console.log(`Logged in as ${res.profileObj.name}`);
+//     const userToken = res.tokenObj.id_token;
+//     post("/api/login", { token: userToken }).then((user) => {
+//       setUserId(user._id);
+//       setFirstName(user.firstname);
+//       getAllFrames();
+//       post("/api/initsocket", { socketid: socket.id });
+//     });
+//   };
+
+//   const handleLogout = () => {
+//     setUserId(undefined);
+//     post("/api/logout");
+//   };
+
+//   return (
+//     <>
+//       <Route path="/">
+//         <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+//         {frames && <FrameWorld images={frames} />}
+//       </Route>
+//       {/* <Route path="/scene/:id">{<World />}</Route> */}
+//     </>
+//   );
+// };
 
 export default connect(mapStateToProps)(App);

@@ -10,12 +10,19 @@ import {
 
 const GOLDENRATIO = 1.61803398875;
 
-const Frame = ({ url, name,c = new THREE.Color(), ...props }) => {
+const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
+
+
   const [hovered, hover] = useState(false);
   const [rnd] = useState(() => Math.random());
   const image = useRef();
   const frame = useRef();
   // const name = getUuid(url);
+  // console.log("this is the color", typeof color, color)
+
+  // console.log("I'm up and this is my color", color)
+
+  console.log("this is the name", name)
 
   useCursor(hovered);
   useFrame((state) => {
@@ -45,7 +52,7 @@ const Frame = ({ url, name,c = new THREE.Color(), ...props }) => {
         position={[0, GOLDENRATIO / 2, 0]}
       >
         <boxGeometry />
-        <meshStandardMaterial color="#151515" metalness={0.5} roughness={0.5} envMapIntensity={2} />
+        <meshStandardMaterial color={color}  metalness={0.5} roughness={0.5} envMapIntensity={2} />
         <mesh ref={frame} raycast={() => null} scale={[0.9, 0.93, 0.9]} position={[0, 0, 0.2]}>
           <boxGeometry />
           <meshBasicMaterial toneMapped={false} fog={false} />

@@ -1,7 +1,6 @@
 const Frame = require("../models/frame");
 
-
-async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, subframes,userId) {
+async function addFrame(type, name, imageUrl, text, frameColor, position, rotation,userId) {
   try {
     let frame = Frame({
       type: type,
@@ -11,11 +10,11 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
       frameColor: frameColor,
       position: position,
       rotation: rotation,
-      subframes: subframes,
       userId: userId,
     });
     await frame.save();
   } catch (error) {
+    console.log("error saving", error)
     return false;
   }
 }
@@ -45,7 +44,9 @@ async function editFrame(frameId,data){
  */
 async function getAllFrames(userId){
     try {
-        return await Frame.find({userId: userId})
+        let framesFound = await Frame.find({userId: userId})
+        console.log(framesFound);
+        return framesFound;
     } catch (error) {
         return false;
     }
