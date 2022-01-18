@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import OpenAIAPI from "react-openai-api";
-import { LangModelAttributes } from "../../LangModel";
+import { LangModelAttributes, getTextAreaDescription } from "../../LangModel";
 import { Shakespeare }  from "../../HumanModel";
 import "../../utilities.css";
 import "./Skeleton.css";
@@ -74,7 +74,7 @@ export default class GPT3_Integrated extends Component {
         this.setState({
             prompt:  this.languageModel.polishedInput(promptVal),
             response: undefined,
-        }, () => this.props.onResponse('A passage about ' + promptVal + ':'));
+        }, () => this.props.onResponse(this.state.prompt));
     }
 
     newlineText = (res) => {
@@ -82,9 +82,16 @@ export default class GPT3_Integrated extends Component {
         return newText;
       }
 
+    
+    labelName = () => {
+        return getTextAreaDescription(this.props.HumanModel)
+    }
     render () {
         return (
-            <div className="room form-block w-form" style={{visibility:this.props.visibility}}>
+            <div id='item2'>
+                <label className='field-label'>{this.labelName()}</label><br></br>
+                <textarea type='text' className='text-field w-input row' cols="35" rows="3" maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
+                <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='converse-btn'>Enter</button>
                 <p>{(this.state.response == undefined) ? 
                                 (<OpenAIAPI
                                 apiKey={apiKey}
@@ -94,15 +101,26 @@ export default class GPT3_Integrated extends Component {
                                 />) 
                                 : ""
                             }</p>
-                <label className='field-label'>Receive Shakespeare&#x27;s writings on any topic.</label>
-                <div className='div-block'>
-                    <input type='text' className='text-field w-input row' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
-                    <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='submit-button w-button row'>Enter</button>
-                    <br></br>
+          </div>
+        //     <div className="room form-block w-form" style={{visibility:this.props.visibility}}>
+        //         <p>{(this.state.response == undefined) ? 
+        //                         (<OpenAIAPI
+        //                         apiKey={apiKey}
+        //                         payload={this.generatePayload() }
+        //                         start_sequence= {`\n${this.languageModel.humanModelName()}:`}
+        //                         responseHandler={this.responseHandler}
+        //                         />) 
+        //                         : ""
+        //                     }</p>
+        //         <label className='field-label'>Receive Shakespeare&#x27;s writings on any topic.</label>
+        //         <div className='div-block'>
+        //             <input type='text' className='text-field w-input row' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
+        //             <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='submit-button w-button row'>Enter</button>
+        //             <br></br>
 
                 
-                </div>
-          </div>
+        //         </div>
+        //   </div>
 
     );
     };
