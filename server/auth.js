@@ -24,8 +24,7 @@ function getOrCreateUser(user) {
     if (existingUser) return existingUser;
 
     const newUser = new User({
-      firstname: user.given_name,
-      lastname: user.family_name,
+      name: user.name,
       googleid: user.sub,
     });
 

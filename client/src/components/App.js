@@ -22,14 +22,12 @@ import './App.scss';
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
-  const [firstName, setFirstName] = useState(undefined);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
-        setFirstName(user.firstname);
       }
     });
   }, []);
@@ -39,7 +37,6 @@ const App = () => {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
-      setFirstName(user.firstname);
       post("/api/initsocket", { socketid: socket.id });
     });
   };
