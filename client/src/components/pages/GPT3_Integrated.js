@@ -102,26 +102,6 @@ export default class GPT3_Integrated extends Component {
                                 : ""
                             }</p>
           </div>
-        //     <div className="room form-block w-form" style={{visibility:this.props.visibility}}>
-        //         <p>{(this.state.response == undefined) ? 
-        //                         (<OpenAIAPI
-        //                         apiKey={apiKey}
-        //                         payload={this.generatePayload() }
-        //                         start_sequence= {`\n${this.languageModel.humanModelName()}:`}
-        //                         responseHandler={this.responseHandler}
-        //                         />) 
-        //                         : ""
-        //                     }</p>
-        //         <label className='field-label'>Receive Shakespeare&#x27;s writings on any topic.</label>
-        //         <div className='div-block'>
-        //             <input type='text' className='text-field w-input row' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
-        //             <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='submit-button w-button row'>Enter</button>
-        //             <br></br>
-
-                
-        //         </div>
-        //   </div>
-
     );
     };
 }
