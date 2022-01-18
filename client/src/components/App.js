@@ -5,7 +5,7 @@ import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/Navbar/NavBar.js";
 import Rooms from "./pages/Rooms.js"; 
 import GPT3_playground from "./pages/GPT3_playground.js";
-import { Shakespeare, Einstein, Musk } from "../LangModel.js";
+import { Shakespeare, Einstein, Musk, UserUpload } from '../HumanModel';
 
 import "../utilities.css";
 
@@ -56,6 +56,8 @@ const App = () => {
         <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk}/> 
         <Rooms path="/room_shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
         <Rooms path="/room_einstein/" FirstName={firstName} HumanModel={Einstein}/> 
+        <Rooms path="/room_musk/" FirstName={firstName} HumanModel={Musk}/> 
+        <Rooms path="/room_user_upload/" FirstName={firstName} HumanModel={UserUpload}/> 
         <NotFound default />
       </Router>
     </>

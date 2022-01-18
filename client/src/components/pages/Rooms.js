@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
-import { Shakespeare, Einstein, Musk } from "../../LangModel.js";
+import { Shakespeare, Einstein, Musk } from "../../HumanModel.js";
 
 import "../modules/RoomScenes/RoomScenes.css";
 

@@ -9,12 +9,6 @@ function setupModel(data, material, name) {
     } else {
       if (o.isMesh) {
         o.geometry.computeVertexNormals();
-        // o.material.reflectionTexture = null;
-        // console.log(o.material.emissive)
-        // o.material.emissive = new Color('white')
-        // o.material.emissiveIntensity = 0
-        // console.log(o.material.emissive)
-        // o.material.emissive = 0xffffff
       }
     }
 

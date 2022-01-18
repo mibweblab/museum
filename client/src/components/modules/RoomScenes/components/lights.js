@@ -9,7 +9,7 @@ import {
   Vector3,
   Object3D,
 } from 'three';
-import { Shakespeare, Einstein, Musk } from "../../../../LangModel.js"
+import { Shakespeare, Einstein, Musk, UserUpload } from "../../../../HumanModel.js"
 
 
 function createLights(humanModel) {
@@ -62,6 +62,7 @@ function createLights(humanModel) {
       group3.add(spotLight)
       break
     case Musk:
+    case UserUpload:
       break
   }
 

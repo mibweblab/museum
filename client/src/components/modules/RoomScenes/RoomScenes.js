@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 
-import { Shakespeare, Einstein, Musk } from "../../../LangModel.js"
+import { Shakespeare, Einstein, Musk, UserUpload } from "../../../HumanModel"
 import { createControls } from './systems/controls.js';
 import { createCamera } from "./components/camera.js"
-import { createShakespeare } from "./components/objects/shakespeare"
-import { createEinstein } from "./components/objects/einstein1"
-import { createText } from "./components/objects/textObject"
+import { createShakespeare } from "./components/objects/shakespeare2"
+import { createMusk } from "./components/objects/musk"
+import { createEinstein } from "./components/objects/einstein2"
+import { createUserUpload } from "./components/objects/userUpload"
+import { createText } from "./components/objects/oldScenes/textObject"
 import { createScene } from "./components/scene" ;  
 import {createRenderer} from "./systems/renderer" ;  
 import { createLights } from './components/lights.js';
@@ -47,23 +49,29 @@ class World extends Component{
     }
 
   init = async() => {
-    console.log(this.props.HumanModel)
     switch (this.props.HumanModel) {
       case Shakespeare:
-        const {group, book} = await createShakespeare()
-        this.loop.updatables.push(book);
-        this.scene.add(group);
+        const {group0} = await createShakespeare()
+        // this.loop.updatables.push(book);
+        this.scene.add(group0);
         // this.spotLight.target = shakespeare
         this.scene.add(this.spotLight)
         this.gptText = await createText('', this.textCoordinates, false, this.fontString)
         this.scene.add(this.gptText);
         break
       case Einstein:
-        const {group2, group1} = await createEinstein()
-        this.loop.updatables.push(group1);
-        this.scene.add(group2);
+        const {group1} = await createEinstein()
+        // this.loop.updatables.push(group1);
+        this.scene.add(group1);
+        break
+      case UserUpload:
+        const {userUploadGroup, UUMovableGroup } = await createUserUpload()
+        this.scene.add(userUploadGroup);
+        this.loop.updatables.push(UUMovableGroup);
         break
       case Musk:
+        const { muskGroup } = await createMusk()
+        this.scene.add(muskGroup);
         break
     }    
   }
@@ -91,6 +99,8 @@ class World extends Component{
         break
       case Musk:
         break
+      case UserUpload:
+        break
     }
   }  
   onClick = (e) => {
@@ -115,6 +125,7 @@ class World extends Component{
       case Einstein:
         break
       case Musk:
+      case UserUpload:
         break
     }
 

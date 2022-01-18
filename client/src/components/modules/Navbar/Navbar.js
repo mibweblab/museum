@@ -56,13 +56,16 @@ class NavBar extends Component {
             </Link>
             <Link to="/room_shakespeare/" className="NavBar-link">
               Shakespeare Scene
-            </Link>
-            <Link to="/room_einstein/" className="NavBar-link" trial='0'>
-              Einstein Scene 0
-            </Link>       
+            </Link>      
             <Link to="/room_einstein/" className="NavBar-link" trial='1'>
-              Einstein Scene 1
-            </Link>           
+              Einstein Scene 
+            </Link>    
+            <Link to="/room_musk/" className="NavBar-link">
+              Musk Scene
+            </Link>    
+            <Link to="/room_user_upload/" className="NavBar-link">
+              User Upload Scene
+            </Link>         
           </>)}
 
           

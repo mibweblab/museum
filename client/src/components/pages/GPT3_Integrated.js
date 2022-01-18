@@ -1,8 +1,8 @@
 
 import React, { Component } from "react";
 import OpenAIAPI from "react-openai-api";
-import { LangModelAttributes, Einstein, Shakespeare } from "../../LangModel";
-
+import { LangModelAttributes } from "../../LangModel";
+import { Shakespeare }  from "../../HumanModel";
 import "../../utilities.css";
 import "./Skeleton.css";
 

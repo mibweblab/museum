@@ -17,7 +17,7 @@ function createControls(camera, canvas) {
   controls.screenSpacePanning = false;
 
   controls.minDistance = 10;
-  controls.maxDistance = 100;
+  controls.maxDistance = 500;
  
 	controls.maxPolarAngle = Math.PI / 2;
   controls.tick = () => {
