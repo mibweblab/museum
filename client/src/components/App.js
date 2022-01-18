@@ -5,7 +5,7 @@ import Skeleton from "./pages/Skeleton.js";
 // import NavBar from "../components/modules/Navbar";
 // import World from "../components/modules/World";
 
-import GPT3_playground from "./pages/GPT3_playground.js";
+// import GPT3_playground from "./pages/GPT3_playground.js";
 // import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
 import NavBar from "./modules/Navbar/NavBar.js";
@@ -93,16 +93,16 @@ class App extends React.Component{
       return (
         <>
         
-          <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+          <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId}/>
           <Router>
-            <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-            <GPT3_playground path="/shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
-            <GPT3_playground path="/einstein/" FirstName={firstName} HumanModel={Einstein}/> 
-            <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk}/> 
-            <Rooms path="/room_shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
-            <Rooms path="/room_einstein/" FirstName={firstName} HumanModel={Einstein}/> 
-            <Rooms path="/room_musk/" FirstName={firstName} HumanModel={Musk}/> 
-            <Rooms path="/room_user_upload/" FirstName={firstName} HumanModel={UserUpload}/> 
+            {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} /> */}
+            <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
+            <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
+            <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
+            <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
+            <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
+            <Rooms path="/room_musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
+            <Rooms path="/room_user_upload/" FirstName={this.state.firstName} HumanModel={UserUpload}/> 
             <NotFound default />
           </Router>
         </>
@@ -118,7 +118,7 @@ class App extends React.Component{
 //  */
 // const App = ({ frames, dispatch }) => {
 //   const [userId, setUserId] = useState(undefined);
-//   const [firstName, setFirstName] = useState(undefined);
+//   const [this.state.firstName, setFirstName] = useState(undefined);
 
 //   console.log("frames changes", frames)
 
