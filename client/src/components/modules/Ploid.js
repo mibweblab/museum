@@ -110,7 +110,7 @@ export default function Model(props) {
       walkDirection.applyAxisAngle(rotateAngle, directionOffset);
 
       // // run/walk velocity
-      const velocity = 2;
+      const velocity = 10;
 
       const moveX = walkDirection.x * velocity * 0.01;
       const moveZ = walkDirection.z * velocity * 0.01;

@@ -49,6 +49,7 @@
     "socket.io-client": "^2.3.1",
     "three": "^0.136.0",
     "url-loader": "^4.1.1",
+    "use-cannon": "^0.5.3",
     "uuid-by-string": "^3.0.5",
     "valtio": "^1.2.8",
     "wouter": "^2.8.0-alpha.2"

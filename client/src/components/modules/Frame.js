@@ -7,10 +7,19 @@ import {
   Image,
   Text,
 } from "@react-three/drei";
-
+import { addMoveObject } from "../action";
+import { connect } from "react-redux";
 const GOLDENRATIO = 1.61803398875;
 
-const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
+const mapStateToProps = (state) => {
+  return {
+    frames: state.frames,
+    queuedFrame: state.queuedFrame,
+    isThereQueuedFrame: state.isThereQueuedFrame,
+  };
+};
+
+const Frame = ({ url, name,color,c = new THREE.Color(), dispatch, ...props }) => {
 
 
   const [hovered, hover] = useState(false);
@@ -18,6 +27,7 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
   const image = useRef();
   const [, setLocation] = useLocation();
   const frame = useRef();
+  const frameUpper = useRef();
   // const name = getUuid(url);
   // console.log("this is the color", typeof color, color)
 
@@ -46,13 +56,21 @@ const Frame = ({ url, name,color,c = new THREE.Color(), ...props }) => {
   return (
     <group {...props}>
       <mesh
+        ref={frameUpper}
         name={name}
         // data-id={props._id}
         onPointerOver={(e) => (e.stopPropagation(), hover(true))}
         onPointerOut={() => hover(false)}
         scale={[1, GOLDENRATIO, 0.05]}
         position={[0, GOLDENRATIO / 2, 0]}
-        onClick={(e)=>(e.stopPropagation(), setLocation("/scene/" + props._id) ,console.log("this s the id",props._id))}
+        onClick={(e)=>(e.stopPropagation(),
+          
+          // setLocation("/scene/" + props._id),
+        dispatch(addMoveObject(frameUpper.current)),
+        
+        console.log("this s the id",props._id))
+      
+      }
       >
         <boxGeometry />
         <meshStandardMaterial color={color}  metalness={0.5} roughness={0.5} envMapIntensity={2} />

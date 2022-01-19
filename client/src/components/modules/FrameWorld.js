@@ -4,7 +4,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Billboard } from "@react-three/drei";
 import "./FrameWorld.scss";
 import { useModal } from "react-hooks-use-modal";
-
+import { CycleRaycast } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useCursor,
@@ -25,6 +25,7 @@ const mapStateToProps = (state) => {
     frames: state.frames,
     queuedFrame: state.queuedFrame,
     isThereQueuedFrame: state.isThereQueuedFrame,
+    moveObject: state.moveObject
   };
 };
 
@@ -36,8 +37,8 @@ import Model from "./Ploid";
 import Frame from "./Frame";
 import Controls from "./Controls";
 import FrameCustomizer from "./FrameCustomizer";
-import { addFrameToQueue } from "../action";
-import APIInterface from "../../api"
+import { addFrameToQueue ,  addMoveObject } from "../action";
+import APIInterface from "../../api";
 
 const GOLDENRATIO = 1.61803398875;
 
@@ -53,11 +54,7 @@ const sizes = {
   height: window.innerHeight,
 };
 
-
-
-function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() }) {
-
-
+function Frames({ images, grassCubes , q = new THREE.Quaternion(),dispatch, p = new THREE.Vector3() }) {
   // console.log("I got these images",images)
   const ref = useRef();
   const clicked = useRef();
@@ -88,16 +85,16 @@ function Frames({ images, q = new THREE.Quaternion(), p = new THREE.Vector3() })
   return (
     <group
       ref={ref}
-      onClick={(e) => (
+      onClick={(e) =>
         e.stopPropagation()
         // ,
         // console.log("this s the id",e.object)
         // setLocation(clicked.current === e.object ? "/" : "/scene/" + e.object._id)
-      )}
+      }
       onPointerMissed={() => setLocation("/")}
     >
       {images.map(
-        (props,index) => <Frame key={index + '-frame' } position={props.position} rotation={props.rotation} url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
+        (props,index) => <Frame key={index + '-frame' }dispatch={dispatch} position={props.position} rotation={props.rotation} url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
       )}
     </group>
   );
@@ -120,11 +117,12 @@ const ModalViewer = ({ Modal, open, close, isOpen, modalType }) => {
   );
 };
 
-const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame }) => {
+const FrameWorld = ({ images, frames, queuedFrame, moveObject, dispatch, isThereQueuedFrame }) => {
   // console.log("I'm inside frames",frames)
   const control = useRef();
   const camera = useRef();
   const ref = useRef();
+  const [{ objects, cycle }, set] = useState({ objects: [], cycle: 0 });
 
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
@@ -133,17 +131,16 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
 
   let [modalType, setModalType] = useState("frame");
 
-
+  useEffect(() => {
+    console.log(objects, cycle);
+  }, [objects, cycle]);
 
   return (
     <>
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType={modalType} />
-      <Controls
-        openModal={open}
-        setModalType={setModalType}
-      />
+      <Controls openModal={open} setModalType={setModalType} />
       <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
-        <color attach="background" args={["#191920"]} />
+        <color attach="background" args={["#fff"]} />
         <fog attach="fog" args={["#191920", 0, 15]} />
         <Suspense fallback={null}>
           <Environment preset="city" />
@@ -158,32 +155,50 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
               controls={control}
               camera={camera}
             />
-            { 
-            <Frames camera={camera} images={frames} />
-            }
+            {<Frames dispatch={dispatch} camera={camera} images={frames} />}
             <mesh
               rotation={[-Math.PI / 2, 0, 0]}
               position={[0, 0, 0]}
-              onClick={(e) => {
-
+              name="ground"
+              onPointerMove={(e) => {
                 e.stopPropagation();
-                const [x, y, z] = Object.values(e.point).map((coord) =>
-                  Math.ceil(coord),
-                );
+
+                // console.log("here is the onj",moveObject)
+                const [x, y, z] = Object.values(e.point).map((coord) => coord)
+                
+                // console.log(x,y,z);
+                moveObject.position.x = x;
+                // moveObject.position.y = y;
+                moveObject.position.z = z;
+                // objects.forEach((obj) => {
+                //   if (obj.object.name !== "ground") {
+                    // moveObject.position.x = x;
+                    // moveObject.position.y = y;
+                    // moveObject.position.z = z;
+                //   }
+                // });
+                // console.log(x, y, z);
+              }}
+
+              onDoubleClick={()=> dispatch(addMoveObject(null))}
+              onClick={(e) => {
+                e.stopPropagation();
+                const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 // addCube(x, y, z, activeTexture);
-                queuedFrame.position = [x,y,z]
-                queuedFrame.rotation = [0,0,0]
-                if (isThereQueuedFrame){
+                // queuedFrame.position = [x, y, z];
+                // queuedFrame.rotation = [0, 0, 0];
+                // if (isThereQueuedFrame) {
+                //   //  console.log()
+                //   dispatch(addFrame(queuedFrame));
+                //   dispatch(dequeueFrame(false));
+                  // dispatch(addMoveObject(null));
 
-                  //  console.log()
-                   dispatch(addFrame(queuedFrame));
-                   dispatch(dequeueFrame(false));
-                   dispatch(addFrameToQueue(null));
-
-                   let {type, name, url, text, color, position, rotation} = queuedFrame;
-                   APIInterface.addFrame(type, name, url, text, color, position, rotation);
-                   
-                }
+                //   let { type, name, url, text, color, position, rotation } = queuedFrame;
+                //   APIInterface.addFrame(type, name, url, text, color, position, rotation);
+                // }
+                // moveObject.position.x = x;
+                // moveObject.position.y = y;
+                // moveObject.position.z = z;
               }}
             >
               <planeGeometry args={[50, 50]} />
@@ -201,19 +216,7 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
               />
             </mesh>
           </group>
-          <OrbitControls
-            makeDefault
-            // autoRotate
-            // autoRotateSpeed={0.3}
-            // maxPolarAngle={Math.PI / 2 - 0.05}
-            // minPolarAngle={Math.PI / 2.3}
-            // enableZoom={true}
-            // enablePan={false}
-            // minDistance={5}
-            // maxDistance={200}
-            // enableDamping={true}
-            ref={control}
-          />
+          <OrbitControls makeDefault ref={control} />
           <PerspectiveCamera
             ref={camera}
             fov={70}
@@ -221,9 +224,12 @@ const FrameWorld = ({ images, frames, queuedFrame, dispatch, isThereQueuedFrame 
             aspect={window.innerWidth / window.innerHeight}
           ></PerspectiveCamera>
         </Suspense>
+        <CycleRaycast onChanged={(objects, cycle) => set({ objects, cycle })} />
       </Canvas>
     </>
   );
 };
+
+// connect(mapStateToProps)(Frames)
 
 export default connect(mapStateToProps)(FrameWorld);
