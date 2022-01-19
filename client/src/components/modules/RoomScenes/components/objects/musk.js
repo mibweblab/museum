@@ -1,11 +1,11 @@
 import {
-    PlaneGeometry,
+
     MeshBasicMaterial,
     Mesh,
     TextureLoader,
-    DoubleSide,
+
     Group,
-    RepeatWrapping,
+
     BoxGeometry,
     Color
   } from 'three';

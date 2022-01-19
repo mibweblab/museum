@@ -1,16 +1,14 @@
 import {
-    PlaneGeometry,
+
     MeshBasicMaterial,
-    CylinderGeometry,
-    MathUtils,
+
     Mesh,
     TextureLoader,
-    DoubleSide,
-    MeshPhongMaterial,
+
     Group,
-    RepeatWrapping,
+
     BoxGeometry,
-    Color
+
   } from 'three';
   
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';

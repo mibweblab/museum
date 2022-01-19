@@ -6,7 +6,7 @@ import { createShakespeare } from "./components/objects/shakespeare2"
 import { createMusk } from "./components/objects/musk"
 import { createEinstein } from "./components/objects/einstein2"
 import { createUserUpload } from "./components/objects/userUpload"
-import { createText } from './components/objects/textObject.js'
+
 import { createScene } from "./components/scene" ;  
 import {createRenderer} from "./systems/renderer" ;  
 import { createLights } from './components/lights.js';

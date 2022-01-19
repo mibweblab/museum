@@ -1,15 +1,9 @@
 import {
-  AmbientLight,
   DirectionalLight,
   HemisphereLight,
-  Vector2,
-  SpotLight,
-  SpotLightHelper,
   Group,
-  Vector3,
-  Object3D,
 } from 'three';
-import { Shakespeare, Einstein, Musk, UserUpload } from "../../../../HumanModel.js"
+
 
 
 function createLights(humanModel) {

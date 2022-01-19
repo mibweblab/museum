@@ -1,18 +1,17 @@
 import {
-    PlaneGeometry,
+
     MeshBasicMaterial,
     Mesh,
     TextureLoader,
-    DoubleSide,
+
     Group,
-    RepeatWrapping,
+
     BoxGeometry,
     Color
   } from 'three';
   
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-  import { setupModel } from './setupModel.js';
-  import { createText } from './textObject'
+
   import { getFloorDir, UserUpload} from '../../../../../HumanModel.js'
   import { createFloor, createDoor} from '../sharedObjects.js'
   
