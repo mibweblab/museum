@@ -26,7 +26,8 @@ const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
 
 const api = require("./api");
-const frameapi = require("./api/frame-routes");
+const frameapi = require("./api/frame");
+const museumapi = require("./api/museum");
 const auth = require("./auth");
 
 // socket stuff
@@ -73,6 +74,7 @@ app.use("/api", api);
 
 // connect user-frame defined routes
 app.use("/api/frame", frameapi);
+app.use("/api/museum", museumapi);
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");

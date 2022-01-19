@@ -14,6 +14,7 @@ const FrameSchema = new mongoose.Schema({
   position: Array,
   rotation: Array,
   userId: String,
+  museumId: String,
 });
 
 // compile model from schema

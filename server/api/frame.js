@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { addFrame, editFrame, deleteFrame, getAllFrames } = require("../controllers/frame");
 const {isUserLoggedIn} = require("../middleware/frame");
+const museum = require("../models/museum");
 
 router.post("/", [isUserLoggedIn],async (req, res) => {
 
@@ -26,10 +27,7 @@ router.post("/", [isUserLoggedIn],async (req, res) => {
 });
 
 router.get("/",[isUserLoggedIn] ,async (req, res) => {
-  let userId = req.session.user._id;
-
-  console.log(userId, "I'm hitting this end point");
-  let allFrames = await getAllFrames(userId);
+  let allFrames = await getAllFrames(museumId);
   if (allFrames) {
     res.send(allFrames);
   } else {
@@ -40,16 +38,21 @@ router.get("/",[isUserLoggedIn] ,async (req, res) => {
 router.patch("/:frameId", async (req, res) => {
     let frameId = req.params.frameId;
     let {data} = req.body;
-    await editFrame(frameId, data);
-
-
+    if (response){
+      res.status(200).send("Sucessfully deleted frame")
+    }else{
+      res.status(304).send({"error": `Failed to delete frame with id ${frameId}`})
+    }
 });
 
 router.delete("/:frameId", async (req,res)=>{
     let frameId = req.params.frameId;
-    await deleteFrame(frameId);
-
-    res.send({})
+    let response = await deleteFrame(frameId);
+    if (response){
+      res.status(200).send("Sucessfully deleted frame")
+    }else{
+      res.status(304).send({"error": `Failed to delete frame with id ${frameId}`})
+    }
 })
 
 module.exports = router;
