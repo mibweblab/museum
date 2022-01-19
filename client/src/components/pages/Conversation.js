@@ -41,6 +41,9 @@ function Floor({HumanModel}) {
   </mesh>)
 }
 
+function Frame(colo) {
+
+}
 function Figure({HumanModel}) {
   switch (HumanModel) {
     case Shakespeare:
