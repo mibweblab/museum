@@ -4,10 +4,8 @@ import GoogleLogin, { GoogleLogout } from "react-google-login";
 import { get } from "../../utilities";
 import "./NavBar.css";
 
-
 // This identifies your web application to Google's authentication service
 const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
-
 
 class NavBar extends Component {
   constructor(props) {
@@ -16,24 +14,21 @@ class NavBar extends Component {
       name: "",
     };
   }
-  
+
   componentDidMount() {
     document.title = "Profile Page";
     if (this.props.userId) {
-      get(`/api/user`, { userid: this.props.userId }).then((user) => 
-      {
+      get(`/api/user`, { userid: this.props.userId }).then((user) => {
         this.setState({ name: user.name });
-      })
-      
+      });
     }
   }
   componentDidUpdate() {
     document.title = "Profile Page";
     if (this.props.userId) {
-      get(`/api/user`, { userid: this.props.userId }).then((user) => 
-      {
+      get(`/api/user`, { userid: this.props.userId }).then((user) => {
         this.setState({ name: user.name });
-      })
+      });
     }
   }
 
@@ -42,16 +37,22 @@ class NavBar extends Component {
       <nav className="NavBar-container">
         <div className="NavBar-title u-inlineBlock">Museum</div>
         <div className="NavBar-linkContainer u-inlineBlock">
-            <Link to="/" className="NavBar-link"></Link>
-          {this.props.userId && (<Link to="/shakespeare/" className="NavBar-link">
-            Shakespeare
-          </Link>)}
-          {this.props.userId && (<Link to="/einstein/" className="NavBar-link">
-            Einstein
-          </Link>)}
-          {this.props.userId && (<Link to="/musk/" className="NavBar-link">
-            Musk
-          </Link>)}
+          <Link to="/" className="NavBar-link"></Link>
+          {this.props.userId && (
+            <Link to="/shakespeare/" className="NavBar-link">
+              Shakespeare
+            </Link>
+          )}
+          {this.props.userId && (
+            <Link to="/einstein/" className="NavBar-link">
+              Einstein
+            </Link>
+          )}
+          {this.props.userId && (
+            <Link to="/musk/" className="NavBar-link">
+              Musk
+            </Link>
+          )}
           {this.props.userId ? (
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
