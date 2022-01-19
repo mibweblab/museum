@@ -3,6 +3,7 @@ import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
+import ImageUpload from "../components/pages/imageUpload";
 
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk } from "../LangModel.js";
@@ -12,6 +13,7 @@ import "../utilities.css";
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
+// import Speech from "./pages/Speech.js"; //Haven't used yet
 
 /**
  * Define the "App" component
@@ -47,12 +49,13 @@ const App = () => {
 
   return (
     <>
-      <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+      <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
       <Router>
         <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <GPT3_playground path="/shakespeare/" FirstName={firstName} HumanModel={Shakespeare}/> 
-        <GPT3_playground path="/einstein/" FirstName={firstName} HumanModel={Einstein}/> 
-        <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk}/> 
+        <GPT3_playground path="/shakespeare/" FirstName={firstName} HumanModel={Shakespeare} />
+        <GPT3_playground path="/einstein/" FirstName={firstName} HumanModel={Einstein} />
+        <GPT3_playground path="/musk/" FirstName={firstName} HumanModel={Musk} />
+        <ImageUpload path="/image" />
         <NotFound default />
       </Router>
     </>
