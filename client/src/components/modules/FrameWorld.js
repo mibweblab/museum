@@ -148,7 +148,7 @@ const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) =>
             <mesh
               rotation={[-Math.PI / 2, 0, 0]}
               position={[0, 0, 0]}
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 // addCube(x, y, z, activeTexture);
@@ -161,7 +161,9 @@ const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) =>
                   dispatch(addFrameToQueue(null));
 
                   let { type, name, url, text, color, position, rotation, parentId} = queuedFrame;
-                  APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
+                  let frameRes = await APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
+
+                  console.log("this is my response",frameRes);
                 }
               }}
             >

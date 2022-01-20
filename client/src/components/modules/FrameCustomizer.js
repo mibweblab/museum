@@ -70,7 +70,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   // const [color, setColor] = useState("#fff");
   const shot = useSnapshot(state);
   const [type, setType] = useState("scene");
-  const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=725f90dc-7f3c-4c51-9e4c-745c16a4b770");
   const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
@@ -105,7 +105,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           <Suspense fallback={null}>
             <Environment preset="city" />
             <group position={[0, -0.5, 0]}>
-              <Frame color={shot.color} name={name} url={url} />
+              <Frame color={shot.color} name={name} url={imageUrl} />
               <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
                 <planeGeometry args={[50, 50]} />
                 <MeshReflectorMaterial
@@ -161,7 +161,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           <button
             className="FrameCustomizer-button"
             onClick={() => {
-              dispatch(addFrameToQueue({ name: name, url: pexel(1103970), color: shot.color, type: type, text: "" }));
+              dispatch(addFrameToQueue({ name: name, url: imageUrl, color: shot.color, type: type, text: "" }));
               dispatch(dequeueFrame(true));
               close();
             }}

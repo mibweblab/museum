@@ -23,8 +23,11 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
     rotation,
     parentId
   );
+
+  console.log(frame)
   if (frame) {
     res.send(frame);
+
   } else {
     res.status(401).send({});
   }

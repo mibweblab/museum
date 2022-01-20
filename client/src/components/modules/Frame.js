@@ -1,10 +1,33 @@
 import * as THREE from "three";
 import React, { useRef, useState } from "react";
 import { useRoute, useLocation } from "wouter";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useCursor, Image, Text } from "@react-three/drei";
 
+
+
+// import { useSpring, useTransition, animated, config } from 'react-spring/three'
+
+
+
+// function Box(props) {
+//   const mesh = useRef();
+//   useFrame(() => (mesh.current.rotation.x =
+//   mesh.current.rotation.y += 0.01));
+//   const base = new THREE.TextureLoader().load("https://dropbox.com/sh/opniys3sehnf402/AAD9eszZaFi7geco0NshKoEja?raw=1");
+
+//   return (
+//      <mesh {...props} ref={mesh}>
+//         <boxGeometry args={[3, 3, 3]} />
+//         <meshBasicMaterial attach="material" color={"lightblue"} map={base} />
+//      </mesh>
+//   );
+// }
+
+
 const GOLDENRATIO = 1.61803398875;
+
+
 
 const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
   const [hovered, hover] = useState(false);
@@ -62,6 +85,9 @@ const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
           <boxGeometry />
           <meshBasicMaterial toneMapped={false} fog={false} />
         </mesh>
+
+
+        {/* <Box/> */}
         <Image raycast={() => null} ref={image} position={[0, 0, 0.7]} url={url} crossOrigin="anonymous"/>
       </mesh>
       <Text
