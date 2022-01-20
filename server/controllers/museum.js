@@ -57,7 +57,7 @@ async function editMuseumProperty(museumId, data) {
 
 async function getAllMuseums(userId) {
   try {
-    return await Museum.find({_id: userId});
+    return await Museum.find({userId: userId});
 
   } catch (error) {
     console.log("error getting all museums", error);

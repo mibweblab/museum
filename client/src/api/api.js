@@ -1,7 +1,8 @@
 import axios from "axios";
 
-export default class APIInterface {
-  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation) {
+export default class FrameAPI {
+
+  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation,parentId) {
     try {
       let frame = await axios.post("/api/frame", {
         type,
@@ -11,6 +12,7 @@ export default class APIInterface {
         frameColor,
         position,
         rotation,
+        parentId
       });
 
       return frame;
@@ -19,10 +21,10 @@ export default class APIInterface {
     }
   }
 
-  static async getAllFrames() {
+  static async getAllFrames(parentId) {
     try {
-      console.log("firing api")
-      let frames = await axios.get("/api/frame");
+      // console.log("firing api")
+      let frames = await axios.get("/api/frame/"+parentId);
       console.log(frames)
       return frames;
     } catch (error) {

@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const { addFrame, editFrame, deleteFrame, getAllFrames } = require("../controllers/frame");
-const {isUserLoggedIn} = require("../middleware/frame");
-const museum = require("../models/museum");
+const { isUserLoggedIn } = require("../middleware/frame");
 
-router.post("/", [isUserLoggedIn],async (req, res) => {
+/**
+ *
+ * POST /api/frame
+ * adds a new frame obj to the databse
+ *
+ */
 
-  let userId = req.session.user._id
-  let { type, name, imageUrl, text, frameColor, position, rotation} = req.body;
+router.post("/", [isUserLoggedIn], async (req, res) => {
+  let { type, name, imageUrl, text, frameColor, position, rotation, parentId } = req.body;
 
   const frame = await addFrame(
     type,
@@ -17,7 +21,7 @@ router.post("/", [isUserLoggedIn],async (req, res) => {
     frameColor,
     position,
     rotation,
-    userId
+    parentId
   );
   if (frame) {
     res.send(frame);
@@ -26,8 +30,15 @@ router.post("/", [isUserLoggedIn],async (req, res) => {
   }
 });
 
-router.get("/",[isUserLoggedIn] ,async (req, res) => {
-  let allFrames = await getAllFrames(museumId);
+/**
+ * GET api/frame/:museumId
+ *
+ * gets all frames associated with a user museumId
+ *
+ */
+router.get("/:parentId", [isUserLoggedIn], async (req, res) => {
+  let parentId= req.params.parentId;
+  let allFrames = await getAllFrames(parentId);
   if (allFrames) {
     res.send(allFrames);
   } else {
@@ -35,24 +46,38 @@ router.get("/",[isUserLoggedIn] ,async (req, res) => {
   }
 });
 
+/**
+ * PATCH api/frame/:frameId
+ *
+ * edits a specific frame 's property with a frameId
+ *
+ */
 router.patch("/:frameId", async (req, res) => {
-    let frameId = req.params.frameId;
-    let {data} = req.body;
-    if (response){
-      res.status(200).send("Sucessfully deleted frame")
-    }else{
-      res.status(304).send({"error": `Failed to delete frame with id ${frameId}`})
-    }
+  let frameId = req.params.frameId;
+  let { data } = req.body;
+  let response = await editFrame(frameId, data);
+  if (response) {
+    res.status(200).send("Sucessfully deleted frame");
+  } else {
+    res.status(304).send({ error: `Failed to delete frame with id ${frameId}` });
+  }
 });
 
-router.delete("/:frameId", async (req,res)=>{
-    let frameId = req.params.frameId;
-    let response = await deleteFrame(frameId);
-    if (response){
-      res.status(200).send("Sucessfully deleted frame")
-    }else{
-      res.status(304).send({"error": `Failed to delete frame with id ${frameId}`})
-    }
-})
+/**
+ *
+ * DELETE api/frame/:frameId
+ *
+ * deletes a specific frame with frameId
+ *
+ */
+router.delete("/:frameId", async (req, res) => {
+  let frameId = req.params.frameId;
+  let response = await deleteFrame(frameId);
+  if (response) {
+    res.status(200).send("Sucessfully deleted frame");
+  } else {
+    res.status(304).send({ error: `Failed to delete frame with id ${frameId}` });
+  }
+});
 
 module.exports = router;

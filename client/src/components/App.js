@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
-import NavBar from "./modules/NavBar.js";
+import NavBar from "./modules/Navbar.js";
 
 import World from "../components/modules/World";
-
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
-
 import FrameWorld from "./modules/FrameWorld.js";
 import { connect } from "react-redux";
 
@@ -19,14 +17,20 @@ import { get, post } from "../utilities";
 import "./App.scss";
 
 import { useLocation, Switch, Route } from "wouter";
-import APIInterface from "../api.js";
-import { addInitialFrames } from "./action";
+import APIInterface from "../api/api.js";
+import MuseumInterface from "../api/museum";
+import Profile from "./pages/Profile";
+
+import { addInitialFrames, addInitialMuseums } from "./action";
+
+import Landing from "../components/modules/Landing";
 
 const mapStateToProps = (state) => {
   return {
     frames: state.frames,
     queuedFrame: state.queuedFrame,
     isThereQueuedFrame: state.isThereQueuedFrame,
+    museums: state.museums
   };
 };
 
@@ -38,15 +42,17 @@ class App extends React.Component{
         this.state = {
           userId: null,
           firstName: null,
+          museums: []
         }
      
     }
 
-    async getAllFrames() {
-      let allFrames = await APIInterface.getAllFrames();
-      if (allFrames) {
-        console.log("these are my frames", allFrames);
-        this.props.dispatch(addInitialFrames(allFrames.data));
+    async getAllMuseums() {
+      let allMuseums= await MuseumInterface.getAllMuseums();
+      if (allMuseums) {
+        console.log("these are my museums", allMuseums);
+        this.setState({museums: allMuseums.data})
+        this.props.dispatch(addInitialMuseums(allMuseums.data));
       }
     }
 
@@ -58,7 +64,7 @@ class App extends React.Component{
           this.setState({userId: user._id})
           // setUserId(user._id);
           this.setState({firstName: user.firstname})
-          await this.getAllFrames();
+          await this.getAllMuseums();
         }
       });
 
@@ -73,7 +79,7 @@ class App extends React.Component{
         // setUserId(user._id);
         this.setState({firstName: user.firstname})
         // setFirstName(user.firstname);
-        await this.getAllFrames();
+        await this.getAllMuseums();
         post("/api/initsocket", { socketid: socket.id });
       });
     };
@@ -85,19 +91,31 @@ class App extends React.Component{
     };
 
     render(){
-
       return (
-        <>
+      <>
+      <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId} />
       <Route path="/">
-        <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId} />
-        {this.props.frames && <FrameWorld images={this.props.frames} />}
+        {
+          this.state.userId &&
+          <Profile museums={this.props.museums} />
+        }
+        
+        {
+          !this.state.userId &&
+          <div>Sign In to View</div>
+        }
       </Route>
-      <Route path="/scene/:id">{<World />}</Route>
+
+      <Route exact path="/museum/:id">
+          { this.state.userId &&
+          (params => <FrameWorld id={params.id}/>)
+    }
+      </Route>
+        {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
+        {/* <Route path="/scene/:id">{<World />}</Route> */}
     </>    
       )
     }
-
-
 }
 
 
