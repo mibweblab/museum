@@ -43,25 +43,22 @@ const state = proxy({
 function Picker() {
   const snap = useSnapshot(state);
   return (
-      <HexColorPicker
-        className="picker"
-        color={snap.color}
-        onChange={(color) => {
-          state.color = color;
-        }}
-      />
+    <HexColorPicker
+      className="picker"
+      color={snap.color}
+      onChange={(color) => {
+        state.color = color;
+      }}
+    />
   );
 }
 
 const pexel = (id) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
 
-
-  // https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260
+// https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260
 
 const FrameCustomizer = ({ snap, dispatch, close }) => {
-
-
   const control = useRef();
   const camera = useRef();
   const reference = useRef();
@@ -70,7 +67,9 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   // const [color, setColor] = useState("#fff");
   const shot = useSnapshot(state);
   const [type, setType] = useState("scene");
-  const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  const [imageUrl, setImageUrl] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+  );
   const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
@@ -85,7 +84,6 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
     uploadTask
       .then((snapshot) => {
         getDownloadURL(snapshot.ref).then((downloadURL) => {
-
           // console.log("what the heck",reference.current.toDataURL(downloadURL))
           setImageUrl(downloadURL);
           console.log("File available at", downloadURL);
@@ -139,29 +137,43 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         </div>
 
         <div className="FrameCustomizer-group">
-          <Dropdown placeholder="Choose Frame Type"  onChange={(_, data) => setType(data.value)} search selection options={options} />
-        </div>
-
-        <div className="FrameCustomizer-group">
-          <Picker
-            // className="picker"
-            // color={color}
-            // onChange={(color) => {
-            //   setColor(color);
-            //   // console.log("current color: ", snap.current, state.items[snap.current], color);
-            // }}
+          <Dropdown
+            placeholder="Choose Frame Type"
+            onChange={(_, data) => setType(data.value)}
+            search
+            selection
+            options={options}
           />
         </div>
 
         <div className="FrameCustomizer-group">
-            <input type="file" onChange={handleChange} />
-            <Button onClick={handleUpload}>Upload Image</Button>
+          <Picker
+          // className="picker"
+          // color={color}
+          // onChange={(color) => {
+          //   setColor(color);
+          //   // console.log("current color: ", snap.current, state.items[snap.current], color);
+          // }}
+          />
+        </div>
+
+        <div className="FrameCustomizer-group">
+          <input type="file" onChange={handleChange} />
+          <Button onClick={handleUpload}>Upload Image</Button>
         </div>
         <div className="FrameCustomizer-group">
           <button
             className="FrameCustomizer-button"
             onClick={() => {
-              dispatch(addFrameToQueue({ name: name, url: pexel(1103970), color: shot.color, type: type, text: "" }));
+              dispatch(
+                addFrameToQueue({
+                  name: name,
+                  url: pexel(1103970),
+                  color: shot.color,
+                  type: type,
+                  text: "",
+                })
+              );
               dispatch(dequeueFrame(true));
               close();
             }}

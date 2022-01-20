@@ -2,17 +2,15 @@ import axios from "axios";
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-    apiKey: process.env.REACT_APP_OPEN_AI_KEY,
-  });
+  apiKey: process.env.REACT_APP_OPEN_AI_KEY,
+});
 
-const maxTokens = 1000;  
+const maxTokens = 1000;
 const maxResponseLen = 200;
 const openai = new OpenAIApi(configuration);
 
-
 export default class FrameAPI {
-
-  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation,parentId) {
+  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation, parentId) {
     try {
       let frame = await axios.post("/api/frame", {
         type,
@@ -22,7 +20,7 @@ export default class FrameAPI {
         frameColor,
         position,
         rotation,
-        parentId
+        parentId,
       });
 
       return frame;
@@ -34,8 +32,8 @@ export default class FrameAPI {
   static async getAllFrames(parentId) {
     try {
       // console.log("firing api")
-      let frames = await axios.get("/api/frame/"+parentId);
-      console.log(frames)
+      let frames = await axios.get("/api/frame/" + parentId);
+      console.log(frames);
       return frames;
     } catch (error) {
       return false;
@@ -45,10 +43,10 @@ export default class FrameAPI {
   static async sendGPT3Request(payload) {
     try {
       const response = await openai.createCompletion("davinci", payload);
-      return response
+      return response;
     } catch (error) {
-      console.log(error)
-      return false
+      console.log(error);
+      return false;
     }
   }
 }
