@@ -4,12 +4,11 @@ import OpenAIAPI from "react-openai-api";
 import { LangModelAttributes, getTextAreaDescription } from "../../LangModel";
 import { Shakespeare }  from "../../HumanModel";
 import "../../utilities.css";
-import "./Skeleton.css";
-
-
+import "./../pages/Skeleton.js"
+import APIInterface from "../../api/api";
 const maxTokens = 1000;
 const maxResponseLen = 200;
-const apiKey = "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"
+const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
 
 
 export default class GPT3_Integrated extends Component {
@@ -37,11 +36,14 @@ export default class GPT3_Integrated extends Component {
         return this.languageModel.modelPayload(maxTokens, combinedPrompts)
     }
 
-    responseHandler = (res) => {
-        let entry = this.state.prompt + '\n' + res.choices[0].text
+    fireRequest = async() => {
+        const payload = this.generatePayload()
+        const response = await APIInterface.sendGPT3Request(payload)
+        const response_text = response.data.choices[0].text
+        let entry = this.state.prompt + '\n' + response_text
         this.setState({
-            response: res.choices[0].text,
-            previous_prompts: this.state.previous_prompts.concat([[this.tokenCount(entry), entry]])
+            response: response_text,
+            previous_prompts: this.state.previous_prompts.concat([[this.tokenCount(entry), entry]]),
         }, () => { 
             this.props.onResponse(this.state.response)
         } );
@@ -73,8 +75,10 @@ export default class GPT3_Integrated extends Component {
     onClickFun = (promptVal) => {
         this.setState({
             prompt:  this.languageModel.polishedInput(promptVal),
-            response: undefined,
-        }, () => this.props.onResponse(this.state.prompt));
+        }, () => {
+            this.props.onPrompt(this.state.prompt);
+            this.fireRequest()
+        });
     }
 
     newlineText = (res) => {
@@ -92,15 +96,6 @@ export default class GPT3_Integrated extends Component {
                 <label className='field-label'>{this.labelName()}</label><br></br>
                 <textarea type='text' className='text-field w-input row' cols="35" rows="3" maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
                 <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='converse-btn'>Enter</button>
-                <p>{(this.state.response == undefined) ? 
-                                (<OpenAIAPI
-                                apiKey={apiKey}
-                                payload={this.generatePayload() }
-                                start_sequence= {`\n${this.languageModel.humanModelName()}:`}
-                                responseHandler={this.responseHandler}
-                                />) 
-                                : ""
-                            }</p>
           </div>
     );
     };

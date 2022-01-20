@@ -1,0 +1,67 @@
+/**
+ * 
+ * Museum
+ * 
+ * id: from Mongo
+ * name:  => no duplicate // duplicate names because the ids are different
+ * description => basic description of what it is about
+ * isPrivate => default true
+ * imageUrl => link to image for the museum
+ * userId => userId from Mongo
+ * 
+ * 
+ */
+
+
+/**
+ * 
+ * Frame 
+ *  
+ * id => from Mongo
+ * type => conversation ? static ? room ? || enum type 
+ * imageUrl => image for the 
+ * name =>  name of the frame to display on top
+ * color => hex color from the frontend 
+ * museumId => from mongoDB
+ * position => position 
+ * rotation => rotation
+ * 
+ * 
+ */
+
+/**
+ * 
+ * Conversation
+ * 
+ * id => from MD || String
+ * frameId => from MD ||  String
+ * firstName  || String
+ * lastName  | String 
+ * description of the person/profile || String
+ * 
+ * 
+ */
+
+/**
+ * 
+ * Asset
+ * 
+ * id: 
+ * type:
+ * position: 
+ * rotation: 
+ * frameId: 
+ * 
+ * 
+ */
+
+/**
+ * 
+ * User
+ * - google creds
+ * - avatar settings
+ * - color codes from different body parts
+ * 
+ * 
+ * 
+ */

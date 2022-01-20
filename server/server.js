@@ -17,7 +17,7 @@
 // this is a tool provided by staff, so you don't need to worry about it
 const validator = require("./validator");
 validator.checkSetup();
-
+require("dotenv").config();
 //import libraries needed for the webserver to work!
 const http = require("http");
 const express = require("express"); // backend framework for our node server.
@@ -26,18 +26,18 @@ const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
 
 const api = require("./api");
-const frameapi = require("./api/frame-routes");
+const frameapi = require("./api/frame");
+const museumapi = require("./api/museum");
 const auth = require("./auth");
 
 // socket stuff
 const socketManager = require("./server-socket");
-
+const webpack = require('webpack') 
 // Server configuration below
 const mongoConnectionURL = 
-  "mongodb+srv://celsius40:104_F_degree@cluster0.j7edo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+process.env.REACT_APP_MONGO_CONNECTION_URL;
 
 const databaseName = "Museum";
-require("dotenv").config();
 
 // connect to mongodb
 mongoose
@@ -73,6 +73,7 @@ app.use("/api", api);
 
 // connect user-frame defined routes
 app.use("/api/frame", frameapi);
+app.use("/api/museum", museumapi);
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");

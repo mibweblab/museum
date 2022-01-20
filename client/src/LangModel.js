@@ -109,11 +109,10 @@ class LangModelAttributes {
         switch(this.humanModel) {
             case Shakespeare:
                 return ({
-                    engine:"davinci",
                     prompt: combinedPrompts,
-                    maxTokens: maxTokens,
+                    max_tokens: maxTokens,
                     temperature: 0.5,
-                    n: 1,
+                    // n: 1,
                     stop: this.stop(),
                     top_p: 1,
                     frequency_penalty: 0.5,
@@ -123,11 +122,10 @@ class LangModelAttributes {
             case Musk:
             case UserUpload:
                 return ({
-                    engine:"davinci",
                     prompt: combinedPrompts,
-                    maxTokens: maxTokens,
+                    max_tokens: maxTokens,
                     temperature: 0.5,
-                    n: 1,
+                    // n: 1,
                     stop: this.stop(),
                     top_p: 1,
                     frequency_penalty: 0.61,

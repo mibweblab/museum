@@ -1,6 +1,6 @@
 const Frame = require("../models/frame");
 
-async function addFrame(type, name, imageUrl, text, frameColor, position, rotation,userId) {
+async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, parentId) {
   try {
     let frame = Frame({
       type: type,
@@ -10,7 +10,7 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
       frameColor: frameColor,
       position: position,
       rotation: rotation,
-      userId: userId,
+      parentId: parentId,
     });
     await frame.save();
   } catch (error) {
@@ -42,16 +42,21 @@ async function editFrame(frameId,data){
  * @param {*} userId 
  * @returns 
  */
-async function getAllFrames(userId){
+async function getAllFrames(parentId){
     try {
-        let framesFound = await Frame.find({userId: userId})
-        // console.log(framesFound);
+        let framesFound = await Frame.find({parentId: parentId})
         return framesFound;
     } catch (error) {
         return false;
     }
 }
 
+/**
+ * 
+ * Deletes a frame with a specific frameId
+ * @param {*} frameId 
+ * @returns 
+ */
 async function deleteFrame(frameId){
   try {
       await Frame.deleteOne({_id: frameId});
@@ -60,5 +65,21 @@ async function deleteFrame(frameId){
       return false;
   }
 }
+
+
+// /**
+//  * 
+//  * Deltes a 
+//  * @param {*} frameId 
+//  * @returns 
+//  */
+// async function deleteFrame(frameId){
+//   try {
+//       await Frame.deleteOne({_id: frameId});
+//       return true;
+//   } catch (error) {
+//       return false;
+//   }
+// }
 
 module.exports = Object.freeze({ addFrame, editFrame, getAllFrames, deleteFrame });

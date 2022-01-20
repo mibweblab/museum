@@ -19,9 +19,11 @@ import {
 import Frame from "./Frame";
 import { connect } from "react-redux";
 
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Button } from "semantic-ui-react";
+import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
 
 const options = [
+  { key: 0, text: "Static", value: "static" },
   { key: 1, text: "Conversation", value: "conversation" },
   { key: 2, text: "Scene", value: "scene" },
 ];
@@ -54,25 +56,50 @@ function Picker() {
 const pexel = (id) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`;
 
+
+  // https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260
+
 const FrameCustomizer = ({ snap, dispatch, close }) => {
+
+
   const control = useRef();
   const camera = useRef();
-  const ref = useRef();
+  const reference = useRef();
   const url = pexel(1103970);
   const [name, setName] = useState(getUuid(url));
   // const [color, setColor] = useState("#fff");
   const shot = useSnapshot(state);
   const [type, setType] = useState("scene");
+  const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  const [image, setImage] = useState(null);
 
+  const handleChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
 
-  // const FrameTypeDropDown = () => (
+  const handleUpload = () => {
+    const storageRef = ref(storage, `images/${image.name}`);
+    const uploadTask = uploadBytes(storageRef, image);
+    uploadTask
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
 
-  // )
+          // console.log("what the heck",reference.current.toDataURL(downloadURL))
+          setImageUrl(downloadURL);
+          console.log("File available at", downloadURL);
+        });
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
 
   return (
     <div className="FrameCustomizer">
       <div className="FrameCustomizer-canvas">
-        <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
+        <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={reference} crossOrigin="anonymous">
           <color attach="background" args={["#191920"]} />
           <fog attach="fog" args={["#191920", 0, 15]} />
           <Suspense fallback={null}>
@@ -124,6 +151,11 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
             //   // console.log("current color: ", snap.current, state.items[snap.current], color);
             // }}
           />
+        </div>
+
+        <div className="FrameCustomizer-group">
+            <input type="file" onChange={handleChange} />
+            <Button onClick={handleUpload}>Upload Image</Button>
         </div>
         <div className="FrameCustomizer-group">
           <button

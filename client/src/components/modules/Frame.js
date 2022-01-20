@@ -62,7 +62,7 @@ const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
           <boxGeometry />
           <meshBasicMaterial toneMapped={false} fog={false} />
         </mesh>
-        <Image raycast={() => null} ref={image} position={[0, 0, 0.7]} url={url} />
+        <Image raycast={() => null} ref={image} position={[0, 0, 0.7]} url={url} crossOrigin="anonymous"/>
       </mesh>
       <Text
         maxWidth={0.1}

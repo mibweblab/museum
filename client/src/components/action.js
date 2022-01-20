@@ -11,16 +11,24 @@ const addFrameToQueue = (payload) => ({
   payload: payload,
 });
 
-
-const dequeueFrame= (payload) => ({
-    type: "DEQUEUE_FRAME",
-    payload: payload,
-  });
-
+const dequeueFrame = (payload) => ({
+  type: "DEQUEUE_FRAME",
+  payload: payload,
+});
 
 const addInitialFrames = (payload) => ({
   type: "ADD_INITIAL_FRAMES",
   payload: payload,
 });
 
-export { addFrame, addFrameToQueue, dequeueFrame, addInitialFrames };
+const addInitialMuseums = (payload) => ({
+  type: "ADD_INITIAL_MUSEUMS",
+  payload: payload,
+});
+
+const addMuseum = (payload) => ({
+  type: "ADD_MUSEUM",
+  payload: payload,
+});
+
+export { addFrame, addFrameToQueue, dequeueFrame, addInitialFrames, addMuseum, addInitialMuseums };
