@@ -1,15 +1,16 @@
 //temporary file
 import React, { Component } from "react";
 import OpenAIAPI from "react-openai-api";
-import { LangModelAttributes, Einstein, Shakespeare } from "../../LangModel";
-
+import { LangModelAttributes} from "../../LangModel";
+import { Shakespeare} from "../../HumanModel.js"
 import "../../utilities.css";
 import "./Skeleton.css";
 
 
+import "../modules/RoomScenes/RoomScenes.css";
 const maxTokens = 1000;
 const maxResponseLen = 200;
-const apiKey = "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"
+const apiKey = process.env.REACT_APP_OPEN_AI_KEY
 
 
 export default class GPT3_playground extends Component {
@@ -83,6 +84,7 @@ export default class GPT3_playground extends Component {
 
     render () {
         return (
+
         <div className = "Skeleton-container">
             <h1>{this.languageModel.title()}</h1>
             <input type="text" className="text-field w-input" maxLength="256" name="Question" data-name="Question" placeholder="Ask away." id="promptinput"/>

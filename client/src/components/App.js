@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
-import NavBar from "./modules/Navbar.js";
+import NavBar from "./modules/Navbar/Navbar.js";
 
 import World from "../components/modules/World";
 import GPT3_playground from "./pages/GPT3_playground.js";
@@ -33,8 +33,6 @@ const mapStateToProps = (state) => {
     museums: state.museums
   };
 };
-
-
 
 class App extends React.Component{
     constructor(props){
@@ -124,7 +122,7 @@ class App extends React.Component{
 //  */
 // const App = ({ frames, dispatch }) => {
 //   const [userId, setUserId] = useState(undefined);
-//   const [firstName, setFirstName] = useState(undefined);
+//   const [this.state.firstName, setFirstName] = useState(undefined);
 
 //   console.log("frames changes", frames)
 

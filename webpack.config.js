@@ -15,7 +15,7 @@
 | see https://babeljs.io/docs/en/ if this interests you!
 |
 */
-
+const Dotenv = require('dotenv-webpack');
 const path = require("path");
 const entryFile = path.resolve(__dirname, "client", "src", "index.js");
 const outputDir = path.resolve(__dirname, "client", "dist");
@@ -76,7 +76,8 @@ module.exports = {
   resolve: {
     extensions: ["*", ".js", ".jsx"],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [new webpack.HotModuleReplacementPlugin(),
+            new Dotenv()],
   devServer: {
     headers: {
       "Access-Control-Allow-Origin": "*",
