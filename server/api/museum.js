@@ -8,6 +8,7 @@ const {
   getAllMuseums,
   deleteMuseum,
   editMuseumProperty,
+  getAllPublicMuseums,
 } = require("../controllers/museum");
 
 router.post("/", [isUserLoggedIn], async (req, res) => {
@@ -45,6 +46,15 @@ router.delete("/:frameId", async (req, res) => {
   await deleteFrame(frameId);
 
   res.send({});
+});
+
+router.get("/explore", [isUserLoggedIn], async (req, res) => {
+  let allPublicMuseums = await getAllPublicMuseums();
+  if (allPublicMuseums) {
+    res.send(allPublicMuseums);
+  } else {
+    res.status(401).send({});
+  }
 });
 
 module.exports = router;
