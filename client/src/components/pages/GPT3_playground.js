@@ -7,7 +7,7 @@ import "../../utilities.css";
 import "./Skeleton.css";
 
 
-import "../modules/RoomScenes/RoomScenes.css";
+import "./../Conversations/RoomScenes.css"
 const maxTokens = 1000;
 const maxResponseLen = 200;
 const apiKey = process.env.REACT_APP_OPEN_AI_KEY

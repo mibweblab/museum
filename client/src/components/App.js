@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
+// import NavBar from "./modules/Navbar/Navbar.js";
+import  Conversation  from './Conversations/Conversation.js'
+// import { Suspense } from "react";
 import NavBar from "./modules/Navbar/Navbar.js";
+import Rooms from "./Conversations/Rooms.js";
+import GPT3_playground from "./pages/GPT3_playground.js";
+// import { Shakespeare, Einstein, Musk, UserUpload } from '../HumanModel';
 
 import World from "../components/modules/World";
-import GPT3_playground from "./pages/GPT3_playground.js";
+// import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
 import FrameWorld from "./modules/FrameWorld.js";
@@ -104,6 +110,11 @@ class App extends React.Component{
         }
       </Route>
 
+    
+      <Route path='/c'>
+        <Conversation HumanModel={Shakespeare}/>
+      </Route>
+
       <Route exact path="/museum/:id">
           { this.state.userId &&
           (params => <FrameWorld id={params.id}/>)
@@ -115,6 +126,32 @@ class App extends React.Component{
       )
     }
 }
+
+
+
+{/* <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId}/> */}
+
+{/* <Route path="/">
+  {frames && <FrameWorld images={frames} />}
+</Route> 
+<Route path="/scene/:id">{<World />}</Route>   
+{this.state.firstName &&
+  <Route path="/room/:id">{<Rooms FirstName={this.state.firstName} />}</Route> 
+} */}
+{/* <div id='content'> */}
+// {/* <Router className='content'>
+//   {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+//   <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
+//   <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
+//   <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/>  */}
+//   <Conversation path='/c' HumanModel={Shakespeare}/>
+//   <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/> 
+//   <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/> 
+//   <Rooms path="/room_musk/" FirstName={this.state.firstName} HumanModel={Musk}/> 
+//   <Rooms path="/room_user_upload/" FirstName={this.state.firstName} HumanModel={UserUpload}/> 
+//   <NotFound default />
+// </Router> */}
+{/* </div> */}
 
 
 // /**

@@ -92,7 +92,7 @@ div.room-main {
 }
 
 div#scene-container {
-  background-color:  blue;
+  background-color: #f1f1f1;
   right: 0px;
   min-height: 300px;
   /* width:80% */
