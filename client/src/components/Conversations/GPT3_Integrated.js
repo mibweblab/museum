@@ -5,7 +5,7 @@ import { LangModelAttributes, getTextAreaDescription } from "../../LangModel";
 import { Shakespeare }  from "../../HumanModel";
 import "../../utilities.css";
 import "./../pages/Skeleton.js"
-import APIInterface from "../../api";
+import APIInterface from "../../api/api";
 const maxTokens = 1000;
 const maxResponseLen = 200;
 const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
