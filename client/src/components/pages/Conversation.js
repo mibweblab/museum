@@ -1,25 +1,24 @@
-import React, { Suspense, useLayoutEffect, useState, useRef } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-// import { HexColorPicker } from "react-colorful";
-// import { proxy, useSnapshot } from "valtio";
-// import Controls from "./Controls";
-// import { connect } from "react-redux";
-// import Model from "./Ploid";
-// import GrassCube from "./nature/CubeGrass";
-// import Tree from "./nature/Tree";
+import React, { Suspense,  useState, useRef } from "react";
+import { Canvas, useLoader, useThree, useFrame } from "@react-three/fiber";
+
 import {
   TextureLoader,
   RepeatWrapping,
   DoubleSide,
-} from 'three';
-import Door from './Door.js'
-import { getCameraPosition, getFloorDir } from './../../HumanModel.js'
+  Color,
 
+} from 'three';
+
+import Door from './Door.js'
+import Figure from './Figure.js'
+import { getCameraPosition, getFloorDir } from './../../HumanModel.js'
+import { createCamera } from './../modules/RoomScenes/components/camera'
 import "./Conversation.scss";
 import {
   meshBasicMaterial,
   Environment,
   OrbitControls,
+
   PerspectiveCamera,
   Stage,
   PresentationControls,
@@ -27,10 +26,9 @@ import {
 } from "@react-three/drei";
 
 
+
 function Floor({HumanModel}) {
-  console.log(HumanModel)
   const floorDir = getFloorDir(HumanModel)
-  console.log(floorDir)
   const floorTexture = useLoader(TextureLoader, floorDir)
   floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping; 
   floorTexture.repeat.set( 10, 10 );
@@ -41,97 +39,129 @@ function Floor({HumanModel}) {
   </mesh>)
 }
 
-function Frame(colo) {
-
+function FrameSide({color, position, size}) {
+  console.log('build me too')
+  console.log(position)
+  console.log(size)
+  console.log(color)
+  const frameTexture = useLoader(TextureLoader, '/frame.png')
+  return (
+    <mesh position={position}>
+      <boxGeometry args={size}/>
+      <meshBasicMaterial color={color} map={frameTexture}/>
+    </mesh> 
+  )
 }
-function Figure({HumanModel}) {
-  switch (HumanModel) {
-    case Shakespeare:
-    case Einstein:
-    case UserUpload: 
-    case Musk:
-      break
-  }
+
+function Frame({color}) {
+  console.log('build me')
+  return (
+    <group>
+      <FrameSide color={color} position={[9, 20, 0]} size={[2, 28, 1 ]}/>
+      <FrameSide color={color} position={[-9, 20, 0]} size={[2, 28, 1 ]}/>
+      <FrameSide color={color} position={[0, 33, 0]} size={[16, 2, 1]}/>
+      <FrameSide color={color} position={[0, 7, 0]} size={[16, 2, 1 ]}/>
+    </group>
+
+  )
 }
 
-// function Door(userUpload) {
+// const Light = () => {
+//   const ref = useRef()
+//   useHelper(ref, DirectionalLightHelper, 1)
 
-//   const loader = new GLTFLoader();
+//   return (
+//     <>
+//       {/* <ambientLight intensity={0.5} /> */}
 
-//   const [doorData] = await Promise.all([
-//     loader.loadAsync('/wooden_door/scene.gltf'),
-//   ]);
-
-//   const floorTexture = useLoader(TextureLoader, floorDir)
-//   const door = setupModel(doorData, undefined, "door");
-//   door.scale.set(6, 6, 6)
-  
-
-//   if (userUpload) {
-//     door.rotation.y = Math.PI / 2
-//     door.position.set(-30, 12, 75)
-//   } else {
-//     door.rotation.y = -Math.PI / 2
-//     door.position.set(30, 12, -75)
-//   }
-
-
-//   return door;
+//     </>
+//   )
 // }
-const Conversation = ({
-  HumanModel
 
+const CameraControls = ({HumanModel}) => {
+  const {
+    camera,
+    gl: { domElement },
+  } = useThree();
+
+  // Ref to the controls, so that we can update them on every frame using useFrame
+  const controls = useRef();
+  useFrame((state) => controls.current.update());
+  const coordinates = getCameraPosition(HumanModel)
+  camera.position.set(coordinates.x, coordinates.y, coordinates.z);
+
+
+  return (
+    <OrbitControls
+      ref={controls}
+      args={[camera, domElement]}
+      enableDamping={true}
+      dampingFactor={0.5} 
+      screenSpacePanning={false}
+      minDistance={10}
+      maxDistance={100}
+      maxPolarAngle={Math.PI / 2}
+      listenToKeyEvents={window}
+
+    />
+  );
+};
+
+
+function Loading({size}) {
+  return (
+    <mesh visible position={[0, 0, 0]} rotation={[0, 0, 0]}>
+      <sphereGeometry attach="geometry" args={[size[0], 16, 16]} />
+      <meshStandardMaterial
+        attach="material"
+        color="grey"
+        transparent
+        opacity={size[1]}
+        roughness={1}
+        metalness={0}
+      />
+    </mesh>
+  );
+}
+
+
+const Conversation = ({
+  HumanModel,
+  ...props
   }) => {
-    const control = useRef();
+    const ref = useRef();
     const camera = useRef();
+    const canv = useRef()
     const [buildState, setBuildState] = useState("add");
-    console.log(HumanModel)
-    const cameraCoordinates = getCameraPosition(HumanModel)
-    //   const snap = useSnapshot(state);
+
+    const frameColor = new Color('grey')
+    const camera2 = createCamera(window.innerWidth, window.innerHeight, HumanModel)
+    camera2.ref = camera
+    const big = [20, 0.3]
+    const med = [10, 0.6]
+    const small = [5, 1.0]
     return (
       <div className="Conversation">
-
-
-        <Canvas dpr={[1, 2]} shadows>
+        <color attach="background" args={["#f1f1f1"]} />
+        <fog attach="fog" args={["#f1f1f1", 160, 300]} /> 
+        <Canvas ref={canv} dpr={[1, 2]} shadows>
           <ambientLight intensity={0.5} />
-          <color attach="background" args={["#f1f1f1"]} />
-          <fog attach="fog" args={["#f1f1f1", 160, 300]} />
-          <Suspense fallback={null}>
-            <Environment preset="city" />
-            <OrbitControls
-              makeDefault
-              // autoRotate
-              // autoRotateSpeed={0.3}
-              maxPolarAngle={Math.PI / 2}
-              // minPolarAngle={Math.PI / 2.3}
-              enableZoom={true}
-              enablePan={false}
-              minDistance={10}
-              maxDistance={100} //PROBLEM
-              enableDamping={true}
-              ref={control}
-              listenToKeyEvents={window}
-            />
-  
-            <PerspectiveCamera
-              ref={camera}
-              fov={50}
-              position={[cameraCoordinates.x, cameraCoordinates.y, cameraCoordinates.z]}
-              aspect={window.innerWidth / window.innerHeight}
-              near={0.1}
-              far={1000}
-            >
-              {/* <spotLight
-                  position={[-4, 10, -10]}
-                  angle={0.15}
-                  penumbra={1}
-                  intensity={100}
-                  castShadow
-                  shadow-mapSize={[2048, 2048]}
-                /> */}
-            </PerspectiveCamera>
+          <directionalLight
+              ref={ref}
+              intensity={1.5}
+              position={[10, 10, 10]}
+            />   
+          <Suspense fallback={<Loading size={big} />}>
+            <CameraControls HumanModel={HumanModel}/>
+            {/* <Environment preset="city" /> */}
+          </Suspense>
+          <Suspense fallback={<Loading size={med}/>}>
             <Floor HumanModel={HumanModel}/>
-            <Door position={[30, 12, 75]} rotation={[0, Math.PI / 2, 0]} scale={[6, 6, 6]}/>
+          </Suspense>
+          <Suspense fallback={<Loading size={small}/>}>
+            <Figure HumanModel={HumanModel}/>
+            <Door position={[30, 12, -75]} rotation={[0, -Math.PI / 2, 0]} scale={[6, 6, 6]} navigate={props.navigate}/>
+            <Frame color={frameColor}/>  
           </Suspense>
         </Canvas>
       </div>

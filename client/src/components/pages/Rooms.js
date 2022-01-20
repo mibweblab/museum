@@ -5,6 +5,7 @@ import { Shakespeare, Einstein, Musk } from "../../HumanModel.js";
 import { getIntro} from '../../LangModel.js'
 import "../modules/RoomScenes/RoomScenes.css";
 
+import Conversation from "./Conversation.js";
 export default class Rooms extends Component{
   constructor(props) {
     super(props); 
@@ -56,7 +57,9 @@ export default class Rooms extends Component{
       return(
         <div className='room-main'>
           {/* <div id="scene-container" ></div> */}
-         <div className = 'main' id="scene-container" ref={(mount) => { this.mount = mount }}></div>
+         <div className = 'main' id="scene-container">
+          <Conversation path='/c' HumanModel={Shakespeare}/>
+         </div>
          <div id="sidebar"> 
           <div id='item1'>
             <p className='conversation-label'>{this.intro()} </p>
