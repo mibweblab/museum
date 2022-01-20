@@ -11,7 +11,8 @@ export default class Rooms extends Component{
     super(props); 
     this.state = {
       isTextBoxVisible: "visible",
-      conversation: []
+      conversation: [],
+      question:[],
     };
   } 
 
@@ -19,15 +20,31 @@ export default class Rooms extends Component{
     return getIntro(this.props.HumanModel)
   }
 
-  onResponse = async(responseText) => {
-    const reactElArray = this.newlineText(responseText)
-    this.setState({ conversation: this.state.conversation.concat(reactElArray)})
+  onPrompt = async(promptText) => {
+    const reactElArray = this.newlineText(promptText)
+    this.setState({ question: reactElArray})
 
+  }
+
+  onResponse = async(responseText) => {
+    console.log('I WAS CALLED')
+    const reactElArray = this.newlineText(responseText)
+
+    this.setState((state) => 
+    {
+        // fix me
+
+        const temp = state.conversation.concat(state.question)
+        return { 
+            conversation: temp.concat( reactElArray),
+            question: "" 
+        }
+    })
   }
 
   newlineText = (res) => {
     const newText = res.split('\n').map(str => <p className='conversation-label'>{str}</p>);
-    return newText.concat(<br></br>);
+    return newText;
   }
   
   render(){
@@ -41,9 +58,10 @@ export default class Rooms extends Component{
           <div id='item1'>
             <p className='conversation-label'>{this.intro()} </p>
             {this.state.conversation}
+            {this.state.question}
             <p></p>
           </div>
-           <GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onResponse={this.onResponse}/> 
+           <GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onPrompt={this.onPrompt} onResponse={this.onResponse}/> 
          </div>
         
         </div>
