@@ -1,82 +1,21 @@
 import React, { Suspense,  useState, useRef } from "react";
-import { Canvas, useLoader, useThree, useFrame } from "@react-three/fiber";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 
 import {
-  TextureLoader,
-  RepeatWrapping,
-  DoubleSide,
+
   Color,
-
 } from 'three';
+import Door from './components/Door.js'
+import Figure from './components/Figure.js'
+import { getCameraPosition, getFloorDir, UserUpload } from '../../HumanModel.js'
 
-import Door from './Door.js'
-import Figure from './Figure.js'
-import { getCameraPosition, getFloorDir } from './../../HumanModel.js'
-import { createCamera } from './../modules/RoomScenes/components/camera'
 import "./Conversation.scss";
 import {
-  meshBasicMaterial,
-  Environment,
   OrbitControls,
-
-  PerspectiveCamera,
-  Stage,
-  PresentationControls,
-  planeGeometry
 } from "@react-three/drei";
+import { Frame, Floor } from './components/Objects.js'
+import UserUploadObject from './components/UserUploadObject.js'
 
-
-
-function Floor({HumanModel}) {
-  const floorDir = getFloorDir(HumanModel)
-  const floorTexture = useLoader(TextureLoader, floorDir)
-  floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping; 
-  floorTexture.repeat.set( 10, 10 );
-  return (
-  <mesh position={[0, -4, 0]} receiveShadow={true} rotation={[-0.5 * Math.PI, 0, 0]}>
-    <planeGeometry args={[150, 150, 5, 5]} />
-    <meshBasicMaterial attach='material' map={floorTexture} side={DoubleSide}/>
-  </mesh>)
-}
-
-function FrameSide({color, position, size}) {
-  console.log('build me too')
-  console.log(position)
-  console.log(size)
-  console.log(color)
-  const frameTexture = useLoader(TextureLoader, '/frame.png')
-  return (
-    <mesh position={position}>
-      <boxGeometry args={size}/>
-      <meshBasicMaterial color={color} map={frameTexture}/>
-    </mesh> 
-  )
-}
-
-function Frame({color}) {
-  console.log('build me')
-  return (
-    <group>
-      <FrameSide color={color} position={[9, 20, 0]} size={[2, 28, 1 ]}/>
-      <FrameSide color={color} position={[-9, 20, 0]} size={[2, 28, 1 ]}/>
-      <FrameSide color={color} position={[0, 33, 0]} size={[16, 2, 1]}/>
-      <FrameSide color={color} position={[0, 7, 0]} size={[16, 2, 1 ]}/>
-    </group>
-
-  )
-}
-
-// const Light = () => {
-//   const ref = useRef()
-//   useHelper(ref, DirectionalLightHelper, 1)
-
-//   return (
-//     <>
-//       {/* <ambientLight intensity={0.5} /> */}
-
-//     </>
-//   )
-// }
 
 const CameraControls = ({HumanModel}) => {
   const {
@@ -135,11 +74,15 @@ const Conversation = ({
     const [buildState, setBuildState] = useState("add");
 
     const frameColor = new Color('grey')
-    const camera2 = createCamera(window.innerWidth, window.innerHeight, HumanModel)
-    camera2.ref = camera
     const big = [20, 0.3]
     const med = [10, 0.6]
     const small = [5, 1.0]
+    
+    let isUserUpload = 1
+    if (HumanModel == UserUpload) {
+      isUserUpload = -1
+    }
+    
     return (
       <div className="Conversation">
         <color attach="background" args={["#f1f1f1"]} />
@@ -159,8 +102,11 @@ const Conversation = ({
             <Floor HumanModel={HumanModel}/>
           </Suspense>
           <Suspense fallback={<Loading size={small}/>}>
-            <Figure HumanModel={HumanModel}/>
-            <Door position={[30, 12, -75]} rotation={[0, -Math.PI / 2, 0]} scale={[6, 6, 6]} navigate={props.navigate}/>
+            {(HumanModel == UserUpload) ? 
+              (<UserUploadObject/>)
+              :   
+              (<Figure HumanModel={HumanModel}/>)}
+            <Door position={[isUserUpload *30, 12, isUserUpload *-75]} rotation={[0, isUserUpload * -Math.PI / 2, 0]} scale={[6, 6, 6]} navigate={props.navigate}/>
             <Frame color={frameColor}/>  
           </Suspense>
         </Canvas>

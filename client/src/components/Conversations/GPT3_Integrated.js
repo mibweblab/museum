@@ -4,7 +4,7 @@ import OpenAIAPI from "react-openai-api";
 import { LangModelAttributes, getTextAreaDescription } from "../../LangModel";
 import { Shakespeare }  from "../../HumanModel";
 import "../../utilities.css";
-import "./Skeleton.css";
+import "./../pages/Skeleton.js"
 
 
 const maxTokens = 1000;

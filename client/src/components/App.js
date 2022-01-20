@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
-import  Conversation  from './pages/Conversation.js'
+import  Conversation  from './Conversations/Conversation.js'
 import { Suspense } from "react";
 import NavBar from "./modules/Navbar/Navbar.js";
-import Rooms from "./pages/Rooms.js"; 
+import Rooms from "./Conversations/Rooms.js";
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk, UserUpload } from '../HumanModel';
 

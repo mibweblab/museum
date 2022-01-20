@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
+// import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
 import { Shakespeare, Einstein, Musk } from "../../HumanModel.js";
 import { getIntro} from '../../LangModel.js'
-import "../modules/RoomScenes/RoomScenes.css";
+import "./RoomScenes.css"
+import Conversation from "./Conversation.js"
 
-import Conversation from "./Conversation.js";
 export default class Rooms extends Component{
   constructor(props) {
     super(props); 
@@ -18,28 +18,6 @@ export default class Rooms extends Component{
   intro() {
     return getIntro(this.props.HumanModel)
   }
-  componentDidMount(){
-    this.initWorld()
-  }
-
-  componentDidUpdate(){
-    this.initWorld()
-  }
-
-  initWorld = async() => {
-    this.world = new World({mount:this.mount, visibilityToggle: this.visibilityToggle, HumanModel:this.props.HumanModel, trial:this.props.trial, navigate:this.props.navigate})
-    await this.world.init()
-    this.world.start()
-  }
-
-  visibilityToggle = async(figureClicked) => {
-    if (figureClicked && (this.state.isTextBoxVisible == 'hidden')) {
-    //  || (!figureClicked && (this.state.isTextBoxVisible == 'visible'))) {
-      let textBoxVisibility = (figureClicked) ? 'visible' : 'hidden'
-      this.setState({ isTextBoxVisible: textBoxVisibility }, () => console.log(this.state.isTextBoxVisible));
-    }
-  }
-
 
   onResponse = async(responseText) => {
     const reactElArray = this.newlineText(responseText)
@@ -49,7 +27,6 @@ export default class Rooms extends Component{
 
   newlineText = (res) => {
     const newText = res.split('\n').map(str => <p className='conversation-label'>{str}</p>);
-    
     return newText.concat(<br></br>);
   }
   
@@ -58,7 +35,7 @@ export default class Rooms extends Component{
         <div className='room-main'>
           {/* <div id="scene-container" ></div> */}
          <div className = 'main' id="scene-container">
-          <Conversation path='/c' HumanModel={Shakespeare}/>
+          <Conversation path='/c' HumanModel={this.props.HumanModel}/>
          </div>
          <div id="sidebar"> 
           <div id='item1'>
