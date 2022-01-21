@@ -108,7 +108,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           <Suspense fallback={null}>
             <Environment preset="city" />
             <group position={[0, -0.5, 0]}>
-              <Frame color={shot.color} name={name} url={url} />
+              <Frame color={shot.color} name={name} url={imageUrl} />
               <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
                 <planeGeometry args={[50, 50]} />
                 <MeshReflectorMaterial
@@ -179,7 +179,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           <button
             className="FrameCustomizer-button"
             onClick={() => {
-              dispatch(addFrameToQueue({ name: name, url: pexel(1103970), color: shot.color, type: type, text: "", firstName: firstName, lastName: lastName, description:description }));
+              dispatch(addFrameToQueue({ name: name, url: imageUrl, color: shot.color, type: type, text: "", firstName: firstName, lastName: lastName, description:description }));
               dispatch(dequeueFrame(true));
               close();
             }}
