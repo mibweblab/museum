@@ -28,6 +28,7 @@ const path = require("path"); // provide utilities for working with file and dir
 const api = require("./api");
 const frameapi = require("./api/frame");
 const museumapi = require("./api/museum");
+const conversationapi = require("./api/conversation");
 const auth = require("./auth");
 
 // socket stuff
@@ -74,7 +75,7 @@ app.use("/api", api);
 // connect user-frame defined routes
 app.use("/api/frame", frameapi);
 app.use("/api/museum", museumapi);
-
+app.use("/api/conversation", conversationapi);
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
 app.use(express.static(reactPath));

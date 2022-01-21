@@ -26,7 +26,7 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
 
   console.log(frame)
   if (frame) {
-    res.send(frame);
+    return res.send(frame);
 
   } else {
     res.status(401).send({});
