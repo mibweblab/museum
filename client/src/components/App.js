@@ -122,7 +122,10 @@ class App extends React.Component {
           <Rooms FirstName={this.state.firstName} HumanModel={Musk} />
         </Route>
         <Route path="/room_user_upload">
-          <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} />
+        {this.state.userId && <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} />}
+        </Route>
+        <Route exact path="/room/:id">
+          {this.state.userId && ((params) => <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} FrameId={params.id} />)}
         </Route>
 
         {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 // import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
-import { Shakespeare, Einstein, Musk } from "../../HumanModel.js";
+import { Shakespeare, Einstein, Musk, UserUpload } from "../../HumanModel.js";
 import { getIntro} from '../../LangModel.js'
 import "./RoomScenes.css"
 import Conversation from "./Conversation.js"
-
+import ConversationAPI from  "../../api/conversation";
 export default class Rooms extends Component{
   constructor(props) {
     super(props); 
@@ -13,7 +13,24 @@ export default class Rooms extends Component{
       isTextBoxVisible: "visible",
       conversation: [],
       question:[],
+      imgUrl:undefined,
+      modelFirstName: undefined,
+      modelLastName: undefined,
+      modelDescription: undefined,
     };
+    this.getConversation()
+  } 
+
+  getConversation = async () => {
+    const conversation = await ConversationAPI.getConversation(this.props.FrameId)
+    const data = conversation.data
+    this.setState({
+      modelFirstName: data.firstName,
+      modelLastName: data.lastName,
+      modelDescription: data.description,
+      imgUrl: data.frameUrl,
+    }, ()=> { console.log(data); console.log(this.state)} )
+
   } 
 
   intro() {
@@ -27,7 +44,6 @@ export default class Rooms extends Component{
   }
 
   onResponse = async(responseText) => {
-    console.log('I WAS CALLED')
     const reactElArray = this.newlineText(responseText)
 
     this.setState((state) => 
@@ -52,7 +68,7 @@ export default class Rooms extends Component{
         <div className='room-main'>
           {/* <div id="scene-container" ></div> */}
          <div className = 'main' id="scene-container">
-          <Conversation path='/c' HumanModel={this.props.HumanModel}/>
+          <Conversation HumanModel={this.props.HumanModel} FrameId={this.props.FrameId} FrameUrl={this.state.imgUrl}/>
          </div>
          <div id="sidebar"> 
           <div id='item1'>
@@ -61,7 +77,9 @@ export default class Rooms extends Component{
             {this.state.question}
             <p></p>
           </div>
-           <GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onPrompt={this.onPrompt} onResponse={this.onResponse}/> 
+           {( (this.props.HumanModel != UserUpload) || (this.state.modelFirstName != undefined)) ?
+           (<GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onPrompt={this.onPrompt} onResponse={this.onResponse} modelFirstName={this.state.modelFirstName} modelLastName={this.state.modelLastName} modelDescription={this.state.modelDescription}/>)
+           :  null}
          </div>
         
         </div>
