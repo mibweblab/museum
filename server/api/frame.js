@@ -24,7 +24,7 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
     parentId
   );
   if (frame) {
-    res.send(frame);
+    return res.send(frame);
   } else {
     res.status(401).send({});
   }

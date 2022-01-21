@@ -12,7 +12,7 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
       rotation: rotation,
       parentId: parentId,
     });
-    await frame.save();
+    return await frame.save();
   } catch (error) {
     console.log("error saving", error)
     return false;

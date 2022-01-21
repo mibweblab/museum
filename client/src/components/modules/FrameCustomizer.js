@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useModal } from "react-hooks-use-modal";
 import getUuid from "uuid-by-string";
 import "./FrameCustomizer.scss";
-import { addFrame, addFrameToQueue, dequeueFrame } from "../action";
+import { addFrame, addFrameToQueue, dequeueFrame, addConversation } from "../action";
 import { HexColorPicker } from "react-colorful";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
@@ -72,6 +72,9 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   const [type, setType] = useState("scene");
   const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
   const [image, setImage] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -133,7 +136,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         </Canvas>
         {/* <Picker /> */}
       </div>
-      <div className="FrameCustomizer-side">
+      <div className={`FrameCustomizer-side${(type == "conversation") ? "-conversation" : ""}`}>
         <div className="FrameCustomizer-group">
           <input className="FrameCustomizer-input" onChange={(e) => setName(e.target.value)} />
         </div>
@@ -141,7 +144,22 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         <div className="FrameCustomizer-group">
           <Dropdown placeholder="Choose Frame Type"  onChange={(_, data) => setType(data.value)} search selection options={options} />
         </div>
-
+        {(type == 'conversation') && // if it's true return the actual JSX
+            <>
+            <div >
+              <label>First Name</label>
+              <input type="text" className="FrameCustomizer-input" onChange={(e) => setFirstName(e.target.value)} />
+            </div>
+            <div >
+              <label>Last Name</label>
+              <input type="text" className="FrameCustomizer-input" onChange={(e) => setLastName(e.target.value)} />
+            </div>
+            <div>
+              <label>Description</label>
+              <textarea type="text" placeholder="Who are you speaking to? Please provide a brief bio to better your conversation experience (the better the bio, the better the convo). Max ~100 words." maxLength={500} className="FrameCustomizer-input" onChange={(e) => setDescription(e.target.value)} />
+            </div>
+          </>
+        }
         <div className="FrameCustomizer-group">
           <Picker
             // className="picker"
@@ -161,7 +179,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           <button
             className="FrameCustomizer-button"
             onClick={() => {
-              dispatch(addFrameToQueue({ name: name, url: pexel(1103970), color: shot.color, type: type, text: "" }));
+              dispatch(addFrameToQueue({ name: name, url: pexel(1103970), color: shot.color, type: type, text: "", firstName: firstName, lastName: lastName, description:description }));
               dispatch(dequeueFrame(true));
               close();
             }}

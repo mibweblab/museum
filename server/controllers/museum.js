@@ -80,4 +80,22 @@ async function deleteMuseum(museumId) {
   }
 }
 
-module.exports = Object.freeze({ addMuseum, getAllMuseums, deleteMuseum , editMuseumProperty});
+
+/**
+ * Gets all museums associated with a certain userId
+ * @param {*} userId 
+ * @returns 
+ */
+
+ async function getAllPublicMuseums() {
+  try {
+    return await Museum.find({isPrivate: false});
+
+  } catch (error) {
+    console.log("error getting all museums", error);
+    return false;
+  }
+}
+
+module.exports = Object.freeze({ addMuseum, getAllMuseums, deleteMuseum , editMuseumProperty, getAllPublicMuseums });
+

@@ -34,6 +34,7 @@ import ModalViewer from "./ModalViewer"
 import { addFrameToQueue } from "../action";
 import APIInterface from "../../api/api";
 import API from "../../api/museum";
+import ConversationAPI from  "../../api/conversation";
 
 const GOLDENRATIO = 1.61803398875;
 
@@ -148,20 +149,22 @@ const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) =>
             <mesh
               rotation={[-Math.PI / 2, 0, 0]}
               position={[0, 0, 0]}
-              onClick={(e) => {
+              onClick={ async(e) => {
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 // addCube(x, y, z, activeTexture);
                 queuedFrame.position = [x, y, z];
                 queuedFrame.rotation = [0, 0, 0];
                 if (isThereQueuedFrame) {
-                  //  console.log()
+                  let { type, name, url, text, color, position, rotation, parentId, firstName, lastName, description} = queuedFrame;
+                  let response = await APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
+                  queuedFrame._id = response.data._id
                   dispatch(addFrame(queuedFrame));
                   dispatch(dequeueFrame(false));
                   dispatch(addFrameToQueue(null));
-
-                  let { type, name, url, text, color, position, rotation, parentId} = queuedFrame;
-                  APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
+                  if (type == 'conversation') {
+                    let response2 = await ConversationAPI.addConversation(firstName, lastName, response.data._id, description)
+                  }
                 }
               }}
             >

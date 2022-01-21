@@ -8,4 +8,4 @@ const ConversationSchema = new mongoose.Schema({
 });
 
 // compile model from schema
-module.exports = mongoose.model("frame", ConversationSchema);
+module.exports = mongoose.model("conversation", ConversationSchema);
