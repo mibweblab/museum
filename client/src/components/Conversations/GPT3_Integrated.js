@@ -13,7 +13,13 @@ const apiKey = "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";
 export default class GPT3_Integrated extends Component {
   constructor(props) {
     super(props);
-    this.languageModel = new LangModelAttributes(props.HumanModel, props.FirstName);
+    this.languageModel = new LangModelAttributes(
+      props.HumanModel,
+      props.FirstName,
+      props.modelFirstName,
+      props.modelLastName,
+      props.modelDescription
+    );
     this.firstName = this.languageModel.firstName;
     this.staticPrompt = this.languageModel.staticPrompt(undefined);
     this.state = {
@@ -22,6 +28,11 @@ export default class GPT3_Integrated extends Component {
       prompt: "",
     };
   }
+
+  tokenCount = (str) => {
+    let one_line_str = str.replace("\n", " ");
+    return one_line_str.length / 5;
+  };
 
   tokenCount = (str) => {
     let one_line_str = str.replace("\n", " ");
