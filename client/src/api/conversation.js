@@ -2,14 +2,14 @@ import axios from "axios";
 
 export default class ConversationAPI {
 
-  static async addConversation(firstName, lastName, frameId, description) {
+  static async addConversation(firstName, lastName, description, frameId, frameUrl) {
     try {
       let conversation = await axios.post("/api/conversation", {
         firstName,
         lastName,
-        frameId,
         description,
-
+        frameId,
+        frameUrl,
       });
       return conversation;
     } catch (error) {

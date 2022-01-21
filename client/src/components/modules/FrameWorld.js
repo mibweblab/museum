@@ -163,7 +163,7 @@ const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) =>
                   dispatch(dequeueFrame(false));
                   dispatch(addFrameToQueue(null));
                   if (type == 'conversation') {
-                    let response2 = await ConversationAPI.addConversation(firstName, lastName, response.data._id, description)
+                    await ConversationAPI.addConversation(firstName, lastName, description, response.data._id, url) 
                   }
                 }
               }}

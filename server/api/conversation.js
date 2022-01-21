@@ -11,13 +11,14 @@ const { isUserLoggedIn } = require("../middleware/frame");
  */
 
 router.post("/", [isUserLoggedIn], async (req, res) => {
-  let { firstName, lastName, frameId, description } = req.body;
+  let { firstName, lastName, frameId, description, frameUrl } = req.body;
 
   const conversation = await addConversation(
     firstName,
     lastName,
-    frameId,
     description,
+    frameId,
+    frameUrl,
   );
   if (conversation) {
     res.send(conversation);

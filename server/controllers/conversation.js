@@ -1,12 +1,13 @@
 const Conversation = require("../models/conversation");
 
-async function addConversation(firstName, lastName, frameId, description) {
+async function addConversation(firstName, lastName, description, frameId, frameUrl) {
   try {
     let conversation = Conversation({
       firstName: firstName,
       lastName: lastName,
-      frameId: frameId,
       description: description,
+      frameId: frameId,
+      frameUrl: frameUrl,
     });
     return await conversation.save();
   } catch (error) {
@@ -56,7 +57,7 @@ async function deleteConversation(frameId){
  */
  async function getConversation(frameId){
   try {
-      let conversationFound = await Frame.findOne({frameId: frameId})
+      let conversationFound = await Conversation.findOne({frameId: frameId})
       return conversationFound;
   } catch (error) {
       return false;

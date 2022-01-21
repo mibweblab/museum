@@ -71,9 +71,9 @@ const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
         position={[0, GOLDENRATIO / 2, 0]}
         onClick={(e)=> {
           e.stopPropagation() 
-          if (props.type == "conversation") {
+          if (type == "conversation") {
             setLocation("/room/" + props._id) 
-          } else if (props.type == "scene") {
+          } else if (type == "scene") {
             setLocation("/scene/" + props._id) 
           }
           // if static, do nothing   

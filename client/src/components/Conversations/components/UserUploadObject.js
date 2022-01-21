@@ -5,8 +5,8 @@ import {
 import { FrameSide } from './Objects'
 import { useLoader } from "@react-three/fiber";
 
-export default function UserUploadObject() {
-    const userUploadTexture = useLoader(TextureLoader, '/conversation_assets/anim.png')
+export default function UserUploadObject({FrameUrl}) {
+    const userUploadTexture = useLoader(TextureLoader, FrameUrl)
     return (
         <>
             <mesh position={[0, 20, 0]} receiveShadow={true}>
