@@ -25,7 +25,9 @@ import "./App.scss";
 import { useLocation, Switch, Route } from "wouter";
 import APIInterface from "../api/api.js";
 import MuseumInterface from "../api/museum";
-import Profile from "./pages/Profile";
+import {Profile} from "./pages/Profile";
+import Explore from "./pages/Explore";
+
 
 import { addInitialFrames, addInitialMuseums } from "./action";
 
@@ -103,10 +105,6 @@ class App extends React.Component {
 
           {!this.state.userId && <div>Sign In to View</div>}
         </Route>
-        <Route path="/c">
-          <Conversation HumanModel={Shakespeare} />
-        </Route>
-
         <Route exact path="/museum/:id">
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
         </Route>
@@ -127,7 +125,9 @@ class App extends React.Component {
         <Route exact path="/room/:id">
           {this.state.userId && ((params) => <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} FrameId={params.id} />)}
         </Route>
-
+        <Route exact path="/explore">
+          <Explore LogInStatus={(this.state.userId != undefined)} />
+        </Route>
         {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
         {/* <Route path="/scene/:id">{<World />}</Route> */}
       </>

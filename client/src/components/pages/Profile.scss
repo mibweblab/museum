@@ -3,5 +3,13 @@
   &-museums
   {
     display: flex;
+    flex-wrap: wrap-reverse;
+  }
+
+  &-card-img {
+
+  }
+  &-card-body {
+
   }
 }
