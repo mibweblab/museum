@@ -20,7 +20,7 @@ import Frame from "./Frame";
 import { connect } from "react-redux";
 
 import { Dropdown, Button } from "semantic-ui-react";
-import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
+// import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
 
 const options = [
   { key: 0, text: "Static", value: "static" },
@@ -72,27 +72,27 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   );
   const [image, setImage] = useState(null);
 
-  const handleChange = (e) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
+  // const handleChange = (e) => {
+  //   if (e.target.files[0]) {
+  //     setImage(e.target.files[0]);
+  //   }
+  // };
 
-  const handleUpload = () => {
-    const storageRef = ref(storage, `images/${image.name}`);
-    const uploadTask = uploadBytes(storageRef, image);
-    uploadTask
-      .then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((downloadURL) => {
-          // console.log("what the heck",reference.current.toDataURL(downloadURL))
-          setImageUrl(downloadURL);
-          console.log("File available at", downloadURL);
-        });
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  };
+  // const handleUpload = () => {
+  //   const storageRef = ref(storage, `images/${image.name}`);
+  //   const uploadTask = uploadBytes(storageRef, image);
+  //   uploadTask
+  //     .then((snapshot) => {
+  //       getDownloadURL(snapshot.ref).then((downloadURL) => {
+  //         // console.log("what the heck",reference.current.toDataURL(downloadURL))
+  //         setImageUrl(downloadURL);
+  //         console.log("File available at", downloadURL);
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  // };
 
   return (
     <div className="FrameCustomizer">
@@ -157,10 +157,10 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           />
         </div>
 
-        <div className="FrameCustomizer-group">
+        {/* <div className="FrameCustomizer-group">
           <input type="file" onChange={handleChange} />
           <Button onClick={handleUpload}>Upload Image</Button>
-        </div>
+        </div> */}
         <div className="FrameCustomizer-group">
           <button
             className="FrameCustomizer-button"
