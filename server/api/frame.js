@@ -13,8 +13,6 @@ const { isUserLoggedIn } = require("../middleware/frame");
 router.post("/", [isUserLoggedIn], async (req, res) => {
   let { type, name, imageUrl, text, frameColor, position, rotation, scale,imageZoomRatio, parentId } = req.body;
 
-  console.log("adding a frame", req.body)
-
   const frame = await addFrame(
     type,
     name,
@@ -60,15 +58,13 @@ router.get("/:parentId", [isUserLoggedIn], async (req, res) => {
 router.patch("/:frameId", async (req, res) => {
 
   let frameId = req.params.frameId;
-  let { data } = req.body;
+  let data  = req.body;
   let response = await editFrame(frameId, data);
   if (response) {
     res.status(200).send("Sucessfully deleted frame");
   } else {
     res.status(304).send({ error: `Failed to delete frame with id ${frameId}` });
   }
-
-  
 });
 
 /**

@@ -42,6 +42,14 @@ export default class FrameAPI {
       return false;
     }
   }
+  static async editFrameProperty(id,data) {
+    try {
+      let frame = await axios.patch("/api/frame/" + id,data);
+      return frame;
+    } catch (error) {
+      return false;
+    }
+  }
 
   static async sendGPT3Request(payload) {
     try {

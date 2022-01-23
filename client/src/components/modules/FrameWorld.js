@@ -3,7 +3,12 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import "./FrameWorld.scss";
 import { useModal } from "react-hooks-use-modal";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import {
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+  TransformControls,
+} from "@react-three/drei";
 import { proxy, snapshot, useSnapshot } from "valtio";
 import { connect, useSelector, useDispatch } from "react-redux";
 import {
@@ -134,7 +139,7 @@ function Frames({ frames, frameToTransform, mode, dispatch }) {
   return (
     <group ref={ref} onClick={(e) => e.stopPropagation()}>
       {frames.map(
-        (props,index) => <Frame mode={mode} dispatch={dispatch} frameToTransform={frameToTransform} snap={snap} key={index + '-frame' } position={props.position} rotation={props.rotation} url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
+        (props,index) => <Frame mode={mode} dispatch={dispatch} frameToTransform={frameToTransform} snap={snap} key={index + '-frame' }  url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
       )}
     </group>
   );
@@ -219,10 +224,12 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
   const control = useRef();
   const camera = useRef();
   const ref = useRef();
+  const transformRef = useRef();
   const mode = useSelector((state) => state.mode);
   const frameToTransform = useSelector((state) => state.frameToTransform);
   const currentMuseum = useSelector((state) => state.currentMuseum);
   const currentFrame = useSelector((state) => state.currentFrame);
+  const currentImage = useSelector((state) => state.currentImage);
 
   const [
     { intensity, backgroundColor, fogColor, planeLength, planeWidth, planeColor, planeStrength },
@@ -263,6 +270,147 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
     },
   }));
 
+  const [{ frameColor, frameImageZoom }, setFrame] = useControls(() => ({
+    framePosX: {
+      value: transformRef.current ? transformRef.current.object.position.x : 0,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.x = x;
+          }
+        }
+      },
+    },
+    framePosY: {
+      value: transformRef.current ? transformRef.current.object.position.y : 0,
+      onChange: (y) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.y = y;
+          }
+        }
+      },
+    },
+    framePosZ: {
+      value: transformRef.current ? transformRef.current.object.position.z : 0,
+      onChange: (z) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.z = z;
+          }
+        }
+      },
+    },
+    frameRotateX: {
+      value: transformRef.current ? transformRef.current.object.rotation.x : 0,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.x = x;
+          }
+        }
+      },
+    },
+    frameRotateY: {
+      value: transformRef.current ? transformRef.current.object.rotation.y : 0,
+      onChange: (y) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.y = y;
+          }
+        }
+      },
+    },
+    frameRotateZ: {
+      value: transformRef.current ? transformRef.current.object.rotation.z : 0,
+      onChange: (z) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.z = z;
+          }
+        }
+      },
+    },
+
+    frameXScale: {
+      value: transformRef.current ? transformRef.current.object.scale.x : 1,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.scale.x = x;
+          }
+        }
+      },
+    },
+    frameYScale: {
+      value: transformRef.current ? transformRef.current.object.scale.y : 1,
+      onChange: (y) => {
+        let userData = currentFrame ? currentFrame.current?.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.scale.y = y;
+          }
+        }
+      },
+    },
+
+    frameImageZoom: {
+      value: transformRef.current
+        ? transformRef.current.object.userData.frameImage.current
+          ? transformRef.current.object.userData.frameImage.current.material.zoom
+          : 0
+        : 0,
+      min: -5,
+      max: 5,
+      step: 0.1,
+      onChange: (v) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable } = userData;
+          if (isEditable) {
+            if (userData.frameImage.current) {
+              userData.frameImage.current.material.zoom = v;
+            }
+          }
+        }
+      },
+    },
+    frameColor: {
+      value: transformRef.current ? transformRef.current.object.userData.color : "#ffffff",
+      onChange: (v) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        // console.log("fish call back issue", userData);
+        // // console.log(transformRef)
+        if (userData) {
+          let { isEditable } = userData;
+          if (isEditable) {
+            let { frameMesh } = transformRef.current.object.userData;
+            if (frameMesh) {
+              if (frameMesh.current) {
+                frameMesh.current.color = new THREE.Color(v);
+              }
+            }
+          }
+        }
+      },
+    },
+  }));
+
   useEffect(() => {
     set({ intensity: currentMuseum ? currentMuseum.intensity : 1 });
     set({ backgroundColor: currentMuseum ? currentMuseum.backgroundColor : "#ffffff" });
@@ -270,9 +418,32 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
     set({ planeWidth: currentMuseum ? currentMuseum.planeWidth : 20 });
     set({ planeColor: currentMuseum ? currentMuseum.planeColor : "#ffffff" });
     set({ planeStrength: currentMuseum ? currentMuseum.planeStrength : 1 });
-    setTextureType(currentMuseum ? currentMuseum.textureIndex : 0)
-  }, [currentMuseum]);
+    setTextureType(currentMuseum ? currentMuseum.textureIndex : 0);
 
+    setFrame({ framePosX: transformRef.current ? transformRef.current.object.position.x : 0 });
+    setFrame({ framePosY: transformRef.current ? transformRef.current.object.position.y : 0 });
+    setFrame({ framePosZ: transformRef.current ? transformRef.current.object.position.z : 0 });
+    setFrame({ frameRotateX: transformRef.current ? transformRef.current.object.rotation.x : 0 });
+    setFrame({ frameRotateY: transformRef.current ? transformRef.current.object.rotation.y : 0 });
+    setFrame({ frameRotateZ: transformRef.current ? transformRef.current.object.rotation.z : 0 });
+    setFrame({ frameXScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
+    setFrame({ frameYScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
+    setFrame({
+      frameColor:  '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+    });
+
+    setFrame({
+      frameImageZoom: transformRef?.current?.object?.userData?.frameImage?.current?.material?.zoom,
+    });
+  }, [currentMuseum, frameToTransform]);
+
+  // if(currentFrame){
+  //   if (currentFrame.current){
+  //     currentFrame.current.userData.color = frameColor;
+  //   }
+  // }
+
+  console.log(frameColor);
   useEffect(() => {
     let mounted = false;
     if (!mounted) {
@@ -303,31 +474,55 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
             planeWidth: planeWidth,
             planeColor: planeColor,
             planeStrength: planeStrength,
-            textureIndex: textureIndex
+            textureIndex: textureIndex,
           });
+
+          let obj = {
+            position: [
+              transformRef.current ? transformRef.current.object.position.x : 0,
+              transformRef.current ? transformRef.current.object.position.y : 0,
+              transformRef.current ? transformRef.current.object.position.z : 0,
+            ],
+            rotation: [
+              transformRef.current ? transformRef.current.object.rotation.x : 0,
+              transformRef.current ? transformRef.current.object.rotation.y : 0,
+              transformRef.current ? transformRef.current.object.rotation.z : 0,
+            ],
+            scale: [
+              transformRef.current ? transformRef.current.object.scale.x : 1,
+              transformRef.current ? transformRef.current.object.scale.y : 1,
+              transformRef.current ? transformRef.current.object.scale.z : 1,
+            ],
+            frameColor: '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+            imageZoomRatio: transformRef.current
+              ? transformRef.current.object.userData.frameImage.current
+                ? transformRef.current.object.userData.frameImage.current.material.zoom
+                : 0
+              : 0,
+          };
+
+          
+          // let color = transformRef?.current?.object?.userData?.frameMesh?.current?.color;
+          // if (color){
+          //   console.log("let's color", transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString())
+          //   // console.log(color.getHexString())
+          // }
+
+          if (transformRef.current) {
+            if (transformRef.current.object.userData) {
+              if (transformRef.current.object.userData.isEditable) {
+
+                console.log("this is the ibject tryna save",obj)
+                let frameResponse = await APIInterface.editFrameProperty(
+                  transformRef.current.object.name,obj
+                );
+              }
+            }
+          }
         }}
       >
         {" "}
         Save{" "}
-      </button>
-      <button
-        className="FrameWorld-saveFrame"
-        onClick={async () => {
-          // let response = await MuseumAPI.editMuseumProperty(id, {
-          //   intensity: intensity,
-          //   backgroundColor: backgroundColor,
-          //   fogColor: fogColor,
-          //   planeLength: planeLength,
-          //   planeWidth: planeWidth,
-          //   planeColor: planeColor,
-          //   planeStrength: planeStrength,
-          //   textureIndex: textureIndex
-          // });
-          console.log("let's see the ",currentFrame.current)
-        }}
-      >
-        {" "}
-        Save Frame{" "}
       </button>
       <ModalViewer
         Modal={Modal}
@@ -362,15 +557,24 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 if (queuedFrame) {
-                  // queuedFrame.position = [x, GOLDENRATIO / 2, z];
                   queuedFrame.position = [x, y, z];
                   queuedFrame.rotation = [0, 0, 0];
-                  queuedFrame.scale =[1,GOLDENRATIO,0.05];
+                  queuedFrame.scale = [1, GOLDENRATIO, 0.05];
                   queuedFrame.imageZoomRatio = 1;
                   if (isThereQueuedFrame) {
                     dispatch(dequeueFrame(false));
                     dispatch(addFrameToQueue(null));
-                    let { type, name, url, text, color, position, rotation,scale,imageZoomRatio } = queuedFrame;
+                    let {
+                      type,
+                      name,
+                      url,
+                      text,
+                      color,
+                      position,
+                      rotation,
+                      scale,
+                      imageZoomRatio,
+                    } = queuedFrame;
                     let frameRes = await APIInterface.addFrame(
                       type,
                       name,
@@ -406,15 +610,45 @@ const FrameWorld = ({ id, frames, queuedFrame, isThereQueuedFrame }) => {
             minDistance={5}
             maxDistance={200}
             ref={control}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 1.75}
           />
+          {mode !== "" && (
+            <TransformControls
+              ref={transformRef}
+              mode={mode === "" ? "translate" : mode}
+              object={currentFrame ? currentFrame.current : null}
+              onChange={() => {
+                if (mode === "translate") {
+                  setFrame({
+                    framePosX: transformRef.current.object.position.x,
+                    framePosY: transformRef.current.object.position.y,
+                    framePosZ: transformRef.current.object.position.z,
+                  });
+                } else if (mode === "rotate") {
+                  setFrame({
+                    frameRotateX: transformRef.current.object.rotation.x,
+                    frameRotateY: transformRef.current.object.rotation.y,
+                    frameRotateZ: transformRef.current.object.rotation.z,
+                  });
+                } else if (mode === "scale") {
+                  setFrame({
+                    frameXScale: transformRef.current.object.scale.x,
+                    frameYScale: transformRef.current.object.scale.y,
+                    // zScale: transformRef.current.object.scale.z,
+                  });
+                }
+              }}
+            />
+          )}
           <PerspectiveCamera
-            makeDefault
+            // makeDefault
             ref={camera}
             fov={70}
             position={[6, 6, 6]}
             aspect={window.innerWidth / window.innerHeight}
           ></PerspectiveCamera>
-          <axesHelper />
+          {/* <axesHelper /> */}
         </Suspense>
       </Canvas>
     </>

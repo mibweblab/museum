@@ -8,7 +8,11 @@ const initialState = {
   museums: [],
   frameToTransform: '',
   mode: '',
+  currentImage: null,
+  currentFrame: null,
+  currentMuseum: null,
 };
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -65,6 +69,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentFrame: action.payload
+      }
+    case "ADD_CURRENT_IMAGE":
+      return {
+        ...state,
+        currentImage: action.payload
       }
     default:
       return state;

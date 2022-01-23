@@ -31,8 +31,11 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
 
 async function editFrame(frameId,data){
 
+    // console.log(frameId,data);
     try {
+
         await Frame.updateOne({_id:frameId},data);
+        // console.log("succssfukky updated")/
         return true;
     } catch (error){
         return false;
@@ -47,7 +50,7 @@ async function editFrame(frameId,data){
 async function getAllFrames(parentId){
     try {
         let framesFound = await Frame.find({parentId: parentId})
-        console.log("ive found",framesFound)
+        // console.log("ive found",framesFound)
         return framesFound;
     } catch (error) {
         return false;
