@@ -3,10 +3,10 @@ import { Button } from "semantic-ui-react";
 import {Link} from "@reach/router"
 import {Card} from "react-bootstrap"
 import './Profile.scss';
-import Gallery from "./Gallery";
-import GallerySeconadry from "./GallerySecondary"
+import Gallery from "../modules/Landing/Gallery";
+import GallerySeconadry from "../modules/Landing/GallerySecondary"
 import "./Landing.css";
-import Wander from "./Wander"
+import Wander from "../modules/Landing/Wander"
 import { Loader } from '@react-three/drei'
 
 
@@ -56,7 +56,7 @@ const Landing = ({}) => {
       <GallerySeconadry/>
       </>
     </Suspense>
-    <Loader initialState={(active) => true } cbarStyles={{backgroundColor:"black", color:"grey"}} // Loading-bar styles
+    <Loader initialState={(active) => true } cbarStyles={{backgroundColor:"black", color:"red"}} // Loading-bar styles
                       dataStyles={{backgroundColor:"white", color:"black"}}  containerStyles={{backgroundColor:"white", color:"white"}}/> 
     </>
   );

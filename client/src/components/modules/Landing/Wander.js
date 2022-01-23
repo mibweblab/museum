@@ -4,7 +4,8 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { Reflector, Text, useTexture, useGLTF, Loader } from '@react-three/drei'
 
 import { Footer } from '@pmndrs/branding'
-import './wander.css'
+
+import './Wander.css'
 import {
   TextureLoader,
   RepeatWrapping,
@@ -75,7 +76,7 @@ export default function Wander() {
   const [scroll, setScroll] = useState(0)
 
   useEffect(() => {
-    document.addEventListener("mousemove", () => {
+    document.addEventListener("scroll", () => {
       const scrollCheck = window.scrollY < 100
       if (scrollCheck !== scroll) {
         setScroll(scrollCheck)
