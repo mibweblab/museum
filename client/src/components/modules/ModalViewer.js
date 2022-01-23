@@ -3,15 +3,14 @@ import FrameCustomizer from "./FrameCustomizer";
 import './ModalViewer.scss';
 import MuseumForm from "./MuseumForm";
 
-const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap }) => {
-
+const ModalViewer = ({ Modal, open, close, isOpen, modalType}) => {
     return (
       <Modal>
         <div className="ModalViewer">
           <div className="ModalViewer-header"></div>
           <div className="ModalViewer-body">
-            {modalType === "frame" && <FrameCustomizer close={close} snap={snap} />}
-            {modalType === "museum" && <MuseumForm close={close} snap={snap} />}
+            {modalType === "frame" && <FrameCustomizer close={close}/>}
+            {modalType === "museum" && <MuseumForm close={close}  />}
           </div>
           <div className="ModalViewer-footer">
             <button onClick={close}>Close</button>

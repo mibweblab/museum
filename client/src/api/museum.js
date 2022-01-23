@@ -24,4 +24,22 @@ export default class API {
       return false;
     }
   }
+  static async getCurrentMuseum(id) {
+    try {
+      // console.log("am trying")
+      let museum = await axios.get("/api/museum/" + id);
+      return museum;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  static async editMuseumProperty(id,data){
+    try {
+      let museum = await axios.patch("/api/museum/" + id,data);
+      return museum;
+    } catch (error) {
+      return false;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 const Frame = require("../models/frame");
 
-async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, parentId) {
+async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, scale, imageZoomRatio,parentId) {
   try {
     let frame = Frame({
       type: type,
@@ -10,9 +10,11 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
       frameColor: frameColor,
       position: position,
       rotation: rotation,
+      scale: scale,
+      imageZoomRatio: imageZoomRatio,
       parentId: parentId,
     });
-    await frame.save();
+    return await frame.save();
   } catch (error) {
     console.log("error saving", error)
     return false;
@@ -45,6 +47,7 @@ async function editFrame(frameId,data){
 async function getAllFrames(parentId){
     try {
         let framesFound = await Frame.find({parentId: parentId})
+        console.log("ive found",framesFound)
         return framesFound;
     } catch (error) {
         return false;

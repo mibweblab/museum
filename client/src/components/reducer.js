@@ -5,7 +5,9 @@ const initialState = {
   frames: [],
   queuedFrame: null,
   isThereQueuedFrame: false,
-  museums: []
+  museums: [],
+  frameToTransform: '',
+  mode: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,11 +33,39 @@ const reducer = (state = initialState, action) => {
         ...state,
         museums: action.payload,
       };
+    case "ADD_INITIAL_FRAMES":
+      return {
+        ...state,
+        frames: action.payload,
+      };
     case "ADD_MUSEUM":
       return {
         ...state,
         museums: [...state.museums, action.payload],
       };
+
+    case "CHANGE_TRANSFORM_MODE":
+      return {
+        ...state,
+        mode: action.payload,
+      };
+
+    case "ADD_FRAME_TO_TRANSFORM":
+      return {
+        ...state,
+        frameToTransform: action.payload,
+      };
+
+    case "ADD_CURRENT_MUSEUM":
+      return {
+        ...state,
+        currentMuseum: action.payload
+      }
+    case "ADD_CURRENT_FRAME":
+      return {
+        ...state,
+        currentFrame: action.payload
+      }
     default:
       return state;
   }
