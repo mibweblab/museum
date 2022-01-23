@@ -111,14 +111,14 @@ class App extends React.Component {
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
         </Route>
 
-        <Route path="/room_shakespeare">
+        <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
-        <Route path="/room_einstein">
+        <Route path="/room_1">
           <Rooms  FirstName={this.state.firstName} HumanModel={Einstein} />
         </Route>
 
-        <Route path="/room_musk">
+        <Route path="/room_2">
           <Rooms FirstName={this.state.firstName} HumanModel={Musk} />
         </Route>
         <Route path="/room_user_upload">

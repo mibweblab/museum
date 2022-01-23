@@ -153,12 +153,14 @@ const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) =>
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 // addCube(x, y, z, activeTexture);
+                console.log(queuedFrame)
                 queuedFrame.position = [x, y, z];
                 queuedFrame.rotation = [0, 0, 0];
                 if (isThereQueuedFrame) {
-                  let { type, name, url, text, color, position, rotation, parentId, firstName, lastName, description} = queuedFrame;
+                  let { type, name, url, text, color, position, rotation, parentId, figure, firstName, lastName, description} = queuedFrame;
                   let response = await APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
                   queuedFrame._id = response.data._id
+                  queuedFrame.figure = queuedFrame.figure
                   dispatch(addFrame(queuedFrame));
                   dispatch(dequeueFrame(false));
                   dispatch(addFrameToQueue(null));

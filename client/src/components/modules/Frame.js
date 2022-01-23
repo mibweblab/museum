@@ -73,6 +73,8 @@ const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
           e.stopPropagation() 
           if (type == "conversation") {
             setLocation("/room/" + props._id) 
+          } else if (type == "premade_conversation") {
+            setLocation("/room_" + props.figure) 
           } else if (type == "scene") {
             setLocation("/scene/" + props._id) 
           }

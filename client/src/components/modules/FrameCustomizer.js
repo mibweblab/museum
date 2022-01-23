@@ -4,6 +4,7 @@ import { useModal } from "react-hooks-use-modal";
 import getUuid from "uuid-by-string";
 import "./FrameCustomizer.scss";
 import { addFrame, addFrameToQueue, dequeueFrame } from "../action";
+import { Shakespeare, Einstein, Musk, UserUpload } from "../../HumanModel.js";
 import { HexColorPicker } from "react-colorful";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
@@ -24,8 +25,16 @@ import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
 
 const options = [
   { key: 0, text: "Static", value: "static" },
-  { key: 1, text: "Conversation", value: "conversation" },
+  { key: 1, text: "Conversation", value: "premade_conversation" },
   { key: 2, text: "Scene", value: "scene" },
+];
+
+const figureOptions = [
+  { key: 0, text: "Shakespeare", value: Shakespeare },
+  { key: 1, text: "Einstein", value: Einstein },
+  { key: 2, text: "Scene", value: Musk },
+  { key: 3, text: "Create your own figure", value: UserUpload },
+  
 ];
 
 import { proxy, useSnapshot } from "valtio";
@@ -70,12 +79,13 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   // const [color, setColor] = useState("#fff");
   const shot = useSnapshot(state);
   const [type, setType] = useState("scene");
+  const [figure, setFigure] = useState(-1);
   const [imageUrl, setImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2FTree.png?alt=media&token=85efad89-f2e9-40ee-b879-1e1effa02a06&auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
   const [image, setImage] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [description, setDescription] = useState("");
-
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -136,7 +146,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         </Canvas>
         {/* <Picker /> */}
       </div>
-      <div className={`FrameCustomizer-side${(type == "conversation") ? "-conversation" : ""}`}>
+      <div className={`FrameCustomizer-side${(type == "conversation" || type == "premade_conversation") ? "-conversation" : ""}`}>
         <div className="FrameCustomizer-group">
           <input className="FrameCustomizer-input" onChange={(e) => setName(e.target.value)} />
         </div>
@@ -144,7 +154,13 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         <div className="FrameCustomizer-group">
           <Dropdown placeholder="Choose Frame Type"  onChange={(_, data) => setType(data.value)} search selection options={options} />
         </div>
-        {(type == 'conversation') && // if it's true return the actual JSX
+        {(type == 'premade_conversation' || type == 'conversation') && // if it's true return the actual JSX
+            <>
+            <Dropdown placeholder="Select Figure"  onChange={(_, data) => {
+                                                              if (data.value == 3) { setType("conversation")};  
+                                                              setFigure(data.value);
+                                                              }} search selection options={figureOptions}/>
+            {(figure == UserUpload) ?  (
             <>
             <div >
               <label>First Name</label>
@@ -156,8 +172,9 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
             </div>
             <div>
               <label>Description</label>
-              <textarea type="text" placeholder="Who are you speaking to? Please provide a brief bio to better your conversation experience (the better the bio, the better the convo). Max ~100 words." maxLength={500} className="FrameCustomizer-input" onChange={(e) => setDescription(e.target.value)} />
-            </div>
+              <textarea type="text" placeholder="Who are you speaking to? Please provide a brief bio to better your conversation experience (the better the bio, the better the convo). Max ~100 words." maxLength={500} className="FrameCustomizer-input" onChange={(e) => setDescription(e.target.value)}/>
+            </div> </>
+            ): null }
           </>
         }
         <div className="FrameCustomizer-group">
@@ -175,14 +192,18 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
             <input type="file" onChange={handleChange} />
             <Button onClick={handleUpload}>Upload Image</Button>
         </div>
+        {showErrorMessage && (<label>Please fill in full name and description fields.</label>)}
         <div className="FrameCustomizer-group">
           <button
             className="FrameCustomizer-button"
             onClick={() => {
-              dispatch(addFrameToQueue({ name: name, url: imageUrl, color: shot.color, type: type, text: "", firstName: firstName, lastName: lastName, description:description }));
+              if ((type == "conversation") && ((firstName == "") || (lastName == "") || (description == ""))) {
+                setShowErrorMessage(true)
+              } else {
+              dispatch(addFrameToQueue({ name: name, url: imageUrl, color: shot.color, type: type, text: "", figure: figure, firstName: firstName, lastName: lastName, description:description }));
               dispatch(dequeueFrame(true));
               close();
-            }}
+            }}}
           >
             Add Frame
           </button>
