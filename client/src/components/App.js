@@ -27,11 +27,12 @@ import APIInterface from "../api/api.js";
 import MuseumInterface from "../api/museum";
 import {Profile} from "./pages/Profile";
 import Explore from "./pages/Explore";
+import Landing from "./pages/Landing";
 
 
 import { addInitialFrames, addInitialMuseums } from "./action";
 
-import Landing from "../components/modules/Landing";
+
 
 const mapStateToProps = (state) => {
   return {
@@ -101,6 +102,10 @@ class App extends React.Component {
           userId={this.state.userId}
         />
         <Route path="/">
+          <Landing />
+        </Route>
+
+        <Route path="/profile">
           {this.state.userId && <Profile museums={this.props.museums} />}
 
           {!this.state.userId && <div>Sign In to View</div>}

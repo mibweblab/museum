@@ -6,7 +6,7 @@ import "./Navbar.css";
 import { Button } from "semantic-ui-react";
 import { useModal } from "react-hooks-use-modal";
 import ModalViewer from "../ModalViewer"
-
+import {  useLocation } from 'wouter'
 // This identifies your web application to Google's authentication service
 // const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
 const GOOGLE_CLIENT_ID = "486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.googleusercontent.com";
@@ -14,7 +14,7 @@ const GOOGLE_CLIENT_ID = "486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.goo
 
 const NavBar = (props) => {
   const [name, setName] = useState("");
-
+  const [location, ] = useLocation();
   useEffect(() => {
     if (props.userId) {
       get(`/api/user`, { userid: props.userId }).then((user) => {
@@ -31,21 +31,21 @@ const NavBar = (props) => {
   return (
     <nav className="NavBar-container">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
-      <div className="NavBar-title u-inlineBlock">
-        <Link to="/">Museum</Link>
+      {(location != '/') && (<div className="NavBar-title u-inlineBlock Navbar-item">
+        <Link to="/" className="u-link">Wander</Link>
         
-      </div>
+      </div>)}
       <div className="NavBar-linkContainer u-inlineBlock">
-        <Button color="blue" onClick={open}>
+      {(props.userId) &&  <Button className="Navbar-item" color="blue" onClick={open}>
           Create Museum
-        </Button>
+        </Button>}
         {props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Logout"
             onLogoutSuccess={props.handleLogout}
             onFailure={(err) => console.log(err)}
-            className="NavBar-link NavBar-login"
+            className="NavBar-link NavBar-login Navbar-item"
           />
         ) : (
           <GoogleLogin
@@ -53,7 +53,7 @@ const NavBar = (props) => {
             buttonText="Login"
             onSuccess={props.handleLogin}
             onFailure={(err) => console.log(err)}
-            className="NavBar-link NavBar-login"
+            className="NavBar-link NavBar-login Navbar-item"
           />
         )}
       </div>
