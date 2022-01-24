@@ -24,13 +24,16 @@ export default class API {
       return false;
     }
   }
-<<<<<<< HEAD
 
   static async getAllPublicMuseums() {
     try {
       let museums = await axios.get("/api/museum/explore");
       return museums;
-=======
+    } catch (error) {
+      return false;
+    }
+  }
+    
   static async getCurrentMuseum(id) {
     try {
       // console.log("am trying")
@@ -47,7 +50,6 @@ export default class API {
       // console.log("am i being triggered")
       let museum = await axios.patch("/api/museum/" + id,data);
       return museum;
->>>>>>> layout
     } catch (error) {
       return false;
     }

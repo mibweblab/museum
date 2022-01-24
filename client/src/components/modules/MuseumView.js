@@ -124,11 +124,22 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
   // let currentFrameData = frame.filter
 
-  console.log("this is the current frame", currentFrame);
+  // console.log("this is the current frame", currentFrame);
   let [currentFrameData, setFrameData] = useState({
     name: "Click on a Frame",
     text: "You will see frame details when you click on a frame",
   });
+
+  const [textureIndex, setTextureIndex] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
+  const [planeLength, setPlaneLength] = useState(currentMuseum ? currentMuseum.planeLength : 20);
+  const [planeWidth, setPlaneWidth] = useState(currentMuseum ? currentMuseum.planeWidth : 20);
+  const [planeStrength, setPlaneStrength] = useState(currentMuseum ? currentMuseum.planeStrength : 2);
+  const [planeColor, setPlaneColor] = useState(currentMuseum ? currentMuseum.planeColor : "#ffffff");
+  const [intensity, setIntensity] = useState(currentMuseum ? currentMuseum.intensity : 1);
+  const [backgroundColor, setBackgroundColor] = useState(
+    currentMuseum ? currentMuseum.backgroundColor : "#ffffff"
+  );
+  const [fogColor, zello] = useState(currentMuseum ? currentMuseum.fogColor : "#ffffff");
 
   useEffect(() => {
     if (frameToTransform) {
@@ -136,6 +147,15 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
       if (currentFramesList.length > 0) {
         setFrameData({ name: currentFramesList[0].name, text: currentFramesList[0].text });
       }
+    }
+    if (currentMuseum){
+      setBackgroundColor(currentMuseum?.backgroundColor)
+      setTextureIndex(currentMuseum?.textureIndex)
+      setPlaneWidth(currentMuseum?.planeWidth)
+      setPlaneLength(currentMuseum?.planeLength)
+      setPlaneStrength(currentMuseum?.planeStrength)
+      setPlaneColor(currentMuseum?.planeColor)
+      setIntensity(currentMuseum?.intensity)
     }
   }, [currentMuseum, frameToTransform]);
 
@@ -148,19 +168,13 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
     return () => (mounted = true);
   }, [frameToTransform]);
 
-  const [textureIndex, _] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
-  const [planeLength, hello] = useState(currentMuseum ? currentMuseum.planeLength : 20);
-  const [planeWidth, tello] = useState(currentMuseum ? currentMuseum.planeWidth : 20);
-  const [planeStrength, mello] = useState(currentMuseum ? currentMuseum.planeStrength : 2);
-  const [planeColor, fello] = useState(currentMuseum ? currentMuseum.planeColor : "#ffffff");
-  const [intensity, wello] = useState(currentMuseum ? currentMuseum.intensity : 1);
-  const [backgroundColor, nello] = useState(
-    currentMuseum ? currentMuseum.backgroundColor : "#ffffff"
-  );
 
-  console.log("Let's see what this bad boy has",currentMuseum)
-  const [fogColor, zello] = useState(currentMuseum ? currentMuseum.fogColor : "#ffffff");
 
+  // console.log("Let's see what this bad boy has",currentMuseum)
+  console.log("I find this backgroundColor",backgroundColor, currentMuseum,currentMuseum?.backgroundColor)
+
+
+  // useEffect
   return (
     <>
       <FrameCard

@@ -9,17 +9,14 @@ import getUuid from 'uuid-by-string'
 const GOLDENRATIO = 1.61803398875
 
 
-
 export default function Gallery({ images }) {
   return (
     <>
     <Canvas gl={{ alpha: false }} dpr={[1, 1.5]} camera={{ fov: 70, position: [0, 2, 15] }}>
     <Suspense fallback={null}>
-      <color attach="background" args={['#fffff']} />
+      <color attach="background" args={['#010101']} />
       <fog attach="fog" args={['#191920', 0, 15]} />
       <Environment preset="city" />
-      
-        
       <group position={[0, -0.5, 0]} >
         <Frames images={images} />
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
@@ -33,16 +30,14 @@ export default function Gallery({ images }) {
             depthScale={1.2}
             minDepthThreshold={0.0}
             maxDepthThreshold={5}
-            color="#ffffff"
+            color="#010101"
             metalness={0.5}
           />
         </mesh>
       </group>
       </Suspense>
     </Canvas>
-
     </>
-    
   )
 }
 

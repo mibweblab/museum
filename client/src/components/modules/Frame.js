@@ -39,7 +39,7 @@ const Frame = ({
 
 
   useEffect(() => {
-    console.log("my user data", collective.current.userData);
+    // console.log("my user data", collective.current.userData);
   }, [frameToTransform, mode]);
 
   useFrame((state) => {

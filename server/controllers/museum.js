@@ -93,6 +93,8 @@ async function deleteMuseum(museumId) {
 
   } catch (error) {
     console.log("error getting all museums", error);
+}
+}
 /**
  *
  * Gets a museum with a certain museumId

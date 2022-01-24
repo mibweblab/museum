@@ -237,7 +237,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
   // let currentFrameData = frame.filter
 
-  console.log("this is the current frame", currentFrame);
+  // console.log("this is the current frame", currentFrame);
   let [currentFrameData, setFrameData] = useState({
     name: "Click on a Frame",
     text: "You will see frame details when you click on a frame",

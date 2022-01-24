@@ -46,6 +46,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: null,
+      userId: null,
       firstName: "",
       museums: [],
     };
@@ -65,7 +66,7 @@ class App extends React.Component {
       if (user._id) {
 
         // they are registed in the database, and currently logged in.
-        this.setState({ user: user, firstName: user.firstname });
+        this.setState({ user: user, firstName: user.firstname, userId: user._id });
 
 
         await this.getAllMuseums();
@@ -80,7 +81,8 @@ class App extends React.Component {
     post("/api/login", { token: userToken }).then(async (user) => {
       this.setState({ 
         user: user, 
-        firstName: user.firstname
+        firstName: user.firstname,
+        userId: user._id
       });
 
       await this.getAllMuseums();

@@ -130,7 +130,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   const [description, setDescription] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [imageUrl, setImageUrl] = useState(url);
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const [targetObjectUrl, setTargetObjectUrl] = useState("");
 
   const handleChange = (e) => {

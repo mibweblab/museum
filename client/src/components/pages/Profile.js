@@ -43,7 +43,8 @@ const MuseumCard = ({ imageUrl, name, description, _id, isPrivate, userImageUrl 
   return (
     <>
       <div className="card Profile-shadow" to={`/museum/`+ _id }>
-      <Button id="card__button_cta" >Edit </Button><Button id="card__button" >Visit</Button>
+      <Link id="card__button_cta" to={`/museum/edit/`+_id}>Edit </Link>
+      <Link id="card__button" to={`/museum/view/`+_id} >Visit</Link>
         <img src={imageUrl} className="card__image"/>
           <div className="card__overlay">
             <div className="card__header">
