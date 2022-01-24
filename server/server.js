@@ -29,6 +29,7 @@ const api = require("./api");
 const frameapi = require("./api/frame");
 const museumapi = require("./api/museum");
 const conversationapi = require("./api/conversation");
+const userapi = require("./api/user");
 const auth = require("./auth");
 
 // socket stuff
@@ -76,6 +77,9 @@ app.use("/api", api);
 app.use("/api/frame", frameapi);
 app.use("/api/museum", museumapi);
 app.use("/api/conversation", conversationapi);
+app.use("/api/user", userapi);
+
+
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
 app.use(express.static(reactPath));

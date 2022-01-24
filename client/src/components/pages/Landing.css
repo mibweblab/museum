@@ -1,0 +1,37 @@
+@import "./../../utilities.css";
+.Landing-container {
+    display: flex;
+    justify-content: center;
+    
+}
+label.Landing-title
+{
+    padding-top: 10%;
+    font-size: 100px;
+    text-align: center;
+
+}
+
+.Landing-subtitle 
+{
+    text-align: center;
+    padding-top: 5%;
+    font-size: 20px;
+    
+}
+
+p.Landing-subtitle  {
+    text-align: center;
+    font-size: 30px;
+}
+
+p.Landing-text
+{
+    text-align: center;
+    font-size: 20px;
+}
+
+
+.Landing-second-div {
+    border-top: solid 2px;
+}

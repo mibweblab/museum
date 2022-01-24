@@ -3,5 +3,82 @@
   &-museums
   {
     display: flex;
+    flex-wrap: wrap-reverse;
+  }
+
+  &-user
+  {
+    // background-color: blue;
+    height:fit-content;
+    margin: 4rem 0vw;
+    padding: 1vw 5vw;
+    border: white;
+    background-color: #e9e6e6;
+    box-shadow:0 4px 8px 0 rgb(0 0 0 / 1%), 0 6px 20px 0 rgb(0 0 0 / 5%);
+  }
+  
+  &-content {
+    padding-left: 15px;
+  }
+
+  &-image{
+    border: transparent !important;
+    background:transparent;
   }
 }
+
+.Profile-shadow {
+  border: 3px solid rgb(183 216 217 / 11%);
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+body {
+  background-color: #B3E5FC;
+  border-radius: 10px
+}
+
+.cardy {
+  // width: 400px;
+  border: none;
+  border-radius: None;
+  // background-color: #fff
+}
+
+.stats {
+  background: #f2f5f8 !important;
+  color: #000 !important
+}
+
+.articles {
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.number1 {
+  font-weight: 500;
+  text-align: center;
+}
+
+.followers {
+  font-size: 10px;
+  color: #a1aab9
+}
+
+.number2 {
+  font-weight: 500
+}
+
+.rating {
+  font-size: 10px;
+  color: #a1aab9
+}
+
+.number3 {
+  font-weight: 500
+}
+
+.here {
+  column-gap: 30px;
+  background-color: #8d999d !important;
+}
+

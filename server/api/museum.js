@@ -76,7 +76,7 @@ router.delete("/:museumId", [isUserLoggedIn], async (req, res) => {
   }
 });
 
-router.get("/explore", [isUserLoggedIn], async (req, res) => {
+router.get("/explore", [], async (req, res) => {
   let allPublicMuseums = await getAllPublicMuseums();
   if (allPublicMuseums) {
     res.send(allPublicMuseums);

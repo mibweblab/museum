@@ -1,7 +1,13 @@
 .NavBar-container {
     padding: var(--s) var(--m);
-    background-color: var(--medgrey);
-    padding-right: 10px;
+    padding-right: 10%;
+    padding-top:2%;
+    background-color: var(--transparent);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
   }
   
   .NavBar-title {
@@ -9,9 +15,11 @@
     font-size: 20px;
   }
   
-  .NavBar-linkContainer {
+.Navbar-item {
 
-  }
+  margin-left: 10px;
+  margin-right: 10px;
+}
   
   .NavBar-link,
   .NavBar-link:visited {
