@@ -628,13 +628,13 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           </group>
           <OrbitControls
             makeDefault
-            enableZoom={true}
-            enablePan={false}
-            minDistance={1}
-            maxDistance={200}
+            // enableZoom={true}
+            // enablePan={false}
+            // minDistance={1}
+            // maxDistance={200}
             ref={control}
-            minPolarAngle={0}
-            maxPolarAngle={Math.PI / 1.75}
+            // minPolarAngle={0}
+            // maxPolarAngle={Math.PI / 1.75}
           />
           {mode !== "" && (
             <TransformControls

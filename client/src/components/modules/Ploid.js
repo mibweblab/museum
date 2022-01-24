@@ -72,6 +72,8 @@ export default function Model(props) {
     // console.log("les see",keysPressed)
     let camera = props.camera.current;
 
+    console.log("this is my camera",camera)
+
     // let play = 0;
     // if (keysPressed["w"] || keysPressed["a"] || keysPressed["d"] || keysPressed["s"]) {
     //   play = 1;
@@ -110,7 +112,7 @@ export default function Model(props) {
       walkDirection.applyAxisAngle(rotateAngle, directionOffset);
 
       // // run/walk velocity
-      const velocity = 5;
+      const velocity = 10;
 
       const moveX = walkDirection.x * velocity * 0.01;
       const moveZ = walkDirection.z * velocity * 0.01;
