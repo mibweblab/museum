@@ -38,7 +38,7 @@ const CameraControls = ({HumanModel}) => {
       dampingFactor={0.5} 
       screenSpacePanning={false}
       minDistance={10}
-      maxDistance={100}
+      maxDistance={300}
       maxPolarAngle={Math.PI / 2}
       listenToKeyEvents={window}
 
@@ -66,6 +66,8 @@ function Loading({size}) {
 
 const Conversation = ({
   HumanModel,
+  FrameUrl,
+  FrameId,
   ...props
   }) => {
     const ref = useRef();
@@ -82,11 +84,9 @@ const Conversation = ({
     if (HumanModel == UserUpload) {
       isUserUpload = -1
     }
-    
     return (
       <div className="Conversation">
-        <color attach="background" args={["#f1f1f1"]} />
-        <fog attach="fog" args={["#f1f1f1", 160, 300]} /> 
+        
         <Canvas ref={canv} dpr={[1, 2]} shadows>
           <ambientLight intensity={0.5} />
           <directionalLight
@@ -95,6 +95,8 @@ const Conversation = ({
               position={[10, 10, 10]}
             />   
           <Suspense fallback={<Loading size={big} />}>
+            <color attach="background" args={["#f1f1f1"]} />
+            <fog attach="fog" args={["#f1f1f1", 160, 300]} /> 
             <CameraControls HumanModel={HumanModel}/>
             {/* <Environment preset="city" /> */}
           </Suspense>
@@ -102,8 +104,9 @@ const Conversation = ({
             <Floor HumanModel={HumanModel}/>
           </Suspense>
           <Suspense fallback={<Loading size={small}/>}>
+           
             {(HumanModel == UserUpload) ? 
-              (<UserUploadObject/>)
+              [ (FrameUrl != undefined) ? <UserUploadObject FrameUrl={FrameUrl}/> : null]
               :   
               (<Figure HumanModel={HumanModel}/>)}
             <Door position={[isUserUpload *30, 12, isUserUpload *-75]} rotation={[0, isUserUpload * -Math.PI / 2, 0]} scale={[6, 6, 6]} navigate={props.navigate}/>

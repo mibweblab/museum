@@ -14,7 +14,7 @@ const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
 export default class GPT3_Integrated extends Component {
     constructor(props) {
         super(props);
-        this.languageModel = new LangModelAttributes(props.HumanModel, props.FirstName )
+        this.languageModel = new LangModelAttributes(props.HumanModel, props.FirstName, props.modelFirstName, props.modelLastName, props.modelDescription )
         this.firstName = this.languageModel.firstName 
         this.staticPrompt = this.languageModel.staticPrompt(undefined)
         this.state = {

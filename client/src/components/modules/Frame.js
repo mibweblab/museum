@@ -69,15 +69,18 @@ const Frame = ({ url, name, type, color, c = new THREE.Color(), ...props }) => {
         onPointerOut={() => hover(false)}
         scale={[1, GOLDENRATIO, 0.05]}
         position={[0, GOLDENRATIO / 2, 0]}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (type==="scene"){
-            setLocation("/scene/" + props._id);
-          }else{
-            setLocation("/room/" + props._id);
+        onClick={(e)=> {
+          e.stopPropagation() 
+          if (type == "conversation") {
+            setLocation("/room/" + props._id) 
+          } else if (type == "premade_conversation") {
+            setLocation("/room_" + props.figure) 
+          } else if (type == "scene") {
+            setLocation("/scene/" + props._id) 
           }
-          // console.log("this s the id", props._id);
-        }}
+          // if static, do nothing   
+        }   
+      }
       >
         <boxGeometry />
         <meshStandardMaterial color={color} metalness={0.5} roughness={0.5} envMapIntensity={2} />

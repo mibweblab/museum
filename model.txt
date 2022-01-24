@@ -18,7 +18,7 @@
  * Frame 
  *  
  * id => from Mongo
- * type => conversation ? static ? room ? || enum type 
+ * type => pre_madeconversation ? conversation ? static ? room ? || enum type 
  * imageUrl => image for the 
  * name =>  name of the frame to display on top
  * color => hex color from the frontend 

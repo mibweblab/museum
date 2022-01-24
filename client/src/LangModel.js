@@ -29,11 +29,12 @@ const getTextAreaDescription = (humanModel) => {
 
 
 class LangModelAttributes {
-    constructor(humanModel, optionalFirstName) {
+    constructor(humanModel, optionalFirstName, modelFirstName, modelLastName, modelDescription) {
         this.humanModel = humanModel
-
-
         this.firstName = this.defaultFirstName(humanModel, optionalFirstName)
+        this.modelFirstName= modelFirstName
+        this.modelLastName = modelLastName
+        this.modelDescription = modelDescription
     }
 
     humanModelName = () => {
@@ -78,7 +79,7 @@ class LangModelAttributes {
             case Musk:
                 return `The following is a transcript of a conversation between ${this.firstName} and Elon Musk. Elon Mus is a visionary entrepreneur. He is the charismatic co-founder of PayPal and Tesla, as well as the founder of SpaceX, Neuralink, and The Boring Company. He serves as CEO of Tesla and CEO/lead engineer of SpaceX.\n${this.firstName}:Hello, Mr. Musk. \nMusk: Hey ${this.firstName}.`
             case UserUpload:
-                return '' // todo: replace this with user inputted bio 
+                return `The following is a transcript of a conversation between ${this.firstName} and ${this.modelFirstName} ${this.modelLastName}. ${this.modelDescription} \n${this.firstName}:Hello, ${this.modelFirstName} ${this.modelLastName}. \n${this.modelLastName}: Hey ${this.firstName}.`
 
         }
     }
