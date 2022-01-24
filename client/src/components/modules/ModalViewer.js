@@ -2,8 +2,9 @@ import React from "react";
 import FrameCustomizer from "./FrameCustomizer";
 import './ModalViewer.scss';
 import MuseumForm from "./MuseumForm";
+import UserForm from "./UserForm";
 
-const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap }) => {
+const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap, user, editUser }) => {
 
     return (
       <Modal>
@@ -12,9 +13,7 @@ const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap }) => {
           <div className="ModalViewer-body">
             {modalType === "frame" && <FrameCustomizer close={close} snap={snap} />}
             {modalType === "museum" && <MuseumForm close={close} snap={snap} />}
-          </div>
-          <div className="ModalViewer-footer">
-            <button onClick={close}>Close</button>
+            {modalType === "user" && <UserForm close={close} snap={snap} user={user} editUser={editUser} />}
           </div>
         </div>
       </Modal>

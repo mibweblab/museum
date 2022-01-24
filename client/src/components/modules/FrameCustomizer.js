@@ -207,6 +207,12 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
           >
             Add Frame
           </button>
+          <button
+            className="FrameCustomizer-button"
+            onClick={close}
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>

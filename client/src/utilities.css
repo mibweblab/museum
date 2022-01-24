@@ -18,13 +18,14 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
 :root {
-  --primary: #396dff;
+  --primary: #6987db;
   --primary--dim: #6987db;
   --darkgrey: #d4d4d4;
   --medgrey: #e0e0e0;
+  --transparent: rgba(0, 0, 255, 0);
   --grey: #f7f7f7;
   --white: #fff;
-
+  --black: #000;
   --xs: 4px;
   --s: 8px;
   --m: 16px;
@@ -80,7 +81,7 @@ form {
 }
 
 .u-link {
-  color: var(--primary);
+  color: var(--black);
   text-decoration: none;
   cursor: pointer;
 }
@@ -88,3 +89,4 @@ form {
 .u-link:hover {
   color: var(--primary--dim);
 }
+

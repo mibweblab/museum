@@ -1,0 +1,21 @@
+@import './../../../utilities.css';
+.wander-font {
+
+}
+
+.bg {
+  background: white;
+}
+
+.fullscreen.ready > div {
+  cursor: pointer;
+}
+
+.fullscreen.clicked {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.Wander-Canvas {
+  height:60% !important;
+}

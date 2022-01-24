@@ -24,4 +24,13 @@ export default class API {
       return false;
     }
   }
+
+  static async getAllPublicMuseums() {
+    try {
+      let museums = await axios.get("/api/museum/explore");
+      return museums;
+    } catch (error) {
+      return false;
+    }
+  }
 }
