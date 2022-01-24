@@ -22,15 +22,24 @@ function getOrCreateUser(user) {
   // the "sub" field means "subject", which is a unique identifier for each user
   return User.findOne({ googleid: user.sub }).then((existingUser) => {
     if (existingUser) return existingUser;
-
     const newUser = new User({
       firstname: user.given_name,
       lastname: user.family_name,
       googleid: user.sub,
+      imageUrl: user.picture,
     });
 
     return newUser.save();
   });
+}
+
+async function editUser(userId, data ) {
+  try {
+      let updatedUser = await User.updateOne({_id:userId},data )
+      return updatedUser;
+  } catch (error){
+      return false;
+  }
 }
 
 function login(req, res) {
@@ -71,4 +80,5 @@ module.exports = {
   logout,
   populateCurrentUser,
   ensureLoggedIn,
+  editUser,
 };

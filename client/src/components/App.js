@@ -28,7 +28,7 @@ import MuseumInterface from "../api/museum";
 import {Profile} from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Landing from "./pages/Landing";
-
+import UserApi from "../api/user";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
 
@@ -47,8 +47,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: null,
-      firstName: null,
+      user: null,
+      firstName: "",
       museums: [],
     };
   }
@@ -65,33 +65,47 @@ class App extends React.Component {
   async componentDidMount() {
     get("/api/whoami").then(async (user) => {
       if (user._id) {
+
         // they are registed in the database, and currently logged in.
-        this.setState({ userId: user._id });
-        // setUserId(user._id);
-        this.setState({ firstName: user.firstname });
+        this.setState({ user: user, firstName: user.firstname });
+
+
         await this.getAllMuseums();
       }
     });
   }
 
-  handleLogin = (res) => {
+
+  handleLogin = (res, callback) => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then(async (user) => {
-      this.setState({ userId: user._id });
-      // setUserId(user._id);
-      this.setState({ firstName: user.firstname });
-      // setFirstName(user.firstname);
+      this.setState({ 
+        user: user, 
+        firstName: user.firstname
+      });
+
       await this.getAllMuseums();
       post("/api/initsocket", { socketid: socket.id });
+      callback()
     });
   };
 
   handleLogout = () => {
     // setUserId(undefined);
-    this.setState({ userId: null });
+    this.setState({ user: null, firstName:null });
     post("/api/logout");
   };
+
+  editUser = async(data) => {
+    let userEdited = await UserApi.updateUser(this.state.user._id, data);
+    this.setState({ 
+      user: data, 
+      firstName: data.firstname
+  });
+
+}
+
 
   render() {
     return (
@@ -99,39 +113,39 @@ class App extends React.Component {
         <NavBar
           handleLogin={this.handleLogin.bind(this)}
           handleLogout={this.handleLogout.bind(this)}
-          userId={this.state.userId}
+          userId={(this.state.user) ? this.state.user._id : null}
         />
         <Route path="/">
           <Landing />
         </Route>
 
         <Route path="/profile">
-          {this.state.userId && <Profile museums={this.props.museums} />}
+          {this.state.user && <Profile museums={this.props.museums} user={this.state.user} editUser={this.editUser}/>}
 
-          {!this.state.userId && <div>Sign In to View</div>}
+          {!this.state.user && <div>Sign In to View</div>}
         </Route>
         <Route exact path="/museum/:id">
-          {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
+          {this.state.user && ((params) => <FrameWorld id={params.id} />)}
         </Route>
 
         <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
         <Route path="/room_1">
-          <Rooms  FirstName={this.state.firstName} HumanModel={Einstein} />
+          <Rooms  FirstName={this.state.firstname} HumanModel={Einstein} />
         </Route>
 
         <Route path="/room_2">
-          <Rooms FirstName={this.state.firstName} HumanModel={Musk} />
+          <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
         </Route>
         <Route path="/room_user_upload">
-        {this.state.userId && <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} />}
+        {this.state.user && <Rooms FirstName={this.state.firstname} HumanModel={UserUpload} />}
         </Route>
         <Route exact path="/room/:id">
-          {this.state.userId && ((params) => <Rooms FirstName={this.state.firstName} HumanModel={UserUpload} FrameId={params.id} />)}
+          {this.state.user && ((params) => <Rooms FirstName={this.state.firstname} HumanModel={UserUpload} FrameId={params.id} />)}
         </Route>
         <Route exact path="/explore">
-          <Explore LogInStatus={(this.state.userId != undefined)} />
+          <Explore LogInStatus={(this.state.user != undefined)} />
         </Route>
         {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
         {/* <Route path="/scene/:id">{<World />}</Route> */}

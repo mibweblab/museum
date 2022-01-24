@@ -11,7 +11,6 @@ const GOLDENRATIO = 1.61803398875
 
 
 export default function Gallery({ images }) {
-   console.log(images)
   return (
     <>
     <Canvas gl={{ alpha: false }} dpr={[1, 1.5]} camera={{ fov: 70, position: [0, 2, 15] }}>
@@ -84,7 +83,6 @@ function Frame({ url, c = new THREE.Color(), ...props }) {
   const [rnd] = useState(() => Math.random())
   const image = useRef()
   const frame = useRef()
-  console.log(url)
   const name = getUuid(url)
   useCursor(hovered)
   useFrame((state) => {

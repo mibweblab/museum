@@ -14,7 +14,7 @@ const GOOGLE_CLIENT_ID = "486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.goo
 
 const NavBar = (props) => {
   const [name, setName] = useState("");
-  const [location, ] = useLocation();
+  const [location, setLocation] = useLocation();
   useEffect(() => {
     if (props.userId) {
       get(`/api/user`, { userid: props.userId }).then((user) => {
@@ -28,17 +28,24 @@ const NavBar = (props) => {
     closeOnOverlayClick: false,
   });
 
+  const callback = () => {
+    setLocation('./profile');
+  }
   return (
     <nav className="NavBar-container">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
-      {(location != '/') && (<div className="NavBar-title u-inlineBlock Navbar-item">
+      {(location != '/') ? (<div className="NavBar-title u-inlineBlock Navbar-item">
         <Link to="/" className="u-link">Wander</Link>
-        
-      </div>)}
-      <div className="NavBar-linkContainer u-inlineBlock">
-      {(props.userId) &&  <Button className="Navbar-item" color="blue" onClick={open}>
-          Create Museum
-        </Button>}
+      </div>) : <Link to="/profile" className="u-link">My Wander</Link> }
+      <div className="NavBar-title u-inlineBlock Navbar-item">
+      {(props.userId) &&  <label className="u-link"  onClick={open}>
+          +Create Museum
+        </label>}
+        </div>
+        <div className="NavBar-title u-inlineBlock Navbar-item">
+          <Link to="/explore" className="u-link">Explore</Link>
+        </div>
+        <div className="NavBar-title u-inlineBlock Navbar-item">
         {props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
@@ -51,7 +58,7 @@ const NavBar = (props) => {
           <GoogleLogin
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Login"
-            onSuccess={props.handleLogin}
+            onSuccess={(res) => props.handleLogin(res, callback)}
             onFailure={(err) => console.log(err)}
             className="NavBar-link NavBar-login Navbar-item"
           />

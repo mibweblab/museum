@@ -66,30 +66,33 @@ const MuseumForm = ({ dispatch }) => {
   return (
     <div className="MuseumForm">
       <div className="MuseumForm-group">
-        <Input onChange={(_, data) => setName(data.value)} placeholder="Name" />
+        <Input onChange={(_, data) => setName(data.value)} className={"MuseumForm-item"} placeholder="Museum Name" />
       </div>
       <div className="MuseumForm-group">
         <TextArea
           onChange={(_, data) => setDescription(data.value)}
           placeholder="Tell us more"
           style={{ minHeight: 100 }}
+          className={"flex-grow-1"}
         />
       </div>
-      <div className="MuseumForm-group">
+      <div className="MuseumForm-row-group">
         <Dropdown
           onChange={(_, data) => setPrivate(data.value)}
           search
           selection
           placeholder="Privacy"
           options={options}
+          className={"MuseumForm-item"}
         />
       </div>
       <div className="MuseumForm-group">
         <input type="file" onChange={handleChange} />
         <Button onClick={handleUpload}>Upload Image</Button>
       </div>
-      <div className="MuseumForm-group">
+      <div className="MuseumForm-col-group">
         <Button
+          className={"w-30 MuseumForm-action-btn "}
           onClick={async () => {
             if (name && description) {
               console.log(imageUrl)
@@ -107,6 +110,11 @@ const MuseumForm = ({ dispatch }) => {
           }}
         >
           Create
+        </Button>
+        <Button className={"w-30"}
+          onClick={close}
+        >
+          Close
         </Button>
       </div>
     </div>
