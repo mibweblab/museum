@@ -180,7 +180,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
               // body={snap.items.body}
               // chest={snap.items.chest}
               // eyes={snap.items.eyes}
-              scale={0.2}
+              scale={0.25}
               // position={[0, 0, 0]}
               controls={control}
               camera={camera}
@@ -194,7 +194,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                 frames={frames}
               />
             }
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} >
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
               <Plane
                 planeLength={planeLength}
                 planeWidth={planeWidth}
@@ -204,12 +204,25 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
               />
             </mesh>
           </group>
-          <OrbitControls makeDefault ref={control} />
+          <OrbitControls
+            makeDefault
+            ref={control}
+            // autoRotate
+            // autoRotateSpeed={0.3}
+            maxPolarAngle={Math.PI / 2 - 0.05}
+            // minPolarAngle={Math.PI / 2.3}
+            enableZoom={true}
+            enablePan={true}
+            minDistance={0}
+            maxDistance={10}
+            enableDamping={true}
+            ref={control}
+          />
           <PerspectiveCamera
             makeDefault
             ref={camera}
-            fov={70}
-            position={[0, 2, 15]}
+            fov={40}
+            position={[0, 0, 5]}
             aspect={window.innerWidth / window.innerHeight}
           ></PerspectiveCamera>
         </Suspense>

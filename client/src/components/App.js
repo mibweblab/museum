@@ -26,7 +26,7 @@ import Profile from "./pages/Profile";
 import { addInitialFrames, addInitialMuseums } from "./action";
 import MuseumView from "./modules/MuseumView.js";
 
-
+import View from "./modules/View.js";
 const mapStateToProps = (state) => {
   return {
     frames: state.frames,
@@ -114,7 +114,7 @@ class App extends React.Component {
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
         <Route path="/room_einstein">
-          <Rooms  FirstName={this.state.firstName} HumanModel={Einstein} />
+          <Rooms FirstName={this.state.firstName} HumanModel={Einstein} />
         </Route>
 
         <Route path="/room_musk">
@@ -127,6 +127,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default connect(mapStateToProps)(App);

@@ -19,9 +19,8 @@ import {
   addCurrentMuseum,
 } from "../action";
 
-import { useControls} from "leva";
+import { useControls } from "leva";
 import FrameCard from "./FrameDetails";
-
 
 const mapStateToProps = (state) => {
   return {
@@ -236,12 +235,11 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
   // let currentFrameData = frame.filter
 
-  console.log("this is the current frame",currentFrame )
+  console.log("this is the current frame", currentFrame);
   let [currentFrameData, setFrameData] = useState({
-      name: "Click on a Frame",
-      text: "You will see frame details when you click on a frame"
-  })
-  
+    name: "Click on a Frame",
+    text: "You will see frame details when you click on a frame",
+  });
 
   const [
     { intensity, backgroundColor, fogColor, planeLength, planeWidth, planeColor, planeStrength },
@@ -441,18 +439,19 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
     setFrame({ frameXScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
     setFrame({ frameYScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
     setFrame({
-      frameColor:  '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+      frameColor:
+        "#" + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
     });
 
     setFrame({
       frameImageZoom: transformRef?.current?.object?.userData?.frameImage?.current?.material?.zoom,
     });
 
-    if (frameToTransform){
-      let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
-      if (currentFramesList.length>0){
+    if (frameToTransform) {
+      let currentFramesList = frames.filter((frame) => frame._id === frameToTransform);
+      if (currentFramesList.length > 0) {
         // console.log("this is my frames list", currentFramesList)
-        setFrameData({name:currentFramesList[0].name, text: currentFramesList[0].text})
+        setFrameData({ name: currentFramesList[0].name, text: currentFramesList[0].text });
       }
     }
   }, [currentMuseum, frameToTransform]);
@@ -480,9 +479,8 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
     <>
       <button
         className="FrameWorld-save"
-        onClick={async() => {
-
-          console.log("am I clicking")
+        onClick={async () => {
+          console.log("am I clicking");
           let response = await MuseumAPI.editMuseumProperty(id, {
             intensity: intensity,
             backgroundColor: backgroundColor,
@@ -494,7 +492,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
             textureIndex: textureIndex,
           });
 
-          console.log("this is a response",response)
+          console.log("this is a response", response);
 
           let obj = {
             position: [
@@ -512,7 +510,9 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
               transformRef.current ? transformRef.current.object.scale.y : 1,
               transformRef.current ? transformRef.current.object.scale.z : 1,
             ],
-            frameColor: '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+            frameColor:
+              "#" +
+              transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
             imageZoomRatio: transformRef.current
               ? transformRef.current.object.userData.frameImage.current
                 ? transformRef.current.object.userData.frameImage.current.material.zoom
@@ -521,7 +521,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           };
 
           console.log(obj);
-  
+
           // let color = transformRef?.current?.object?.userData?.frameMesh?.current?.color;
           // if (color){
           //   console.log("let's color", transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString())
@@ -531,17 +531,15 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           if (transformRef.current) {
             if (transformRef.current.object.userData) {
               if (transformRef.current.object.userData.isEditable) {
-
-                console.log("this is the ibject tryna save",obj)
+                console.log("this is the ibject tryna save", obj);
                 let frameResponse = await APIInterface.editFrameProperty(
-                  transformRef.current.object.name,obj
+                  transformRef.current.object.name,
+                  obj
                 );
               }
             }
           }
-        }
-      
-      }
+        }}
       >
         {" "}
         Save{" "}
@@ -555,7 +553,14 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
         modalType={modalType}
       />
       <Controls openModal={open} setModalType={setModalType} />
-      <FrameCard dispatch={dispatch} currentFrame={currentFrame} name={currentFrame?.current?.userData?.name} text={currentFrame?.current?.userData?.text}  parentId={id}frameToTransform={frameToTransform} />
+      <FrameCard
+        dispatch={dispatch}
+        currentFrame={currentFrame}
+        name={currentFrame?.current?.userData?.name}
+        text={currentFrame?.current?.userData?.text}
+        parentId={id}
+        frameToTransform={frameToTransform}
+      />
       <ToggleTransforms dispatch={dispatch} mode={mode} />
       <TextureSelector setTextureType={setTextureType} />
       <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
@@ -628,13 +633,13 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           </group>
           <OrbitControls
             makeDefault
-            // enableZoom={true}
-            // enablePan={false}
-            // minDistance={1}
-            // maxDistance={200}
+            enableZoom={true}
+            enablePan={false}
+            minDistance={1}
+            maxDistance={200}
             ref={control}
-            // minPolarAngle={0}
-            // maxPolarAngle={Math.PI / 1.75}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 1.75}
           />
           {mode !== "" && (
             <TransformControls
