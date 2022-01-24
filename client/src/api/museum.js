@@ -35,7 +35,9 @@ export default class API {
   }
 
   static async editMuseumProperty(id,data){
+    // console.log("am I being called")
     try {
+      // console.log("am i being triggered")
       let museum = await axios.patch("/api/museum/" + id,data);
       return museum;
     } catch (error) {

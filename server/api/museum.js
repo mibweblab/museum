@@ -51,12 +51,13 @@ router.patch("/:museumId", [isUserLoggedIn], async (req, res) => {
   let museumId = req.params.museumId;
   let data = req.body;
   // console.log(req.body)
+  // console.log(data);
   let response = await editMuseumProperty(museumId, data);
-  // if (response){
-  //   res.status(200).send("Sucessfully edited museum")
-  // }else{
-  //   res.status(304).send({"error": `Failed to edit museum with id ${museumId}`})
-  // }
+  if (response){
+    res.status(200).send("Sucessfully edited museum")
+  }else{
+    res.status(304).send({"error": `Failed to edit museum with id ${museumId}`})
+  }
 });
 
 /**
@@ -85,7 +86,7 @@ router.delete("/:museumId", [isUserLoggedIn], async (req, res) => {
   let museumId = req.params.museumId;
   let response = await getMuseum(museumId);
 
-  console.log("htiting the backedn",response)
+  // console.log("htiting the backedn",response)
   if (response){
     res.status(200).send(response)
   }else{

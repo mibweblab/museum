@@ -12,7 +12,8 @@ const MuseumCard = ({ imageUrl, name, description,_id }) => {
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Text>{description}</Card.Text>
-        <Link to={`/museum/`+ _id }>Enter</Link>
+        <Link to={`/museum/view/`+ _id }>View</Link>
+        <Link to={`/museum/edit/`+ _id }>Edit</Link>
       </Card.Body>
     </Card>
   );

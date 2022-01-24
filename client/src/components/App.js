@@ -24,6 +24,7 @@ import MuseumInterface from "../api/museum";
 import Profile from "./pages/Profile";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
+import MuseumView from "./modules/MuseumView.js";
 
 
 const mapStateToProps = (state) => {
@@ -101,8 +102,12 @@ class App extends React.Component {
           <Conversation HumanModel={Shakespeare} />
         </Route>
 
-        <Route exact path="/museum/:id">
+        <Route exact path="/museum/edit/:id">
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
+        </Route>
+
+        <Route exact path="/museum/view/:id">
+          {this.state.userId && ((params) => <MuseumView id={params.id} />)}
         </Route>
 
         <Route path="/room_shakespeare">

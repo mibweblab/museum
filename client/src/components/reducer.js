@@ -6,13 +6,12 @@ const initialState = {
   queuedFrame: null,
   isThereQueuedFrame: false,
   museums: [],
-  frameToTransform: '',
-  mode: '',
+  frameToTransform: "",
+  mode: "",
   currentImage: null,
   currentFrame: null,
   currentMuseum: null,
 };
-
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -63,18 +62,35 @@ const reducer = (state = initialState, action) => {
     case "ADD_CURRENT_MUSEUM":
       return {
         ...state,
-        currentMuseum: action.payload
-      }
+        currentMuseum: action.payload,
+      };
     case "ADD_CURRENT_FRAME":
       return {
         ...state,
-        currentFrame: action.payload
-      }
+        currentFrame: action.payload,
+      };
     case "ADD_CURRENT_IMAGE":
       return {
         ...state,
-        currentImage: action.payload
+        currentImage: action.payload,
+      };
+
+    case "EDIT_CURRENT_FRAME":
+      let { id, name, text } = action.payload;
+      let frames = state.frames.filter((f) => f._id === id);
+      let isolatedFrames = state.frames.filter((f) => f._id !== id);
+   
+      if (frames.length > 0) {
+        let frame = frames[0];
+        frame.name = name;
+        frame.text = text;
       }
+
+      let combinedFrames = isolatedFrames.concat(frames);
+
+
+      return { ...state, frames:combinedFrames};
+
     default:
       return state;
   }

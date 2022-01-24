@@ -31,9 +31,10 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
 
 async function editFrame(frameId,data){
 
-    // console.log(frameId,data);
+    console.log("trying to update",frameId,data);
     try {
 
+        
         await Frame.updateOne({_id:frameId},data);
         // console.log("succssfukky updated")/
         return true;

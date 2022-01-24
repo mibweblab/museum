@@ -60,7 +60,7 @@ const Frame = ({
     <group rotation={props.rotation}>
       <mesh
         ref={collective}
-        userData={{ isEditable: frameToTransform === _id, mode: mode, frameMesh: frameMesh , frameImage: image}}
+        userData={{ isEditable: frameToTransform === _id, mode: mode, name: name,text:props.text,frameMesh: frameMesh , frameImage: image}}
         // onPointerOver={(e) => (e.stopPropagation(), hover(true))}
         // onPointerOut={() => hover(false)}
         // scale={[1, GOLDENRATIO, 0.05]}

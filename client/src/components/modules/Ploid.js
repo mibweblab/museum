@@ -110,7 +110,7 @@ export default function Model(props) {
       walkDirection.applyAxisAngle(rotateAngle, directionOffset);
 
       // // run/walk velocity
-      const velocity = 2;
+      const velocity = 5;
 
       const moveX = walkDirection.x * velocity * 0.01;
       const moveZ = walkDirection.z * velocity * 0.01;
@@ -125,6 +125,7 @@ export default function Model(props) {
       cameraTarget.y = ref.current.position.y + 1;
       cameraTarget.z = ref.current.position.z;
       props.controls.current.target = cameraTarget;
+      console.log("camera target", cameraTarget)
     }
   });
   return (

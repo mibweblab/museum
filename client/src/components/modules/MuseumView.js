@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import "./FrameWorld.scss";
+import "./MuseumView.scss";
 import { useModal } from "react-hooks-use-modal";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
@@ -19,7 +19,7 @@ import {
   addCurrentMuseum,
 } from "../action";
 
-import { useControls} from "leva";
+import { useControls} from "leva"; 
 import FrameCard from "./FrameDetails";
 
 
@@ -243,222 +243,18 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   })
   
 
-  const [
-    { intensity, backgroundColor, fogColor, planeLength, planeWidth, planeColor, planeStrength },
-    set,
-  ] = useControls(() => ({
-    intensity: {
-      min: 0,
-      max: 10,
-      value: currentMuseum ? currentMuseum.intensity : 1,
-      step: 1,
-    },
-    backgroundColor: currentMuseum ? currentMuseum.backgroundColor : "#ffffff",
-    fogColor: currentMuseum ? currentMuseum.fogColor : "#ffffff",
-    planeLength: {
-      min: 1,
-      max: 50,
-      value: currentMuseum ? currentMuseum.planeLength : 20,
-      step: 1,
-    },
-    planeWidth: {
-      min: 1,
-      max: 50,
-      value: currentMuseum ? currentMuseum.planeWidth : 20,
-      step: 2,
-    },
-    planeColor: currentMuseum ? currentMuseum.planeColor : "#ffffff",
-    planeStrength: {
-      min: 0,
-      max: 100,
-      value: currentMuseum ? currentMuseum.planeStrength : 1,
-      step: 2,
-    },
-    planeMetal: {
-      min: 1,
-      max: 10,
-      value: 1,
-      step: 1,
-    },
-  }));
 
-  const [{ frameColor, frameImageZoom }, setFrame] = useControls(() => ({
-    framePosX: {
-      value: transformRef.current ? transformRef.current.object.position.x : 0,
-      onChange: (x) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.position.x = x;
-          }
-        }
-      },
-    },
-    framePosY: {
-      value: transformRef.current ? transformRef.current.object.position.y : 0,
-      onChange: (y) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.position.y = y;
-          }
-        }
-      },
-    },
-    framePosZ: {
-      value: transformRef.current ? transformRef.current.object.position.z : 0,
-      onChange: (z) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.position.z = z;
-          }
-        }
-      },
-    },
-    frameRotateX: {
-      value: transformRef.current ? transformRef.current.object.rotation.x : 0,
-      onChange: (x) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.rotation.x = x;
-          }
-        }
-      },
-    },
-    frameRotateY: {
-      value: transformRef.current ? transformRef.current.object.rotation.y : 0,
-      onChange: (y) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.rotation.y = y;
-          }
-        }
-      },
-    },
-    frameRotateZ: {
-      value: transformRef.current ? transformRef.current.object.rotation.z : 0,
-      onChange: (z) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.rotation.z = z;
-          }
-        }
-      },
-    },
-
-    frameXScale: {
-      value: transformRef.current ? transformRef.current.object.scale.x : 1,
-      onChange: (x) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.scale.x = x;
-          }
-        }
-      },
-    },
-    frameYScale: {
-      value: transformRef.current ? transformRef.current.object.scale.y : 1,
-      onChange: (y) => {
-        let userData = currentFrame ? currentFrame.current?.userData : null;
-        if (userData) {
-          let { isEditable, mode } = userData;
-          if (mode !== "" && isEditable) {
-            transformRef.current.object.scale.y = y;
-          }
-        }
-      },
-    },
-
-    frameImageZoom: {
-      value: transformRef.current
-        ? transformRef.current.object.userData.frameImage.current
-          ? transformRef.current.object.userData.frameImage.current.material.zoom
-          : 0
-        : 0,
-      min: -5,
-      max: 5,
-      step: 0.1,
-      onChange: (v) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        if (userData) {
-          let { isEditable } = userData;
-          if (isEditable) {
-            if (userData.frameImage.current) {
-              userData.frameImage.current.material.zoom = v;
-            }
-          }
-        }
-      },
-    },
-    frameColor: {
-      value: transformRef.current ? transformRef.current.object.userData.color : "#ffffff",
-      onChange: (v) => {
-        let userData = transformRef.current ? transformRef.current.object.userData : null;
-        // console.log("fish call back issue", userData);
-        // // console.log(transformRef)
-        if (userData) {
-          let { isEditable } = userData;
-          if (isEditable) {
-            let { frameMesh } = transformRef.current.object.userData;
-            if (frameMesh) {
-              if (frameMesh.current) {
-                frameMesh.current.color = new THREE.Color(v);
-              }
-            }
-          }
-        }
-      },
-    },
-  }));
 
   useEffect(() => {
-    set({ intensity: currentMuseum ? currentMuseum.intensity : 1 });
-    set({ backgroundColor: currentMuseum ? currentMuseum.backgroundColor : "#ffffff" });
-    set({ planeLength: currentMuseum ? currentMuseum.planeLength : 20 });
-    set({ planeWidth: currentMuseum ? currentMuseum.planeWidth : 20 });
-    set({ planeColor: currentMuseum ? currentMuseum.planeColor : "#ffffff" });
-    set({ planeStrength: currentMuseum ? currentMuseum.planeStrength : 1 });
-    setTextureType(currentMuseum ? currentMuseum.textureIndex : 0);
-
-    setFrame({ framePosX: transformRef.current ? transformRef.current.object.position.x : 0 });
-    setFrame({ framePosY: transformRef.current ? transformRef.current.object.position.y : 0 });
-    setFrame({ framePosZ: transformRef.current ? transformRef.current.object.position.z : 0 });
-    setFrame({ frameRotateX: transformRef.current ? transformRef.current.object.rotation.x : 0 });
-    setFrame({ frameRotateY: transformRef.current ? transformRef.current.object.rotation.y : 0 });
-    setFrame({ frameRotateZ: transformRef.current ? transformRef.current.object.rotation.z : 0 });
-    setFrame({ frameXScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
-    setFrame({ frameYScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
-    setFrame({
-      frameColor:  '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
-    });
-
-    setFrame({
-      frameImageZoom: transformRef?.current?.object?.userData?.frameImage?.current?.material?.zoom,
-    });
-
     if (frameToTransform){
       let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
       if (currentFramesList.length>0){
-        // console.log("this is my frames list", currentFramesList)
         setFrameData({name:currentFramesList[0].name, text: currentFramesList[0].text})
       }
     }
   }, [currentMuseum, frameToTransform]);
 
-  //
-  // console.log(frameColor);
+
   useEffect(() => {
     let mounted = false;
     if (!mounted) {
@@ -468,102 +264,36 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
     return () => (mounted = true);
   }, [frameToTransform]);
 
-  const [Modal, open, close, isOpen] = useModal("root", {
-    preventScroll: true,
-    closeOnOverlayClick: false,
-  });
-  let [modalType, setModalType] = useState("frame");
-  const [textureIndex, setTextureType] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
-  const snap = useSnapshot(state);
+
+  const [textureIndex, _] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
+  const [planeLength, hello] = useState(currentMuseum ? currentMuseum.planeLength : 20);
+  const [planeWidth,tello] = useState(currentMuseum ? currentMuseum.planeWidth : 20);
+  const [planeStrength, mello] = useState(currentMuseum ? currentMuseum.planeStrength : 2);
+  const [planeColor, fello] = useState(currentMuseum ? currentMuseum.planeColor : "#ffffff");
+  const [intensity, wello ] = useState(currentMuseum ? currentMuseum.intensity : 1);
+  const [backgroundColor, nello ] = useState(currentMuseum ? currentMuseum.backgroundColor : "#ffffff");
+  const [fogColor, zello] = useState(currentMuseum ? currentMuseum.fogColor : "#ffffff");
+
 
   return (
     <>
-      <button
-        className="FrameWorld-save"
-        onClick={async() => {
-
-          console.log("am I clicking")
-          let response = await MuseumAPI.editMuseumProperty(id, {
-            intensity: intensity,
-            backgroundColor: backgroundColor,
-            fogColor: fogColor,
-            planeLength: planeLength,
-            planeWidth: planeWidth,
-            planeColor: planeColor,
-            planeStrength: planeStrength,
-            textureIndex: textureIndex,
-          });
-
-          console.log("this is a response",response)
-
-          let obj = {
-            position: [
-              transformRef.current ? transformRef.current.object.position.x : 0,
-              transformRef.current ? transformRef.current.object.position.y : 0,
-              transformRef.current ? transformRef.current.object.position.z : 0,
-            ],
-            rotation: [
-              transformRef.current ? transformRef.current.object.rotation.x : 0,
-              transformRef.current ? transformRef.current.object.rotation.y : 0,
-              transformRef.current ? transformRef.current.object.rotation.z : 0,
-            ],
-            scale: [
-              transformRef.current ? transformRef.current.object.scale.x : 1,
-              transformRef.current ? transformRef.current.object.scale.y : 1,
-              transformRef.current ? transformRef.current.object.scale.z : 1,
-            ],
-            frameColor: '#' + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
-            imageZoomRatio: transformRef.current
-              ? transformRef.current.object.userData.frameImage.current
-                ? transformRef.current.object.userData.frameImage.current.material.zoom
-                : 0
-              : 0,
-          };
-
-          console.log(obj);
-  
-          // let color = transformRef?.current?.object?.userData?.frameMesh?.current?.color;
-          // if (color){
-          //   console.log("let's color", transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString())
-          //   // console.log(color.getHexString())
-          // }
-          // console.log("I'm here", transformRef.current)
-          if (transformRef.current) {
-            if (transformRef.current.object.userData) {
-              if (transformRef.current.object.userData.isEditable) {
-
-                console.log("this is the ibject tryna save",obj)
-                let frameResponse = await APIInterface.editFrameProperty(
-                  transformRef.current.object.name,obj
-                );
-              }
-            }
-          }
-        }
-      
-      }
-      >
-        {" "}
-        Save{" "}
-      </button>
-      <ModalViewer
-        Modal={Modal}
-        open={open}
-        close={close}
-        isOpen={isOpen}
-        snap={snap}
-        modalType={modalType}
-      />
-      <Controls openModal={open} setModalType={setModalType} />
       <FrameCard dispatch={dispatch} currentFrame={currentFrame} name={currentFrame?.current?.userData?.name} text={currentFrame?.current?.userData?.text}  parentId={id}frameToTransform={frameToTransform} />
-      <ToggleTransforms dispatch={dispatch} mode={mode} />
-      <TextureSelector setTextureType={setTextureType} />
       <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
         <ambientLight intensity={intensity} />
         <color attach="background" args={[backgroundColor]} />
         <Suspense fallback={null}>
           <Environment preset="city" />
           <group position={[0, -0.5, 0]}>
+            <Model
+              // clothes={snap.items.clothes}
+              // body={snap.items.body}
+              // chest={snap.items.chest}
+              // eyes={snap.items.eyes}
+              scale={0.2}
+              // position={[0, 0, 0]}
+              controls={control}
+              camera={camera}
+            />
             {
               <Frames
                 dispatch={dispatch}

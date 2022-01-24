@@ -50,10 +50,15 @@ const addCurrentFrame = (payload) => ({
   payload: payload,
 });
 
-const addCurrentImage = (payload) =>({
+const addCurrentImage = (payload) => ({
   type: "ADD_CURRENT_IMAGE",
   payload: payload,
-})
+});
+
+const editCurrentFrame = (payload) => ({
+  type: "EDIT_CURRENT_FRAME",
+  payload: payload,
+});
 
 export {
   addFrame,
@@ -66,5 +71,6 @@ export {
   addFrameToTransform,
   addCurrentMuseum,
   addCurrentFrame,
-  addCurrentImage
+  addCurrentImage,
+  editCurrentFrame
 };
