@@ -1,0 +1,58 @@
+.FrameCard
+{
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  z-index: 999;
+}
+
+
+.Card
+{
+    padding: 8px;
+
+    &-field
+    {
+      margin-top: 16px !important;
+      outline: yellowgreen;
+    }
+
+    &-content
+    {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-delete
+    {
+      position: relative;
+    }
+
+    &-edit
+    {
+      position: relative;
+    }
+
+    &-delete::before
+    {
+        position: 'absolute';
+        content: 'delete';
+        display: none;
+        transform: scale(0);
+    }
+
+    &-edit::before
+    {
+        position: 'absolute';
+        content: 'delete';
+        transform: scale(0);
+    }
+
+    &-edit:hover::before{
+        transform: scale(1);
+    }
+    &-delete:hover::before{
+        transform: scale(1);
+    }
+
+}

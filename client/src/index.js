@@ -6,6 +6,7 @@ import {createStore} from "redux"
 import framesReducer from "./components/reducer.js";
 import 'semantic-ui-css/semantic.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-circular-progressbar/dist/styles.css';
 
 const store = createStore(framesReducer);
 

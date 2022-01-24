@@ -2,39 +2,46 @@ import * as THREE from "three";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import "./FrameWorld.scss";
 import { useModal } from "react-hooks-use-modal";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
-  useCursor,
-  MeshReflectorMaterial,
-  Image,
-  Text,
   Environment,
   OrbitControls,
   PerspectiveCamera,
+  TransformControls,
 } from "@react-three/drei";
 import { proxy, snapshot, useSnapshot } from "valtio";
-import { connect } from "react-redux";
-import { addFrame, dequeueFrame, addInitialFrames } from "../action";
+import { connect, useSelector, useDispatch } from "react-redux";
+import {
+  addFrame,
+  dequeueFrame,
+  addInitialFrames,
+  changeTransformMode,
+  addCurrentMuseum,
+} from "../action";
+
+import { useControls } from "leva";
+import FrameCard from "./FrameDetails";
 
 const mapStateToProps = (state) => {
   return {
     frames: state.frames,
     queuedFrame: state.queuedFrame,
     isThereQueuedFrame: state.isThereQueuedFrame,
+    frameToTransform: state.frameToTransform,
+    mode: state.mode,
+    currentMuseum: state.currentMuseum,
   };
 };
 
-import { useRoute, useLocation } from "wouter";
-import getUuid from "uuid-by-string";
 import Model from "./Ploid";
 import Frame from "./Frame";
 import Controls from "./Controls";
-// import FrameCustomizer from "./FrameCustomizer";
-import ModalViewer from "./ModalViewer"
+import ModalViewer from "./ModalViewer";
 import { addFrameToQueue } from "../action";
 import APIInterface from "../../api/api";
-import API from "../../api/museum";
+// import API from "../../api/museum";
 import ConversationAPI from  "../../api/conversation";
+import MuseumAPI from "../../api/museum";
 
 const GOLDENRATIO = 1.61803398875;
 
@@ -42,6 +49,8 @@ const GOLDENRATIO = 1.61803398875;
 // the canvas and the dom, both can write to it and/or react to it.
 const state = proxy({
   current: null,
+  frameToEdit: null,
+  mode: "disabled",
   frameExists: false,
 });
 
@@ -50,160 +59,629 @@ const sizes = {
   height: window.innerHeight,
 };
 
-
-
-function Frames({ frames, q = new THREE.Quaternion(), p = new THREE.Vector3() }) {
-
-  const ref = useRef();
-  const clicked = useRef();
-  const [, params] = useRoute("/item/:id");
-  const [, setLocation] = useLocation();
-  useEffect(() => {
-    clicked.current = ref.current.getObjectByName(params?.id);
-    if (clicked.current) {
-      clicked.current.parent.updateWorldMatrix(true, true);
-      clicked.current.parent.localToWorld(p.set(0, GOLDENRATIO / 2, 1.25));
-      clicked.current.parent.getWorldQuaternion(q);
-
-      console.log("I clicked");
-    } else {
-      p.set(0, 0, 5.5);
-      q.identity();
-    }
-  });
-  useFrame((state, dt) => {
-    // console.log("before",camera.current.position)
-    // console.log("before",camera.current.quaternion)
-    // state.camera.position.lerp(p, THREE.MathUtils.damp(0, 1, 3, dt));
-    // state.camera.quaternion.slerp(q, THREE.MathUtils.damp(0, 1, 3, dt));
-    // console.log("after",camera.current.position)
-    // console.log("after",camera.current.quaternion)
-  });
-
+const ToggleTransforms = () => {
+  const mode = useSelector((state) => state.mode);
+  const dispatch = useDispatch();
   return (
-    <group
-      ref={ref}
-      onClick={(e) =>
-        e.stopPropagation()
-        // ,
-        // console.log("this s the id",e.object)
-        // setLocation(clicked.current === e.object ? "/" : "/scene/" + e.object._id)
-      }
-      // onPointerMissed={() => setLocation("/")}
-    >
+    <div className="ToggleTransforms">
+      <div className="d-flex justify-content-center mt-5 align-items-center">
+        <section id="first" className="section">
+          <div className="radio-container">
+            <input
+              type="radio"
+              name="group1"
+              id="radio-0"
+              value=""
+              onChange={(e) => {
+                dispatch(changeTransformMode(e.target.value));
+              }}
+              checked={mode === ""}
+            />
+            <label for="radio-0">
+              <span className="radio">Disable Transforms</span>
+            </label>
+          </div>
+          <div className="radio-container">
+            <input
+              type="radio"
+              name="group1"
+              id="radio-1"
+              value="translate"
+              onChange={(e) => {
+                dispatch(changeTransformMode(e.target.value));
+              }}
+              checked={mode === "translate"}
+            />
+            <label for="radio-1">
+              <span className="radio">Translate</span>
+            </label>
+          </div>
+          <div className="radio-container">
+            <input
+              type="radio"
+              name="group1"
+              id="radio-2"
+              value="rotate"
+              onChange={(e) => {
+                dispatch(changeTransformMode(e.target.value));
+              }}
+              checked={mode === "rotate"}
+            />
+            <label for="radio-2">
+              <span className="radio">Rotate</span>
+            </label>
+          </div>
+          <div className="radio-container">
+            <input
+              type="radio"
+              name="group1"
+              id="radio-3"
+              value="scale"
+              onChange={(e) => {
+                dispatch(changeTransformMode(e.target.value));
+              }}
+              checked={mode === "scale"}
+            />
+            <label for="radio-3">
+              <span className="radio">Scale</span>
+            </label>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+function Frames({ frames, frameToTransform, mode, dispatch }) {
+  const ref = useRef();
+
+  // console.log("these are the frames", frames);
+  useEffect(() => {}, [frameToTransform, mode]);
+  useFrame((state, dt) => {});
+
+  const snap = useSnapshot(state);
+  return (
+    <group ref={ref} onClick={(e) => e.stopPropagation()}>
       {frames.map(
-        (props,index) => <Frame key={index + '-frame' } position={props.position} rotation={props.rotation} url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
+        (props,index) => <Frame mode={mode} dispatch={dispatch} frameToTransform={frameToTransform} snap={snap} key={index + '-frame' }  url={props.imageUrl} color={props.frameColor} name={props.name} {...props} /> /* prettier-ignore */
       )}
     </group>
   );
 }
 
+/**
+ *
+ * sets the texture type for the room floor
+ * @param {*} setTextureType
+ * @returns
+ */
+const TextureSelector = ({ setTextureType }) => {
+  const images = [
+    { key: "text01", text: "Wood", path: "/assets/images/wood.png" },
+    {
+      key: "text02",
+      text: "Water",
+      path: "/assets/images/water.jpg",
+    },
+    {
+      key: "text03",
+      text: "Grass",
+      path: "/assets/images/grass.jpg",
+    },
+  ];
 
-const FrameWorld = ({ id,frames, queuedFrame, dispatch, isThereQueuedFrame }) => {
+  let [hovered, setHovered] = useState(false);
 
+  return (
+    <div className="TextureSelector">
+      {images.map(({ key, text, path }, index) => (
+        <div className="TextureSelector-tileWrapper">
+          <button key={key} className="TextureSelector-tile" onClick={() => setTextureType(index)}>
+            <img src={path} className="TextureSelector-img" />
+          </button>
+          {hovered && <span className="TextureSelector-tileText">{text}</span>}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/**
+ * Idea from here https://github.com/pmndrs/react-three-fiber/discussions/487
+ */
+const Plane = ({ planeLength, planeWidth, planeColor, planeStrength, textureIndex }) => {
+  const texture0 = useLoader(THREE.TextureLoader, "/assets/images/wood.png");
+  const texture1 = useLoader(THREE.TextureLoader, "/assets/images/water.jpg");
+  const texture2 = useLoader(THREE.TextureLoader, "/assets/images/grass.jpg");
+
+  let textures = [texture0, texture1, texture2];
+  return (
+    <group>
+      <mesh>
+        <planeGeometry args={[planeLength, planeWidth]} />
+        <meshBasicMaterial
+          attach="material"
+          map={textures[textureIndex]}
+          blur={[100, 100]}
+          resolution={2048}
+          mixStrength={planeStrength}
+          color={planeColor}
+        />
+      </mesh>
+    </group>
+  );
+};
+
+const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
+  const dispatch = useDispatch();
 
   const getAllFrames = async () => {
-    let f = await APIInterface.getAllFrames(id)
-    dispatch(addInitialFrames(f.data))
-  }
+    let f = await APIInterface.getAllFrames(id);
+    dispatch(addInitialFrames(f.data));
+  };
 
-  useEffect(()=>{
-      getAllFrames()
-    // console.log("this is the Id", id)
-  });
-
+  const getCurrentMuseum = async () => {
+    let f = await MuseumAPI.getCurrentMuseum(id);
+    dispatch(addCurrentMuseum(f.data));
+  };
 
   const control = useRef();
   const camera = useRef();
   const ref = useRef();
+  const transformRef = useRef();
+  const mode = useSelector((state) => state.mode);
+  const frameToTransform = useSelector((state) => state.frameToTransform);
+  const currentMuseum = useSelector((state) => state.currentMuseum);
+  const currentFrame = useSelector((state) => state.currentFrame);
+  const frames = useSelector((state) => state.frames);
+  // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
+  // let currentFrameData = frame.filter
+
+  console.log("this is the current frame", currentFrame);
+  let [currentFrameData, setFrameData] = useState({
+    name: "Click on a Frame",
+    text: "You will see frame details when you click on a frame",
+  });
+
+  const [
+    { intensity, backgroundColor, fogColor, planeLength, planeWidth, planeColor, planeStrength },
+    set,
+  ] = useControls(() => ({
+    intensity: {
+      min: 0,
+      max: 10,
+      value: currentMuseum ? currentMuseum.intensity : 1,
+      step: 1,
+    },
+    backgroundColor: currentMuseum ? currentMuseum.backgroundColor : "#ffffff",
+    fogColor: currentMuseum ? currentMuseum.fogColor : "#ffffff",
+    planeLength: {
+      min: 1,
+      max: 50,
+      value: currentMuseum ? currentMuseum.planeLength : 20,
+      step: 1,
+    },
+    planeWidth: {
+      min: 1,
+      max: 50,
+      value: currentMuseum ? currentMuseum.planeWidth : 20,
+      step: 2,
+    },
+    planeColor: currentMuseum ? currentMuseum.planeColor : "#ffffff",
+    planeStrength: {
+      min: 0,
+      max: 100,
+      value: currentMuseum ? currentMuseum.planeStrength : 1,
+      step: 2,
+    },
+    planeMetal: {
+      min: 1,
+      max: 10,
+      value: 1,
+      step: 1,
+    },
+  }));
+
+  const [{ frameColor, frameImageZoom }, setFrame] = useControls(() => ({
+    framePosX: {
+      value: transformRef.current ? transformRef.current.object.position.x : 0,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.x = x;
+          }
+        }
+      },
+    },
+    framePosY: {
+      value: transformRef.current ? transformRef.current.object.position.y : 0,
+      onChange: (y) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.y = y;
+          }
+        }
+      },
+    },
+    framePosZ: {
+      value: transformRef.current ? transformRef.current.object.position.z : 0,
+      onChange: (z) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.position.z = z;
+          }
+        }
+      },
+    },
+    frameRotateX: {
+      value: transformRef.current ? transformRef.current.object.rotation.x : 0,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.x = x;
+          }
+        }
+      },
+    },
+    frameRotateY: {
+      value: transformRef.current ? transformRef.current.object.rotation.y : 0,
+      onChange: (y) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.y = y;
+          }
+        }
+      },
+    },
+    frameRotateZ: {
+      value: transformRef.current ? transformRef.current.object.rotation.z : 0,
+      onChange: (z) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.rotation.z = z;
+          }
+        }
+      },
+    },
+
+    frameXScale: {
+      value: transformRef.current ? transformRef.current.object.scale.x : 1,
+      onChange: (x) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.scale.x = x;
+          }
+        }
+      },
+    },
+    frameYScale: {
+      value: transformRef.current ? transformRef.current.object.scale.y : 1,
+      onChange: (y) => {
+        let userData = currentFrame ? currentFrame.current?.userData : null;
+        if (userData) {
+          let { isEditable, mode } = userData;
+          if (mode !== "" && isEditable) {
+            transformRef.current.object.scale.y = y;
+          }
+        }
+      },
+    },
+
+    frameImageZoom: {
+      value: transformRef.current
+        ? transformRef.current.object.userData.frameImage.current
+          ? transformRef.current.object.userData.frameImage.current.material.zoom
+          : 0
+        : 0,
+      min: -5,
+      max: 5,
+      step: 0.1,
+      onChange: (v) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        if (userData) {
+          let { isEditable } = userData;
+          if (isEditable) {
+            if (userData.frameImage.current) {
+              userData.frameImage.current.material.zoom = v;
+            }
+          }
+        }
+      },
+    },
+    frameColor: {
+      value: transformRef.current ? transformRef.current.object.userData.color : "#ffffff",
+      onChange: (v) => {
+        let userData = transformRef.current ? transformRef.current.object.userData : null;
+        // console.log("fish call back issue", userData);
+        // // console.log(transformRef)
+        if (userData) {
+          let { isEditable } = userData;
+          if (isEditable) {
+            let { frameMesh } = transformRef.current.object.userData;
+            if (frameMesh) {
+              if (frameMesh.current) {
+                frameMesh.current.color = new THREE.Color(v);
+              }
+            }
+          }
+        }
+      },
+    },
+  }));
+
+  useEffect(() => {
+    set({ intensity: currentMuseum ? currentMuseum.intensity : 1 });
+    set({ backgroundColor: currentMuseum ? currentMuseum.backgroundColor : "#ffffff" });
+    set({ planeLength: currentMuseum ? currentMuseum.planeLength : 20 });
+    set({ planeWidth: currentMuseum ? currentMuseum.planeWidth : 20 });
+    set({ planeColor: currentMuseum ? currentMuseum.planeColor : "#ffffff" });
+    set({ planeStrength: currentMuseum ? currentMuseum.planeStrength : 1 });
+    setTextureType(currentMuseum ? currentMuseum.textureIndex : 0);
+
+    setFrame({ framePosX: transformRef.current ? transformRef.current.object.position.x : 0 });
+    setFrame({ framePosY: transformRef.current ? transformRef.current.object.position.y : 0 });
+    setFrame({ framePosZ: transformRef.current ? transformRef.current.object.position.z : 0 });
+    setFrame({ frameRotateX: transformRef.current ? transformRef.current.object.rotation.x : 0 });
+    setFrame({ frameRotateY: transformRef.current ? transformRef.current.object.rotation.y : 0 });
+    setFrame({ frameRotateZ: transformRef.current ? transformRef.current.object.rotation.z : 0 });
+    setFrame({ frameXScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
+    setFrame({ frameYScale: transformRef.current ? transformRef.current.object.scale.y : 1 });
+    setFrame({
+      frameColor:
+        "#" + transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+    });
+
+    setFrame({
+      frameImageZoom: transformRef?.current?.object?.userData?.frameImage?.current?.material?.zoom,
+    });
+
+    if (frameToTransform) {
+      let currentFramesList = frames.filter((frame) => frame._id === frameToTransform);
+      if (currentFramesList.length > 0) {
+        // console.log("this is my frames list", currentFramesList)
+        setFrameData({ name: currentFramesList[0].name, text: currentFramesList[0].text });
+      }
+    }
+  }, [currentMuseum, frameToTransform]);
+
+  //
+  // console.log(frameColor);
+  useEffect(() => {
+    let mounted = false;
+    if (!mounted) {
+      getAllFrames();
+      getCurrentMuseum();
+    }
+    return () => (mounted = true);
+  }, [frameToTransform]);
 
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
-
   let [modalType, setModalType] = useState("frame");
-  const snap = useSnapshot(state)
+  const [textureIndex, setTextureType] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
+  const snap = useSnapshot(state);
 
   return (
     <>
-      <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} snap={snap} modalType={modalType} />
+      <button
+        className="FrameWorld-save"
+        onClick={async () => {
+          console.log("am I clicking");
+          let response = await MuseumAPI.editMuseumProperty(id, {
+            intensity: intensity,
+            backgroundColor: backgroundColor,
+            fogColor: fogColor,
+            planeLength: planeLength,
+            planeWidth: planeWidth,
+            planeColor: planeColor,
+            planeStrength: planeStrength,
+            textureIndex: textureIndex,
+          });
+
+          console.log("this is a response", response);
+
+          let obj = {
+            position: [
+              transformRef.current ? transformRef.current.object.position.x : 0,
+              transformRef.current ? transformRef.current.object.position.y : 0,
+              transformRef.current ? transformRef.current.object.position.z : 0,
+            ],
+            rotation: [
+              transformRef.current ? transformRef.current.object.rotation.x : 0,
+              transformRef.current ? transformRef.current.object.rotation.y : 0,
+              transformRef.current ? transformRef.current.object.rotation.z : 0,
+            ],
+            scale: [
+              transformRef.current ? transformRef.current.object.scale.x : 1,
+              transformRef.current ? transformRef.current.object.scale.y : 1,
+              transformRef.current ? transformRef.current.object.scale.z : 1,
+            ],
+            frameColor:
+              "#" +
+              transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+            imageZoomRatio: transformRef.current
+              ? transformRef.current.object.userData.frameImage.current
+                ? transformRef.current.object.userData.frameImage.current.material.zoom
+                : 0
+              : 0,
+          };
+
+          console.log(obj);
+
+          // let color = transformRef?.current?.object?.userData?.frameMesh?.current?.color;
+          // if (color){
+          //   console.log("let's color", transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString())
+          //   // console.log(color.getHexString())
+          // }
+          // console.log("I'm here", transformRef.current)
+          if (transformRef.current) {
+            if (transformRef.current.object.userData) {
+              if (transformRef.current.object.userData.isEditable) {
+                console.log("this is the ibject tryna save", obj);
+                let frameResponse = await APIInterface.editFrameProperty(
+                  transformRef.current.object.name,
+                  obj
+                );
+              }
+            }
+          }
+        }}
+      >
+        {" "}
+        Save{" "}
+      </button>
+      <ModalViewer
+        Modal={Modal}
+        open={open}
+        close={close}
+        isOpen={isOpen}
+        snap={snap}
+        modalType={modalType}
+      />
       <Controls openModal={open} setModalType={setModalType} />
+      <FrameCard
+        dispatch={dispatch}
+        currentFrame={currentFrame}
+        name={currentFrame?.current?.userData?.name}
+        text={currentFrame?.current?.userData?.text}
+        parentId={id}
+        frameToTransform={frameToTransform}
+      />
+      <ToggleTransforms dispatch={dispatch} mode={mode} />
+      <TextureSelector setTextureType={setTextureType} />
       <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
-        <color attach="background" args={["#191920"]} />
-        <fog attach="fog" args={["#191920", 0, 15]} />
+        <ambientLight intensity={intensity} />
+        <color attach="background" args={[backgroundColor]} />
         <Suspense fallback={null}>
           <Environment preset="city" />
           <group position={[0, -0.5, 0]}>
-            <Model
-              // clothes={snap.items.clothes}
-              // body={snap.items.body}
-              // chest={snap.items.chest}
-              // eyes={snap.items.eyes}
-              scale={0.2}
-              // position={[0, 0, 0]}
-              controls={control}
-              camera={camera}
-            />
-            {<Frames camera={camera} frames={frames} />}
+            {
+              <Frames
+                dispatch={dispatch}
+                camera={camera}
+                frameToTransform={frameToTransform}
+                mode={mode}
+                frames={frames}
+              />
+            }
             <mesh
               rotation={[-Math.PI / 2, 0, 0]}
               position={[0, 0, 0]}
-              onClick={async(e) => {
+              onClick={async (e) => {
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
-                // addCube(x, y, z, activeTexture);
-                console.log(queuedFrame)
-                queuedFrame.position = [x, y, z];
-                queuedFrame.rotation = [0, 0, 0];
-                if (isThereQueuedFrame) {
-                  let { type, name, url, text, color, position, rotation, parentId, figure, firstName, lastName, description} = queuedFrame;
-                  let response = await APIInterface.addFrame(type, name, url, text, color, position, rotation, parentId);
-                  queuedFrame._id = response.data._id
-                  queuedFrame.figure = queuedFrame.figure
-                  dispatch(addFrame(queuedFrame));
-                  dispatch(dequeueFrame(false));
-                  dispatch(addFrameToQueue(null));
-                  if (type == 'conversation') {
-                    await ConversationAPI.addConversation(firstName, lastName, description, response.data._id, url) 
+                if (queuedFrame) {
+                  queuedFrame.position = [x, y, z];
+                  queuedFrame.rotation = [0, 0, 0];
+                  queuedFrame.scale = [1, GOLDENRATIO, 0.05];
+                  queuedFrame.imageZoomRatio = 1;
+                  if (isThereQueuedFrame) {
+                    dispatch(dequeueFrame(false));
+                    dispatch(addFrameToQueue(null));
+                    let {
+                      type,
+                      name,
+                      url,
+                      text,
+                      color,
+                      position,
+                      rotation,
+                      scale,
+                      imageZoomRatio,
+                    } = queuedFrame;
+                    let frameRes = await APIInterface.addFrame(
+                      type,
+                      name,
+                      url,
+                      text,
+                      color,
+                      position,
+                      rotation,
+                      scale,
+                      imageZoomRatio,
+                      id
+                    );
+                    if (type==='conversation'){
+                        await ConversationAPI.addConversation(firstName, lastName, description, response.data._id, url) 
+                    }
+                    if (frameRes) {
+                      dispatch(addFrame(frameRes.data));
+                    }
                   }
                 }
               }}
             >
-              <planeGeometry args={[50, 50]} />
-              <MeshReflectorMaterial
-                blur={[300, 100]}
-                resolution={2048}
-                mixBlur={1}
-                mixStrength={60}
-                roughness={1}
-                depthScale={1.2}
-                minDepthThreshold={0.4}
-                maxDepthThreshold={1.4}
-                color="#151515"
-                metalness={0.5}
+              <Plane
+                planeLength={planeLength}
+                planeWidth={planeWidth}
+                planeColor={planeColor}
+                planeStrength={planeStrength}
+                textureIndex={textureIndex}
               />
             </mesh>
           </group>
           <OrbitControls
             makeDefault
-            // autoRotate
-            // autoRotateSpeed={0.3}
-            // maxPolarAngle={Math.PI / 2 - 0.05}
-            // minPolarAngle={Math.PI / 2.3}
-            // enableZoom={true}
-            // enablePan={false}
-            // minDistance={5}
-            // maxDistance={200}
-            // enableDamping={true}
+            enableZoom={true}
+            enablePan={false}
+            minDistance={1}
+            maxDistance={200}
             ref={control}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 1.75}
           />
+          {mode !== "" && (
+            <TransformControls
+              ref={transformRef}
+              mode={mode === "" ? "translate" : mode}
+              object={currentFrame ? currentFrame.current : null}
+              onChange={() => {
+                if (mode === "translate") {
+                  setFrame({
+                    framePosX: transformRef.current.object.position.x,
+                    framePosY: transformRef.current.object.position.y,
+                    framePosZ: transformRef.current.object.position.z,
+                  });
+                } else if (mode === "rotate") {
+                  setFrame({
+                    frameRotateX: transformRef.current.object.rotation.x,
+                    frameRotateY: transformRef.current.object.rotation.y,
+                    frameRotateZ: transformRef.current.object.rotation.z,
+                  });
+                } else if (mode === "scale") {
+                  setFrame({
+                    frameXScale: transformRef.current.object.scale.x,
+                    frameYScale: transformRef.current.object.scale.y,
+                    // zScale: transformRef.current.object.scale.z,
+                  });
+                }
+              }}
+            />
+          )}
           <PerspectiveCamera
+            // makeDefault
             ref={camera}
-            fov={70}
-            position={[0, 2, 15]}
+            fov={100}
+            position={[6, 6, 6]}
             aspect={window.innerWidth / window.innerHeight}
           ></PerspectiveCamera>
+          {/* <axesHelper /> */}
         </Suspense>
       </Canvas>
     </>

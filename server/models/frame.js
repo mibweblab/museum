@@ -12,8 +12,10 @@ const FrameSchema = new mongoose.Schema({
   frameColor: String,
   position: Array,
   rotation: Array,
+  scale: Array,
   userId: String,
   parentId: String,
+  imageZoomRatio: Number
 });
 
 // compile model from schema

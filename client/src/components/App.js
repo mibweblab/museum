@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
-// import NavBar from "./modules/Navbar/Navbar.js";
+
 import Conversation from "./Conversations/Conversation.js";
-// import { Suspense } from "react";
 import NavBar from "./modules/Navbar/Navbar.js";
 import Rooms from "./Conversations/Rooms.js";
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk, UserUpload } from "../HumanModel";
 
 import World from "../components/modules/World";
+
 // import GPT3_playground from "./pages/GPT3_playground.js";
 // import { Shakespeare, Einstein, Musk } from "../LangModel.js";
 import { Suspense } from "react";
 import FrameWorld from "./modules/FrameWorld.js";
 import { connect } from "react-redux";
-
 import "../utilities.css";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 import "./App.scss";
-
 import { useLocation, Switch, Route } from "wouter";
-import APIInterface from "../api/api.js";
 import MuseumInterface from "../api/museum";
 import {Profile} from "./pages/Profile";
 import Explore from "./pages/Explore";
@@ -31,9 +27,11 @@ import Landing from "./pages/Landing";
 import UserApi from "../api/user";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
+import MuseumView from "./modules/MuseumView.js";
 
 
 
+import View from "./modules/View.js";
 const mapStateToProps = (state) => {
   return {
     frames: state.frames,
@@ -124,17 +122,21 @@ class App extends React.Component {
 
           {!this.state.user && <div>Sign In to View</div>}
         </Route>
-        <Route exact path="/museum/:id">
-          {this.state.user && ((params) => <FrameWorld id={params.id} />)}
-        </Route>
 
         <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
         <Route path="/room_1">
-          <Rooms  FirstName={this.state.firstname} HumanModel={Einstein} />
+          <Rooms FirstName={this.state.firstname} HumanModel={Einstein} />
+        </Route>
+        <Route exact path="/museum/edit/:id">
+          {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
         </Route>
 
+        <Route exact path="/museum/view/:id">
+          {this.state.userId && ((params) => <MuseumView id={params.id} />)}
+        </Route>
+        
         <Route path="/room_2">
           <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
         </Route>
@@ -147,100 +149,9 @@ class App extends React.Component {
         <Route exact path="/explore">
           <Explore LogInStatus={(this.state.user != undefined)} />
         </Route>
-        {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
-        {/* <Route path="/scene/:id">{<World />}</Route> */}
       </>
     );
   }
 }
-
-{
-  /* <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId}/> */
-}
-
-{
-  /* <Route path="/">
-  {frames && <FrameWorld images={frames} />}
-</Route> 
-<Route path="/scene/:id">{<World />}</Route>   
-{this.state.firstName &&
-  <Route path="/room/:id">{<Rooms FirstName={this.state.firstName} />}</Route> 
-} */
-}
-{
-  /* <div id='content'> */
-}
-// {/* <Router className='content'>
-//   {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-//   <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/>
-//   <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/>
-//   <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/>  */}
-//   <Conversation path='/c' HumanModel={Shakespeare}/>
-//   <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/>
-//   <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/>
-//   <Rooms path="/room_musk/" FirstName={this.state.firstName} HumanModel={Musk}/>
-//   <Rooms path="/room_user_upload/" FirstName={this.state.firstName} HumanModel={UserUpload}/>
-//   <NotFound default />
-// </Router> */}
-{
-  /* </div> */
-}
-
-// /**
-//  * Define the "App" component
-//  */
-// const App = ({ frames, dispatch }) => {
-//   const [userId, setUserId] = useState(undefined);
-//   const [this.state.firstName, setFirstName] = useState(undefined);
-
-//   console.log("frames changes", frames)
-
-//   async function getAllFrames() {
-//     let allFrames = await APIInterface.getAllFrames();
-//     if (allFrames) {
-//       console.log("these are my frames", allFrames);
-//       dispatch(addInitialFrames(allFrames.data));
-//     }
-//   }
-
-//   useEffect(() => {
-//     get("/api/whoami").then((user) => {
-//       if (user._id) {
-//         // they are registed in the database, and currently logged in.
-//         setUserId(user._id);
-//         setFirstName(user.firstname);
-//         getAllFrames();
-//       }
-//     });
-
-//     getAllFrames();
-//   }, []);
-
-//   const handleLogin = (res) => {
-//     console.log(`Logged in as ${res.profileObj.name}`);
-//     const userToken = res.tokenObj.id_token;
-//     post("/api/login", { token: userToken }).then((user) => {
-//       setUserId(user._id);
-//       setFirstName(user.firstname);
-//       getAllFrames();
-//       post("/api/initsocket", { socketid: socket.id });
-//     });
-//   };
-
-//   const handleLogout = () => {
-//     setUserId(undefined);
-//     post("/api/logout");
-//   };
-
-//   return (
-//     <>
-//       <Route path="/">
-//         <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-//         {frames && <FrameWorld images={frames} />}
-//       </Route>
-//       {/* <Route path="/scene/:id">{<World />}</Route> */}
-//     </>
-//   );
-// };
 
 export default connect(mapStateToProps)(App);

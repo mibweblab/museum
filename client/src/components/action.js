@@ -31,4 +31,46 @@ const addMuseum = (payload) => ({
   payload: payload,
 });
 
-export { addFrame, addFrameToQueue, dequeueFrame, addInitialFrames, addMuseum, addInitialMuseums };
+const changeTransformMode = (payload) => ({
+  type: "CHANGE_TRANSFORM_MODE",
+  payload: payload,
+});
+const addFrameToTransform = (payload) => ({
+  type: "ADD_FRAME_TO_TRANSFORM",
+  payload: payload,
+});
+
+const addCurrentMuseum = (payload) => ({
+  type: "ADD_CURRENT_MUSEUM",
+  payload: payload,
+});
+
+const addCurrentFrame = (payload) => ({
+  type: "ADD_CURRENT_FRAME",
+  payload: payload,
+});
+
+const addCurrentImage = (payload) => ({
+  type: "ADD_CURRENT_IMAGE",
+  payload: payload,
+});
+
+const editCurrentFrame = (payload) => ({
+  type: "EDIT_CURRENT_FRAME",
+  payload: payload,
+});
+
+export {
+  addFrame,
+  addFrameToQueue,
+  dequeueFrame,
+  addInitialFrames,
+  addMuseum,
+  addInitialMuseums,
+  changeTransformMode,
+  addFrameToTransform,
+  addCurrentMuseum,
+  addCurrentFrame,
+  addCurrentImage,
+  editCurrentFrame
+};

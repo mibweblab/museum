@@ -4,15 +4,15 @@ const Museum = require("../models/museum");
 //
 
 /**
- * 
+ *
  * Given the following params, creates a museum hall
  *
- * @param {*} name 
- * @param {*} description 
- * @param {*} isPrivate 
- * @param {*} imageUrl 
- * @param {*} userId 
- * @returns 
+ * @param {*} name
+ * @param {*} description
+ * @param {*} isPrivate
+ * @param {*} imageUrl
+ * @param {*} userId
+ * @returns
  */
 async function addMuseum(name, description, isPrivate, imageUrl, userId) {
   try {
@@ -33,32 +33,32 @@ async function addMuseum(name, description, isPrivate, imageUrl, userId) {
 }
 
 /**
- * 
+ *
  * edits a museum property
- * 
- * @param {*} museumId 
- * @param {*} data 
- * @returns 
+ *
+ * @param {*} museumId
+ * @param {*} data
+ * @returns
  */
 async function editMuseumProperty(museumId, data) {
-    try {
-        await Museum.updateOne({_id:museumId},data );
-        return true;
-    } catch (error){
-        return false;
-    }
+  // console.log(museumId, data);
+  try {
+    await Museum.updateOne({ _id: museumId }, data);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 /**
  * Gets all museums associated with a certain userId
- * @param {*} userId 
- * @returns 
+ * @param {*} userId
+ * @returns
  */
 
 async function getAllMuseums(userId) {
   try {
-    return await Museum.find({userId: userId});
-
+    return await Museum.find({ userId: userId });
   } catch (error) {
     console.log("error getting all museums", error);
     return false;
@@ -66,14 +66,14 @@ async function getAllMuseums(userId) {
 }
 
 /**
- * 
+ *
  * Delete a museum with a certain userId
- * 
- * 
+ *
+ *
  */
 async function deleteMuseum(museumId) {
   try {
-    await Museum.deleteOne({_id: museumId})
+    await Museum.deleteOne({ _id: museumId });
     return true;
   } catch (error) {
     return false;
@@ -93,8 +93,17 @@ async function deleteMuseum(museumId) {
 
   } catch (error) {
     console.log("error getting all museums", error);
+/**
+ *
+ * Gets a museum with a certain museumId
+ *
+ */
+async function getMuseum(museumId) {
+  try {
+    return await Museum.findOne({ _id: museumId });
+  } catch (error) {
     return false;
   }
 }
 
-module.exports = Object.freeze({ addMuseum, getAllMuseums, deleteMuseum , editMuseumProperty, getAllPublicMuseums });
+module.exports = Object.freeze({ addMuseum, getAllMuseums, deleteMuseum , editMuseumProperty, getAllPublicMuseums,  getMuseum });

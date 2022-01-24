@@ -12,7 +12,7 @@ const openai = new OpenAIApi(configuration);
 
 export default class FrameAPI {
 
-  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation,parentId) {
+  static async addFrame(type, name, imageUrl, text, frameColor, position, rotation,scale,imageZoomRatio,parentId) {
     try {
       let frame = await axios.post("/api/frame", {
         type,
@@ -22,6 +22,8 @@ export default class FrameAPI {
         frameColor,
         position,
         rotation,
+        scale,
+        imageZoomRatio,
         parentId
       });
 
@@ -35,8 +37,16 @@ export default class FrameAPI {
     try {
       // console.log("firing api")
       let frames = await axios.get("/api/frame/"+parentId);
-      console.log(frames)
       return frames;
+    } catch (error) {
+      return false;
+    }
+  }
+  static async editFrameProperty(id,data) {
+    console.log("what am I sending", data)
+    try {
+      let frame = await axios.patch("/api/frame/" + id,data);
+      return frame;
     } catch (error) {
       return false;
     }
