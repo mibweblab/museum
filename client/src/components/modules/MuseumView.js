@@ -157,6 +157,8 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   const [backgroundColor, nello] = useState(
     currentMuseum ? currentMuseum.backgroundColor : "#ffffff"
   );
+
+  console.log("Let's see what this bad boy has",currentMuseum)
   const [fogColor, zello] = useState(currentMuseum ? currentMuseum.fogColor : "#ffffff");
 
   return (
@@ -180,7 +182,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
               // body={snap.items.body}
               // chest={snap.items.chest}
               // eyes={snap.items.eyes}
-              scale={0.25}
+              scale={0.21}
               // position={[0, 0, 0]}
               controls={control}
               camera={camera}
@@ -209,7 +211,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
             ref={control}
             // autoRotate
             // autoRotateSpeed={0.3}
-            maxPolarAngle={Math.PI / 2 - 0.05}
+            // maxPolarAngle={Math.PI / 2 - 0.05}
             // minPolarAngle={Math.PI / 2.3}
             enableZoom={true}
             enablePan={true}

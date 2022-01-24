@@ -72,7 +72,7 @@ export default function Model(props) {
     // console.log("les see",keysPressed)
     let camera = props.camera.current;
 
-    console.log("this is my camera",camera)
+    // console.log("this is my camera",camera)
 
     // let play = 0;
     // if (keysPressed["w"] || keysPressed["a"] || keysPressed["d"] || keysPressed["s"]) {
@@ -127,7 +127,7 @@ export default function Model(props) {
       cameraTarget.y = ref.current.position.y + 1;
       cameraTarget.z = ref.current.position.z;
       props.controls.current.target = cameraTarget;
-      console.log("camera target", cameraTarget)
+      // console.log("camera target", cameraTarget)
     }
   });
   return (
