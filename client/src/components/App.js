@@ -65,11 +65,8 @@ class App extends React.Component {
   async componentDidMount() {
     get("/api/whoami").then(async (user) => {
       if (user._id) {
-
         // they are registed in the database, and currently logged in.
         this.setState({ user: user, firstName: user.firstname });
-
-
         await this.getAllMuseums();
       }
     });
@@ -97,7 +94,7 @@ class App extends React.Component {
     post("/api/logout");
   };
 
-  editUser = async(data) => {
+  editUserFunction = async(data) => {
     let userEdited = await UserApi.updateUser(this.state.user._id, data);
     this.setState({ 
       user: data, 
@@ -120,12 +117,18 @@ class App extends React.Component {
         </Route>
 
         <Route path="/profile">
-          {this.state.user && <Profile museums={this.props.museums} user={this.state.user} editUser={this.editUser}/>}
+          {this.state.user && <Profile museums={this.props.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
 
           {!this.state.user && <div>Sign In to View</div>}
         </Route>
+        <Route path="/profile/:id">
+          { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
+        </Route>
         <Route exact path="/museum/:id">
           {this.state.user && ((params) => <FrameWorld id={params.id} />)}
+        </Route>
+        <Route exact path="/museum">
+         <Landing />
         </Route>
 
         <Route path="/room_0">
@@ -145,7 +148,7 @@ class App extends React.Component {
           {this.state.user && ((params) => <Rooms FirstName={this.state.firstname} HumanModel={UserUpload} FrameId={params.id} />)}
         </Route>
         <Route exact path="/explore">
-          <Explore LogInStatus={(this.state.user != undefined)} />
+          <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
         {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
         {/* <Route path="/scene/:id">{<World />}</Route> */}
@@ -154,93 +157,8 @@ class App extends React.Component {
   }
 }
 
-{
-  /* <NavBar handleLogin={this.handleLogin.bind(this)} handleLogout={this.handleLogout.bind(this)} userId={this.state.userId}/> */
-}
 
-{
-  /* <Route path="/">
-  {frames && <FrameWorld images={frames} />}
-</Route> 
-<Route path="/scene/:id">{<World />}</Route>   
-{this.state.firstName &&
-  <Route path="/room/:id">{<Rooms FirstName={this.state.firstName} />}</Route> 
-} */
-}
-{
-  /* <div id='content'> */
-}
-// {/* <Router className='content'>
-//   {/* <Skeleton path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-//   <GPT3_playground path="/shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/>
-//   <GPT3_playground path="/einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/>
-//   <GPT3_playground path="/musk/" FirstName={this.state.firstName} HumanModel={Musk}/>  */}
-//   <Conversation path='/c' HumanModel={Shakespeare}/>
-//   <Rooms path="/room_shakespeare/" FirstName={this.state.firstName} HumanModel={Shakespeare}/>
-//   <Rooms path="/room_einstein/" FirstName={this.state.firstName} HumanModel={Einstein}/>
-//   <Rooms path="/room_musk/" FirstName={this.state.firstName} HumanModel={Musk}/>
-//   <Rooms path="/room_user_upload/" FirstName={this.state.firstName} HumanModel={UserUpload}/>
-//   <NotFound default />
-// </Router> */}
-{
-  /* </div> */
-}
 
-// /**
-//  * Define the "App" component
-//  */
-// const App = ({ frames, dispatch }) => {
-//   const [userId, setUserId] = useState(undefined);
-//   const [this.state.firstName, setFirstName] = useState(undefined);
 
-//   console.log("frames changes", frames)
-
-//   async function getAllFrames() {
-//     let allFrames = await APIInterface.getAllFrames();
-//     if (allFrames) {
-//       console.log("these are my frames", allFrames);
-//       dispatch(addInitialFrames(allFrames.data));
-//     }
-//   }
-
-//   useEffect(() => {
-//     get("/api/whoami").then((user) => {
-//       if (user._id) {
-//         // they are registed in the database, and currently logged in.
-//         setUserId(user._id);
-//         setFirstName(user.firstname);
-//         getAllFrames();
-//       }
-//     });
-
-//     getAllFrames();
-//   }, []);
-
-//   const handleLogin = (res) => {
-//     console.log(`Logged in as ${res.profileObj.name}`);
-//     const userToken = res.tokenObj.id_token;
-//     post("/api/login", { token: userToken }).then((user) => {
-//       setUserId(user._id);
-//       setFirstName(user.firstname);
-//       getAllFrames();
-//       post("/api/initsocket", { socketid: socket.id });
-//     });
-//   };
-
-//   const handleLogout = () => {
-//     setUserId(undefined);
-//     post("/api/logout");
-//   };
-
-//   return (
-//     <>
-//       <Route path="/">
-//         <NavBar handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-//         {frames && <FrameWorld images={frames} />}
-//       </Route>
-//       {/* <Route path="/scene/:id">{<World />}</Route> */}
-//     </>
-//   );
-// };
 
 export default connect(mapStateToProps)(App);

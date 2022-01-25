@@ -34,14 +34,17 @@ const NavBar = (props) => {
   return (
     <nav className="NavBar-container">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
-      {(location != '/') ? (<div className="NavBar-title u-inlineBlock Navbar-item">
+      {(location != '/' && (props.userId == undefined)) && (<div className="NavBar-title u-inlineBlock Navbar-item">
         <Link to="/" className="u-link">Wander</Link>
-      </div>) : <Link to="/profile" className="u-link">My Wander</Link> }
+      </div>)} 
       <div className="NavBar-title u-inlineBlock Navbar-item">
-      {(props.userId) &&  <label className="u-link"  onClick={open}>
+        {(props.userId && location != '/profile') && <Link to="/profile" className="u-link">My Wander</Link> }
+      </div>
+      <div className="NavBar-title u-inlineBlock Navbar-item">
+        {(props.userId) &&  <label className="u-link"  onClick={open}>
           +Create Museum
         </label>}
-        </div>
+      </div>
         <div className="NavBar-title u-inlineBlock Navbar-item">
           <Link to="/explore" className="u-link">Explore</Link>
         </div>

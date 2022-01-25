@@ -50,15 +50,18 @@ async function editMuseumProperty(museumId, data) {
 }
 
 /**
- * Gets all museums associated with a certain userId
+ * Gets all museums associated with a certain userId, bool: publicMuseumsOnly
  * @param {*} userId 
  * @returns 
  */
 
-async function getAllMuseums(userId) {
+async function getAllMuseums(userId, publicMuseumsOnly) {
   try {
-    return await Museum.find({userId: userId});
-
+    if (publicMuseumsOnly) {
+      return await Museum.find({userId: userId, isPrivate: false});
+    } else {
+      return await Museum.find({userId: userId});
+    }
   } catch (error) {
     console.log("error getting all museums", error);
     return false;
@@ -82,14 +85,35 @@ async function deleteMuseum(museumId) {
 
 
 /**
- * Gets all museums associated with a certain userId
+ * Gets all public museums 
  * @param {*} userId 
  * @returns 
  */
 
  async function getAllPublicMuseums() {
+  const agg = [
+    {
+      '$addFields': {
+        'userIdObject': {
+          '$toObjectId': '$userId'
+        }
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'localField': 'userIdObject', 
+        'foreignField': '_id', 
+        'as': 'userObject'
+      }
+    }, {
+      '$unwind': {
+        'path': '$userObject'
+      }
+    }
+  ]
   try {
-    return await Museum.find({isPrivate: false});
+    return await Museum.aggregate(agg);
+
 
   } catch (error) {
     console.log("error getting all museums", error);

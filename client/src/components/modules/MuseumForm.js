@@ -29,7 +29,7 @@ const addRandomImageUrl = () => {
   const randomIndex =  Math.floor(Math.random() * 8);
   return (imgUrls[randomIndex])
 }
-const MuseumForm = ({ dispatch }) => {
+const MuseumForm = ({ dispatch, close }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isPrivate, setPrivate] = useState(true);
@@ -107,6 +107,7 @@ const MuseumForm = ({ dispatch }) => {
                 dispatch(addMuseum(museum.data));
               }
             }
+            close()
           }}
         >
           Create

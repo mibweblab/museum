@@ -25,6 +25,18 @@
     border: transparent !important;
     background:transparent;
   }
+
+  &-tab{
+    color: #8d999d;
+    padding-left: 10px;
+  }
+
+  &-userCard {
+    // width: 400px;
+    border: none;
+    border-radius: None;
+    // background-color: #fff
+  }
 }
 
 .Profile-shadow {
@@ -37,12 +49,6 @@ body {
   border-radius: 10px
 }
 
-.cardy {
-  // width: 400px;
-  border: none;
-  border-radius: None;
-  // background-color: #fff
-}
 
 .stats {
   background: #f2f5f8 !important;

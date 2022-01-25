@@ -1,4 +1,5 @@
 import axios from "axios";
+import { get } from "../utilities"
 
 export default class API {
   static async addMuseum(name, description, isPrivate, imageUrl) {
@@ -33,4 +34,16 @@ export default class API {
       return false;
     }
   }
+
+  static async getUserProfileAndPublicMuseums(userId) {
+    try {
+      let obj = await axios.get("/api/museum/profile/"+userId);   
+      const museums = obj.data
+      let profile = await  get(`/api/user`, { userid: userId })
+      return { museums, profile} ;
+    } catch (error) {
+      return false;
+    }
+  }
+  
 }
