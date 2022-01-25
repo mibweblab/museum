@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 import React, { useEffect, useRef, useState, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useCursor, MeshReflectorMaterial, Image, Text, Environment, Loader } from '@react-three/drei'
+import { useCursor, MeshReflectorMaterial, Image, Text, Environment, Loader, Html } from '@react-three/drei'
 import { useRoute, useLocation } from 'wouter'
 import getUuid from 'uuid-by-string'
 
@@ -18,6 +18,14 @@ export default function Gallery({ images }) {
       <fog attach="fog" args={['#191920', 0, 15]} />
       <Environment preset="city" />
       <group position={[0, -0.5, 0]} >
+        <Html className="content" rotation={[-Math.PI / 2,0,Math.PI / 2]} position={[0, 10, 0]} transform occlude>
+            <div className="Landing-container">
+              <div className="Landing-subtitle" >
+                <p className="Landing-subtitle">Build your own museums. </p><b/>
+                <p className="Landing-text"> Construct rooms, craft galleries, and share your work.</p>
+              </div>
+          </div>
+        </Html>
         <Frames images={images} />
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
           <planeGeometry args={[50, 50]} />
@@ -25,7 +33,7 @@ export default function Gallery({ images }) {
             blur={[300, 100]}
             resolution={450}
             mixBlur={1}
-            mixStrength={2}
+            mixStrength={5}
             roughness={10}
             depthScale={1.2}
             minDepthThreshold={0.0}

@@ -1,12 +1,13 @@
-import React, { Component, useEffect , useState} from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Link } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
 import { get } from "../../../utilities";
-import "./Navbar.css";
+// import "./Navbar.css";
+import "./Navbar.scss";
 import { Button } from "semantic-ui-react";
 import { useModal } from "react-hooks-use-modal";
-import ModalViewer from "../ModalViewer"
-import {  useLocation } from 'wouter'
+import ModalViewer from "../ModalViewer";
+import { useLocation } from "wouter";
 // This identifies your web application to Google's authentication service
 // const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
 const GOOGLE_CLIENT_ID = "486452721555-mv97gl89cqbdemntlnbugl44c72iphuv.apps.googleusercontent.com";
@@ -23,36 +24,74 @@ const NavBar = (props) => {
     }
   }, [props.userId]);
 
+
+  const [linkClassName,setLinkClassName] = useState("NavBar-link");
+
+
+
+  useEffect(() => {
+
+    const onScroll = () => {
+      if (window.scrollY > 0.8*window.innerHeight) {
+        setLinkClassName("NavBar-link--dark");
+      }else{
+        setLinkClassName("NavBar-link");
+      }
+
+      // if (window.scrollY > 1.3 * window.innerHeight) {
+      //   setSecondClassName("Landing-subtitle--large2");
+      //   setLandingTextSecondClassName("Landing-text--large");
+      // } else {
+      //   setSecondClassName("Landing-subtitle");
+      //   setLandingTextSecondClassName("Landing-text");
+      // }
+    };
+    // clean up code
+    window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
 
   const callback = () => {
-    setLocation('./profile');
-  }
+    setLocation("./profile");
+  };
+
+
+
   return (
-    <nav className="NavBar-container">
+    <nav className="NavBar">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
-      {(location != '/') ? (<div className="NavBar-title u-inlineBlock Navbar-item">
-        <Link to="/" className="u-link">Wander</Link>
-      </div>) : <Link to="/profile" className="u-link">My Wander</Link> }
-      <div className="NavBar-title u-inlineBlock Navbar-item">
-      {(props.userId) &&  <label className="u-link"  onClick={open}>
-          +Create Museum
-        </label>}
-        </div>
-        <div className="NavBar-title u-inlineBlock Navbar-item">
-          <Link to="/explore" className="u-link">Explore</Link>
-        </div>
-        <div className="NavBar-title u-inlineBlock Navbar-item">
-        {props.userId ? (
+      <div className="NavBar-links">
+          { 
+          location != "/" ? (
+              <Link to="/" className={linkClassName}>
+                Home
+              </Link>
+
+          ) : (
+            <Link to="/profile" className={linkClassName}>
+              My Wander
+            </Link>
+            ) 
+          }
+
+          <Link to="/explore" className={linkClassName}>
+            Explore
+          </Link>
+
+          {props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Logout"
             onLogoutSuccess={props.handleLogout}
             onFailure={(err) => console.log(err)}
-            className="NavBar-link NavBar-login Navbar-item"
+            className="NavBar-login Navbar-item"
           />
         ) : (
           <GoogleLogin
@@ -60,10 +99,18 @@ const NavBar = (props) => {
             buttonText="Login"
             onSuccess={(res) => props.handleLogin(res, callback)}
             onFailure={(err) => console.log(err)}
-            className="NavBar-link NavBar-login Navbar-item"
+            className="NavBar-login Navbar-item"
           />
         )}
       </div>
+
+      {/* <div className="NavBar-title u-inlineBlock Navbar-item">
+        {props.userId && (
+          <label className="u-link" onClick={open}>
+            +Create Museum
+          </label>
+        )}
+      </div> */}
     </nav>
   );
 };

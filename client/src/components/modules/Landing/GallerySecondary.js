@@ -74,7 +74,6 @@ export default function GallerySecondary() {
           <Scroll html>
             <h1 style={{ position: 'absolute', top: '20vh', left: '0vw', color:'grey' }}>Ask away.</h1>
             <h1 style={{ position: 'absolute', top: '20vh', left: '40vw', color:'grey'}}>Ask away.</h1>
-
           </Scroll>
         </ScrollControls>
         <Preload />

@@ -1,0 +1,96 @@
+// @import url('../../../variables.scss');
+@use "../../../variables.scss" as variables;
+
+
+
+@mixin link{
+  margin: 12px;
+  font-size: 18px;
+  color: variables.$gray-2;
+  font-weight: variables.$font-weight-semibold;
+  text-decoration: none;
+  text-transform: uppercase;
+  position: relative;
+}
+
+@mixin  linkBefore{
+
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: -6px;
+  left: 0;
+  background-color: variables.$primary-color;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+
+}
+
+
+.NavBar
+{
+  position: sticky;
+  top:1vw;
+  left:0;
+  z-index:999;
+
+  &-link
+  {
+    @include link;
+  }
+
+ /**
+  *https://tobiasahlin.com/blog/css-trick-animating-link-underlines/
+  *
+  **/
+  &-link::before
+  {
+      @include linkBefore;
+  }
+
+  &-link:hover::before
+  {
+    transform: scaleX(1);
+  }
+
+  &-link:hover
+  {
+    color: variables.$primary-color;
+  }
+
+
+  &-link--dark
+  {
+    @include link;
+
+    color: variables.$primary-color;
+  }
+
+  &-link--dark:hover{
+    color: variables.$white;
+  }
+
+  &-link--dark::before
+  {
+      @include linkBefore;
+
+      color: variables.$white;
+  }
+
+  &-link--dark:hover::before
+  {
+    background-color: variables.$white;
+
+    transform: scaleX(1);
+  }
+
+  &-links
+  {
+    margin-left: 8px;
+  }
+
+
+
+}

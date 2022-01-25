@@ -1,0 +1,60 @@
+.Landing
+{
+  &-containter
+  {
+    text-align: center;
+  }
+  
+  &-titleWrapper
+  {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+  }
+
+  &-subtitle
+  {
+    text-align: center;
+    font-size: 32px;
+    transition: ease-out 400ms;
+    transform: scale(1);
+    margin-top: 16px;
+  }
+
+  &-subtitle--large {
+    text-align: center;
+    transform: scale(4);
+    transition: ease-in 500ms;
+    font-weight: bold;
+  } 
+
+  &-subtitle--large2 {
+    text-align: center;
+    transform: scale(4);
+    transition: ease-in 500ms;
+    margin-top: 32px;
+    font-weight: bold;
+  } 
+
+  &-text
+  {
+    text-align: center;
+    font-size: 18px;
+    margin: 16px 0;
+    transform: scale(1);
+    font-weight: lighter;
+    transition: ease-out 400ms;
+  }
+
+  &-text--large
+  {
+    text-align: center;
+    margin-top: 64px;
+    margin-bottom: 32px;
+    transform: scale(2);
+    font-weight: lighter;
+    transition: ease-in 500ms;
+  }
+}
+
+
