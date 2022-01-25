@@ -25,9 +25,11 @@ import {Profile} from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Landing from "./pages/Landing";
 import UserApi from "../api/user";
+import ExternalPage from "./pages/External";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
 import MuseumView from "./modules/MuseumView.js";
+
 
 
 
@@ -124,19 +126,19 @@ class App extends React.Component {
         <Route path="/profile/:id">
           { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
         </Route>
-        <Route exact path="/museum/:id">
-          {this.state.user && ((params) => <FrameWorld id={params.id} />)}
-        </Route>
-        {/* <Route exact path="/museum">
-         <Landing />
-        </Route> */}
 
         <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
+
         <Route path="/room_1">
           <Rooms FirstName={this.state.firstname} HumanModel={Einstein} />
         </Route>
+
+        <Route path="/room_2">
+          <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
+        </Route>
+
         <Route exact path="/museum/edit/:id">
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
         </Route>
@@ -145,9 +147,6 @@ class App extends React.Component {
           {this.state.userId && ((params) => <MuseumView id={params.id} />)}
         </Route>
         
-        <Route path="/room_2">
-          <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
-        </Route>
         <Route path="/room_user_upload">
         {this.state.user && <Rooms FirstName={this.state.firstname} HumanModel={UserUpload} />}
         </Route>

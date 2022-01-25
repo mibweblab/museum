@@ -1,0 +1,254 @@
+@use "../../variables.scss" as variables;
+
+.Card
+{
+
+  padding:0;
+  margin: 16px;
+  width: 320px;
+  // box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; ;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
+  &:hover{
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  }
+
+  &-overlay
+  {
+    margin-top: 8px;
+  }
+
+
+  &-body
+  {
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+  }
+
+
+  &-icons
+  {
+    display: flex;
+  }
+
+  &-statusImage
+  {
+    width: 24px;
+    height: 24px;
+    // border-radius: 100%;
+  }
+
+  &-status
+  {
+    padding: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &-status::before{
+
+    content: "Public";
+    display: block;
+    height: 12px;
+    width: 100px;
+    transform: scale(0);
+    position: absolute;
+    bottom: -18px;
+    left: -6px;
+  }
+
+  &-statusPrivate
+  {
+    padding: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &-statusPrivate::before{
+
+    content: "Private";
+    display: block;
+    height: 12px;
+    width: 100px;
+    transform: scale(0);
+    position: absolute;
+    bottom: -18px;
+    left: -6px;
+  }
+
+  &-status:hover::before{
+
+    transform: scale(1);
+  }
+  &-statusPrivate:hover::before{
+
+    transform: scale(1);
+  }
+
+
+  &-thumb
+  {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 100%;
+    cursor:pointer;
+    padding: 4px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  }
+
+  &-thumb:hover
+  {
+    background-color: variables.$secondary-color;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
+
+  &-descriptionWrapper
+  {
+    margin:16px 0;
+  }
+
+  &-image
+  {
+    object-fit: cover;
+    width: 100%;
+    max-width: 320px;
+    max-height: 200px;
+  }
+  &-details
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-titleWrapper
+  {
+    display: flex;
+  }
+
+  &-title
+  {
+    font-size: 32px;
+    font-weight: variables.$font-weight-semibold;
+    color: variables.$gray-1;
+    margin-left: 12px;
+  }
+
+  &-description
+  {
+    width: 100%;
+    font-size: 18px;
+    font-weight: variables.$font-weight-light;
+    margin-top: 12px;
+    margin-left: 2px;
+  }
+
+  &-body
+  {
+
+  }
+
+  &-delete
+  {
+    padding: 2px;
+    position: relative;
+    // margin: 0 12px;
+    margin-left: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &-delete::before{
+
+    content: "Delete";
+    display: block;
+    height: 12px;
+    width: 100px;
+    transform: scale(0);
+    position: absolute;
+    bottom: -18px;
+    left: -4px;
+  }
+
+  &-delete:hover::before{
+
+    transform: scale(1);
+  }
+
+
+  &-edit
+  {
+    padding: 2px;
+    position: relative;
+    // margin: 0 12px;
+    margin-left: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &-editImage
+  {
+    width: 24px;
+    height: 24px;
+    // border-radius: 100%;
+  }
+
+  &-edit::before{
+
+    content: "Edit";
+    display: block;
+    height: 12px;
+    width: 100px;
+    transform: scale(0);
+    position: absolute;
+    bottom: -18px;
+    left: 2px;
+  }
+
+  &-edit:hover::before{
+
+    transform: scale(1);
+  }
+
+  &-enter
+  {
+    padding: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    cursor: pointer;
+  }
+
+  &-enterImage
+  {
+    width: 32px;
+    height: 32px;
+    transform: rotate(-180deg);
+    // border-radius: 100%;
+  }
+
+  &-enter::before{
+
+    content: "Visit";
+    display: block;
+    height: 12px;
+    width: 100px;
+    transform: scale(0);
+    position: absolute;
+    bottom: -18px;
+    left: 2px;
+  }
+
+  &-enter:hover::before{
+
+    transform: scale(1);
+  }
+}

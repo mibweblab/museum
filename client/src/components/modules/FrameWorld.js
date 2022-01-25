@@ -21,6 +21,12 @@ import {
 
 import { useControls } from "leva";
 import FrameCard from "./FrameDetails";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const mapStateToProps = (state) => {
   return {
@@ -237,7 +243,6 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
   // let currentFrameData = frame.filter
 
-  // console.log("this is the current frame", currentFrame);
   let [currentFrameData, setFrameData] = useState({
     name: "Click on a Frame",
     text: "You will see frame details when you click on a frame",
@@ -406,8 +411,6 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
       value: transformRef.current ? transformRef.current.object.userData.color : "#ffffff",
       onChange: (v) => {
         let userData = transformRef.current ? transformRef.current.object.userData : null;
-        // console.log("fish call back issue", userData);
-        // // console.log(transformRef)
         if (userData) {
           let { isEditable } = userData;
           if (isEditable) {
@@ -452,14 +455,12 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
     if (frameToTransform) {
       let currentFramesList = frames.filter((frame) => frame._id === frameToTransform);
       if (currentFramesList.length > 0) {
-        // console.log("this is my frames list", currentFramesList)
         setFrameData({ name: currentFramesList[0].name, text: currentFramesList[0].text });
       }
     }
   }, [currentMuseum, frameToTransform]);
 
-  //
-  // console.log(frameColor);
+
   useEffect(() => {
     let mounted = false;
     if (!mounted) {
@@ -475,14 +476,33 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   });
   let [modalType, setModalType] = useState("frame");
   const [textureIndex, setTextureType] = useState(currentMuseum ? currentMuseum.textureIndex : 0);
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackBar(false);
+  };
+
   const snap = useSnapshot(state);
+
+
 
   return (
     <>
+      <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
       <button
         className="FrameWorld-save"
         onClick={async () => {
-          console.log("am I clicking");
+
           let response = await MuseumAPI.editMuseumProperty(id, {
             intensity: intensity,
             backgroundColor: backgroundColor,
@@ -494,7 +514,10 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
             textureIndex: textureIndex,
           });
 
-          console.log("this is a response", response);
+          if (response) {
+            setOpenSnackBar(true);
+            setSnackBarMessage("Successfully updated frame property");
+          }
 
           let obj = {
             position: [

@@ -20,7 +20,7 @@ import {
 } from "../action";
 
 import { useControls } from "leva";
-import FrameCard from "./FrameDetails";
+import FrameCard from "./FrameCardView";
 
 const mapStateToProps = (state) => {
   return {

@@ -67,3 +67,4 @@ static async getUserProfileAndPublicMuseums(userId) {
     return false;
   }
 }
+}

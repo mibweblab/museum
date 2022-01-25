@@ -45,7 +45,7 @@
     left: 0;
     right: 0;
     z-index: 1;      
-    border-radius: calc(var(--curve) * 1px);    
+    /* border-radius: calc(var(--curve) * 1px);     */
     background-color: var(--surface-color);      
     transform: translateY(100%);
     transition: .2s ease-in-out;
@@ -83,7 +83,7 @@
   }       
   
   .card:hover .card__header {
-    transform: translateY(0);
+    transform: translateY(5);
   }
   
   .card__thumb {
@@ -117,10 +117,10 @@
     margin: 0;
     color: #D7BDCA;
     font-family: "MockFlowFont";   
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
+    /* display: -webkit-box; */
+    /* -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; */
+    /* overflow: hidden; */
   }    
 #card__button {
   width: 100%;

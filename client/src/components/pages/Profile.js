@@ -40,31 +40,6 @@ const UserProfile = ({user, isCurrentUser, museumCount, editUserFunction}) => {
 </div>)
 }
 
-<<<<<<< HEAD
-  return (
-    <>
-      <div className="card Profile-shadow" to={`/museum/`+ _id }>
-      <Link id="card__button_cta" to={`/museum/edit/`+_id}>Edit </Link>
-      <Link id="card__button" to={`/museum/view/`+_id} >Visit</Link>
-        <img src={imageUrl} className="card__image"/>
-          <div className="card__overlay">
-            <div className="card__header">
-              <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
-              <img className="card__thumb" src={userImageUrl} alt="" />
-              <div className="card__header-text">
-                <h3 className="card__title">{name}</h3>            
-              <span className="card__status">1 hour ago</span><br/>
-              <span className="card__status">{(isPrivate) ? "Private" : "Public"}</span>
-            </div>
-          </div>
-      </div>
-      
-      </div>
-      
-    </>
-    
-=======
->>>>>>> origin/jpearl-ui-25
 
 
 const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunction}) => {

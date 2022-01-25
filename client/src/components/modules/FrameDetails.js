@@ -42,7 +42,6 @@ export default function FrameCard({ name, text, frameToTransform, dispatch, pare
   const nameRef = useRef();
   const textRef = useRef();
 
-//   console.log("No current frame here", currentFrame)
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -68,6 +67,26 @@ export default function FrameCard({ name, text, frameToTransform, dispatch, pare
       className="FrameCard"
       flipDirection="vertical"
     >
+      <Card sx={{ width: 345 }}>
+        <CardHeader
+          action={
+            <IconButton aria-label="edit" onClick={() => setIsFlipped(!isFlipped)}>
+              <EditIcon />
+            </IconButton>
+          }
+          title={internalName}
+        />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {internalText}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton aria-label="share">
+            <DeleteIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
       <Card sx={{ width: 345 }} className="Card">
         <CardHeader
           action={
@@ -131,27 +150,6 @@ export default function FrameCard({ name, text, frameToTransform, dispatch, pare
             aria-label="share"
           >
             <SaveIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
-
-      <Card sx={{ width: 345 }}>
-        <CardHeader
-          action={
-            <IconButton aria-label="edit" onClick={() => setIsFlipped(!isFlipped)}>
-              <EditIcon />
-            </IconButton>
-          }
-          title={internalName}
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {internalText}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="share">
-            <DeleteIcon />
           </IconButton>
         </CardActions>
       </Card>
