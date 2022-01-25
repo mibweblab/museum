@@ -34,7 +34,7 @@ const mapStateToProps = (state) => {
 };
 
 import Model from "./Ploid";
-import Frame from "./Frame";
+import Frame from "./FrameView";
 import Controls from "./Controls";
 import ModalViewer from "./ModalViewer";
 import { addFrameToQueue } from "../action";

@@ -56,19 +56,25 @@ const Frame = ({
     <group rotation={props.rotation}>
       <mesh
         name={name}
-        onPointerOver={(e) => (e.stopPropagation(), hover(true))}
+        onPointerOver={(e) => (e.stopPropagation(), hover(true), dispatch(addCurrentFrame(collective)) ,dispatch(addCurrentImage(image)))}
         onPointerOut={() => hover(false)}
+        scale={[1, GOLDENRATIO, 0.05]}
+        position={[0, GOLDENRATIO / 2, 0]}
         ref={collective}
         userData={{ isEditable: frameToTransform === _id, mode: mode, name: name,text:props.text,frameMesh: frameMesh , frameImage: image}}
         scale={props.scale}
-        position={props.position}       
+        position={props.position} 
         onClick={(e) => {
-          e.stopPropagation();
-          dispatch(addFrameToTransform(_id));
-          dispatch(addCurrentFrame(collective));
-          dispatch(addCurrentImage(image));
+        //   e.stopPropagation();
+        //   dispatch(addFrameToTransform(_id));
+        //   dispatch(addCurrentFrame(collective));
+        //   dispatch(addCurrentImage(image));
         }}
+        // onWheel={()=>image.current.material.zoom =image.current.material.zoom - 0.1}
         name={_id}
+        // onClick={(e) => (e.stopPropagation(), (state.current = props._id))}
+        // If a click happened but this mesh wasn't hit we null out the target,
+        // This works because missed pointers fire before the actual hits
         // onPointerMissed={(e) => e.type === "click" && dispatch(addFrameToTransform(""))}
       >
         <boxGeometry />

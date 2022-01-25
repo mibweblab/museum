@@ -2,7 +2,7 @@ import * as THREE from "three";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import "./FrameWorld.scss";
 import { useModal } from "react-hooks-use-modal";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import {
   Environment,
   OrbitControls,
@@ -39,13 +39,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-import Model from "./Ploid";
 import Frame from "./Frame";
-import Controls from "./Controls";
 import ModalViewer from "./ModalViewer";
 import { addFrameToQueue } from "../action";
 import APIInterface from "../../api/api";
-// import API from "../../api/museum";
 import ConversationAPI from  "../../api/conversation";
 import MuseumAPI from "../../api/museum";
 
@@ -60,10 +57,6 @@ const state = proxy({
   frameExists: false,
 });
 
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
-};
 
 const ToggleTransforms = () => {
   const mode = useSelector((state) => state.mode);
@@ -141,7 +134,6 @@ const ToggleTransforms = () => {
 function Frames({ frames, frameToTransform, mode, dispatch }) {
   const ref = useRef();
 
-  // console.log("these are the frames", frames);
   useEffect(() => {}, [frameToTransform, mode]);
   useFrame((state, dt) => {});
 
@@ -499,76 +491,74 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           {snackBarMessage}
         </Alert>
       </Snackbar>
-      <button
-        className="FrameWorld-save"
-        onClick={async () => {
+      <div className="FrameWorld-topNav">
+          <button onClick={open} className="FrameWorld-framer">Add Frame</button>
+          <button
+            className="FrameWorld-save"
+            onClick={async () => {
 
-          let response = await MuseumAPI.editMuseumProperty(id, {
-            intensity: intensity,
-            backgroundColor: backgroundColor,
-            fogColor: fogColor,
-            planeLength: planeLength,
-            planeWidth: planeWidth,
-            planeColor: planeColor,
-            planeStrength: planeStrength,
-            textureIndex: textureIndex,
-          });
+              let response = await MuseumAPI.editMuseumProperty(id, {
+                intensity: intensity,
+                backgroundColor: backgroundColor,
+                fogColor: fogColor,
+                planeLength: planeLength,
+                planeWidth: planeWidth,
+                planeColor: planeColor,
+                planeStrength: planeStrength,
+                textureIndex: textureIndex,
+              });
 
-          if (response) {
-            setOpenSnackBar(true);
-            setSnackBarMessage("Successfully updated frame property");
-          }
-
-          let obj = {
-            position: [
-              transformRef.current ? transformRef.current.object.position.x : 0,
-              transformRef.current ? transformRef.current.object.position.y : 0,
-              transformRef.current ? transformRef.current.object.position.z : 0,
-            ],
-            rotation: [
-              transformRef.current ? transformRef.current.object.rotation.x : 0,
-              transformRef.current ? transformRef.current.object.rotation.y : 0,
-              transformRef.current ? transformRef.current.object.rotation.z : 0,
-            ],
-            scale: [
-              transformRef.current ? transformRef.current.object.scale.x : 1,
-              transformRef.current ? transformRef.current.object.scale.y : 1,
-              transformRef.current ? transformRef.current.object.scale.z : 1,
-            ],
-            frameColor:
-              "#" +
-              transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
-            imageZoomRatio: transformRef.current
-              ? transformRef.current.object.userData.frameImage.current
-                ? transformRef.current.object.userData.frameImage.current.material.zoom
-                : 0
-              : 0,
-          };
-
-          console.log(obj);
-
-          // let color = transformRef?.current?.object?.userData?.frameMesh?.current?.color;
-          // if (color){
-          //   console.log("let's color", transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString())
-          //   // console.log(color.getHexString())
-          // }
-          // console.log("I'm here", transformRef.current)
-          if (transformRef.current) {
-            if (transformRef.current.object.userData) {
-              if (transformRef.current.object.userData.isEditable) {
-                console.log("this is the ibject tryna save", obj);
-                let frameResponse = await APIInterface.editFrameProperty(
-                  transformRef.current.object.name,
-                  obj
-                );
+              if (response) {
+                setOpenSnackBar(true);
+                setSnackBarMessage("Successfully updated frame property");
               }
-            }
-          }
-        }}
-      >
-        {" "}
-        Save{" "}
-      </button>
+
+              let obj = {
+                position: [
+                  transformRef.current ? transformRef.current.object.position.x : 0,
+                  transformRef.current ? transformRef.current.object.position.y : 0,
+                  transformRef.current ? transformRef.current.object.position.z : 0,
+                ],
+                rotation: [
+                  transformRef.current ? transformRef.current.object.rotation.x : 0,
+                  transformRef.current ? transformRef.current.object.rotation.y : 0,
+                  transformRef.current ? transformRef.current.object.rotation.z : 0,
+                ],
+                scale: [
+                  transformRef.current ? transformRef.current.object.scale.x : 1,
+                  transformRef.current ? transformRef.current.object.scale.y : 1,
+                  transformRef.current ? transformRef.current.object.scale.z : 1,
+                ],
+                frameColor:
+                  "#" +
+                  transformRef?.current?.object?.userData?.frameMesh?.current?.color.getHexString(),
+                imageZoomRatio: transformRef.current
+                  ? transformRef.current.object.userData.frameImage.current
+                    ? transformRef.current.object.userData.frameImage.current.material.zoom
+                    : 0
+                  : 0,
+              };
+
+              console.log(obj);
+              if (transformRef.current) {
+                if (transformRef.current.object.userData) {
+                  if (transformRef.current.object.userData.isEditable) {
+                    console.log("this is the ibject tryna save", obj);
+                    let frameResponse = await APIInterface.editFrameProperty(
+                      transformRef.current.object.name,
+                      obj
+                    );
+                  }
+                }
+              }
+            }}
+          >
+            {" "}
+            Save{" "}
+          </button>
+      </div>
+
+
       <ModalViewer
         Modal={Modal}
         open={open}
@@ -577,7 +567,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
         snap={snap}
         modalType={modalType}
       />
-      <Controls openModal={open} setModalType={setModalType} />
+
       <FrameCard
         dispatch={dispatch}
         currentFrame={currentFrame}
@@ -586,6 +576,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
         parentId={id}
         frameToTransform={frameToTransform}
       />
+
       <ToggleTransforms dispatch={dispatch} mode={mode} />
       <TextureSelector setTextureType={setTextureType} />
       <Canvas gl={{ alpha: false }} dpr={[1, 2]} ref={ref}>
@@ -610,7 +601,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                 e.stopPropagation();
                 const [x, y, z] = Object.values(e.point).map((coord) => Math.ceil(coord));
                 if (queuedFrame) {
-                  queuedFrame.position = [x, y, z];
+                  queuedFrame.position = [x, GOLDENRATIO/2, z];
                   queuedFrame.rotation = [0, 0, 0];
                   queuedFrame.scale = [1, GOLDENRATIO, 0.05];
                   queuedFrame.imageZoomRatio = 1;

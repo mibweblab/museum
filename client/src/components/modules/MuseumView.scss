@@ -1,42 +1,8 @@
 .FrameWorld {
-  &-save {
-    position: absolute;
-    top: 4vw;
-    left: 6vw;
-    z-index: 999;
-    border: none;
-    outline: none;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background-color: #028a0f;
-    color: white;
-  }
 
-  &-save:hover {
-    background-color: #234f1e;
-  }
-
-  &-saveFrame {
-    position: absolute;
-    top: 4vw;
-    left: 12vw;
-    z-index: 999;
-    border: none;
-    outline: none;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background-color: #028a0f;
-    color: white;
-  }
-
-  &-saveFrame:hover {
-    background-color: #234f1e;
-  }
 }
+
+
 .btn {
   position: absolute;
   top: 120px;
