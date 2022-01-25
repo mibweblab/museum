@@ -3,8 +3,7 @@ const router = express.Router();
 const { isUserLoggedIn } = require("../middleware/frame");
 
 const {
-    editUser,
-
+    editUserFunction,
 } = require("../auth")
 
 
@@ -19,7 +18,7 @@ router.patch("/:userId", [isUserLoggedIn], async (req, res) => {
   let userId = req.params.userId;
   let  data  = req.body;
 
-  let response = await editUser(userId, data);
+  let response = await editUserFunction(userId, data);
   if (response){
 
     req.session.user = data;

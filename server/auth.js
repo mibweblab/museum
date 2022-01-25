@@ -33,7 +33,7 @@ function getOrCreateUser(user) {
   });
 }
 
-async function editUser(userId, data ) {
+async function editUserFunction(userId, data ) {
   try {
       let updatedUser = await User.updateOne({_id:userId},data )
       return updatedUser;
@@ -80,5 +80,5 @@ module.exports = {
   logout,
   populateCurrentUser,
   ensureLoggedIn,
-  editUser,
+  editUserFunction,
 };

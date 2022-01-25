@@ -1,14 +1,14 @@
 import React,  { useState, useEffect }  from "react";
 import { Button } from "semantic-ui-react";
-import {Link} from "@reach/router"
+import {Link, navigate} from "@reach/router"
 import {Card} from "react-bootstrap"
 import './Profile.scss';
-import { MuseumCard } from "./Profile";
+import { MuseumCard } from "./Card";
 
 import MuseumInterface from "../../api/museum";
 
 
-const Explore = ({LogInStatus}) => {
+const Explore = ({currentUserId }) => {
     const [allPublicMuseums, setAllPublicMuseums] = useState([]);
 
     const retrievePublicMuseums = async () => {
@@ -20,14 +20,13 @@ const Explore = ({LogInStatus}) => {
         retrievePublicMuseums()
     }, []);
 
-
-    console.log(LogInStatus)
   return (
     <div className="Profile">
-      {LogInStatus ? <Link to="/profile">My Wander</Link> : <Link to="/">Create Your Own</Link>}
-      <div className="Profile-museums">
+      <div className="Profile-user">
+      </div>
+      <div className="Profile-museums cards">
         {allPublicMuseums.map(
-          (props,index) => <MuseumCard key={props._id} {...props}/> /* prettier-ignore */
+          (props,index) => <MuseumCard key={props._id} {...props} navigate={navigate} isCurrentUser={props.userId== currentUserId} /> /* prettier-ignore */
         )}
       </div>
     </div>

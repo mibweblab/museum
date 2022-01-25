@@ -64,11 +64,8 @@ class App extends React.Component {
   async componentDidMount() {
     get("/api/whoami").then(async (user) => {
       if (user._id) {
-
         // they are registed in the database, and currently logged in.
         this.setState({ user: user, firstName: user.firstname, userId: user._id });
-
-
         await this.getAllMuseums();
       }
     });
@@ -97,7 +94,7 @@ class App extends React.Component {
     post("/api/logout");
   };
 
-  editUser = async(data) => {
+  editUserFunction = async(data) => {
     let userEdited = await UserApi.updateUser(this.state.user._id, data);
     this.setState({ 
       user: data, 
@@ -120,10 +117,19 @@ class App extends React.Component {
         </Route>
 
         <Route path="/profile">
-          {this.state.user && <Profile museums={this.props.museums} user={this.state.user} editUser={this.editUser}/>}
+          {this.state.user && <Profile museums={this.props.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
 
           {!this.state.user && <div>Sign In to View</div>}
         </Route>
+        <Route path="/profile/:id">
+          { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
+        </Route>
+        <Route exact path="/museum/:id">
+          {this.state.user && ((params) => <FrameWorld id={params.id} />)}
+        </Route>
+        {/* <Route exact path="/museum">
+         <Landing />
+        </Route> */}
 
         <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
@@ -149,7 +155,7 @@ class App extends React.Component {
           {this.state.user && ((params) => <Rooms FirstName={this.state.firstname} HumanModel={UserUpload} FrameId={params.id} />)}
         </Route>
         <Route exact path="/explore">
-          <Explore LogInStatus={(this.state.user != undefined)} />
+          <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
       </>
     );

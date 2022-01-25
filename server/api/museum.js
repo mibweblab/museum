@@ -35,7 +35,7 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
  */
 router.get("/", [isUserLoggedIn], async (req, res) => {
   let userId = req.session.user._id;
-  let allMuseums = await getAllMuseums(userId);
+  let allMuseums = await getAllMuseums(userId, false);
   if (allMuseums) {
     res.send(allMuseums);
   } else {
@@ -81,6 +81,16 @@ router.get("/explore", [], async (req, res) => {
   let allPublicMuseums = await getAllPublicMuseums();
   if (allPublicMuseums) {
     res.send(allPublicMuseums);
+  } else {
+    res.status(401).send({});
+  }
+});
+
+router.get("/profile/:userId", [], async (req, res) => {
+  let userId = req.params.userId;
+  let userPublicMuseums = await getAllMuseums(userId, true);
+  if (userPublicMuseums) {
+    res.send(userPublicMuseums);
   } else {
     res.status(401).send({});
   }

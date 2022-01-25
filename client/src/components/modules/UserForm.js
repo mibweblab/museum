@@ -16,7 +16,7 @@ import { addMuseum } from "../action";
 //   };
 // };
 
-const UserForm = ({ dispatch, user, close, editUser }) => {
+const UserForm = ({ user, close, editUserFunction }) => {
   const [firstname, setfirstname] = useState(user.firstname);
   const [lastname, setlastname] = useState(user.lastname);
   const [description, setDescription] = useState(user.description);
@@ -48,8 +48,6 @@ const UserForm = ({ dispatch, user, close, editUser }) => {
         console.log("err", err);
       });
   };
-  console.log('HI')
-  console.log(editUser)
   return (
     <div className="MuseumForm">
       <div className="MuseumForm-row-group">
@@ -81,7 +79,8 @@ const UserForm = ({ dispatch, user, close, editUser }) => {
                 imageUrl, 
                 description
               }
-              editUser(data)
+              editUserFunction(data)
+              close()
             }
           }
         >
