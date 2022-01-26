@@ -8,7 +8,7 @@ import "./../pages/Skeleton.js"
 import APIInterface from "../../api/api";
 const maxTokens = 1000;
 const maxResponseLen = 200;
-const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
+const apiKey = REACT_APP_OPEN_AI_KEY;
 
 
 export default class GPT3_Integrated extends Component {

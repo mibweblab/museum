@@ -2,7 +2,7 @@ import axios from "axios";
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-    apiKey: process.env.REACT_APP_OPEN_AI_KEY,
+    apiKey: REACT_APP_OPEN_AI_KEY,
   });
 
 const maxTokens = 1000;  
