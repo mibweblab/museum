@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import { Link, navigate } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
+import { Dropdown } from "react-bootstrap";
 import { get } from "../../../utilities";
 // import "./Navbar.css";
 import "./Navbar.scss";
@@ -71,7 +72,18 @@ const NavBar = (props) => {
         <Link to="/explore" className={linkClassName}>
           Explore
         </Link>
+        <Link to="/room_0" className={linkClassName}>
+          Shakespeare
+        </Link>
+        <Link to="/room_1" className={linkClassName}>
+          Einstein
+        </Link>
+        <Link to="/room_2" className={linkClassName}>
+          Musk
+        </Link>
+ 
 
+ 
         {props.userId && (
           <button className="NavBar-create" onClick={open}>
             +Create Museum
