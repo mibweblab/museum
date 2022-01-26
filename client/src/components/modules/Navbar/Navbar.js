@@ -70,16 +70,16 @@ const NavBar = (props) => {
         </Link>
 
         <Link to="/explore" className={linkClassName}>
-          Explore Museums
+          Explore
         </Link>
         <Link to="/room_0" className={linkClassName}>
-          Shakespeare's Room
+          Shakespeare
         </Link>
         <Link to="/room_1" className={linkClassName}>
-          Einstein's Room
+          Einstein
         </Link>
-        <Link to="/room_0" className={linkClassName}>
-          Musk's Room
+        <Link to="/room_2" className={linkClassName}>
+          Musk
         </Link>
  
 
