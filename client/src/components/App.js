@@ -116,12 +116,12 @@ class App extends React.Component {
         </Route>
 
         <Route path="/profile">
-          {this.state.user && <Profile museums={this.props.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
+          {this.state.user && <Profile museums={this.state.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
 
           {!this.state.user && <div>Sign In to View</div>}
         </Route>
         <Route path="/profile/:id">
-          { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
+          { ((params) => (<Profile museums={this.state.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
         </Route>
 
         <Route path="/room_0">
