@@ -88,10 +88,16 @@ const Landing = ({}) => {
             <div className="Landing-titleWrapper">
               <span className={secondClassName}>Conversations</span>
               <span className={landingTextSecondClassName}>
-                Build conversation rooms and chat with prominent figures
+                Taken from our favorite films, enter conversation rooms and chat with prominent figures
               </span>
             </div>
           </div>
+          <div className='Landing-flex'>
+            <img className='Landing-gif Landing-gifleft' src={'/hpotter/gif1.gif'} alt="loading..." />
+            <img className='Landing-logo Landing-giflogo' src={'/hpotter/logo.jpeg'} alt="loading..." />
+            <img className='Landing-gif Landing-gifright' src={'/hpotter/gif2.gif'} alt="loading..." />
+          </div>
+
           <GallerySeconadry />
         </>
       </Suspense>
