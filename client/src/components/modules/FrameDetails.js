@@ -21,8 +21,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
 import "./FrameCard.scss";
-import { addCurrentFrame, editCurrentFrame, addInitialFrames } from "../action";
+import { deleteCurrentFrame, addCurrentFrame , addFrameToTransform} from "../action";
 import APIInterface from "../../api/api";
+
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -127,7 +128,16 @@ export default function FrameCard({ name, text, frameToTransform, dispatch, pare
           />
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="share">
+          <IconButton onClick={async ()=>{
+             if (currentFrame?.current?.userData?.id){      
+                let response = await APIInterface.deleteFrame(currentFrame?.current?.userData?.id)
+                if (response){
+                  dispatch(deleteCurrentFrame(currentFrame?.current?.userData?.id));
+                  dispatch(addCurrentFrame(null))
+                  dispatch(addFrameToTransform(""))
+                }
+             }
+          }} aria-label="share">
             <DeleteIcon />
           </IconButton>
           <IconButton

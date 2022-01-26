@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addConversation, editConversation, deleteConversation, getConversation } = require("../controllers/conversation");
-const { isUserLoggedIn } = require("../middleware/frame");
+const { isUserLoggedIn, doesFrameExist } = require("../middleware/index");
 
 /**
  *
@@ -33,7 +33,7 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
  * gets conversation associated with a frameId 
  *
  */
-router.get("/:frameId", [isUserLoggedIn], async (req, res) => {
+router.get("/:frameId", [isUserLoggedIn, doesFrameExist], async (req, res) => {
   let frameId= req.params.frameId;
   let conversationFound = await getConversation(frameId);
   if (conversationFound) {
@@ -67,7 +67,7 @@ router.patch("/:conversationId", async (req, res) => {
  * deletes a specific conversation with frameId
  *
  */
-router.delete("/:frameId", async (req, res) => {
+router.delete("/:frameId", [isUserLoggedIn, doesFrameExist],async (req, res) => {
   let frameId = req.params.frameId;
   let response = await deleteConversation(frameId);
   if (response) {

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addFrame, editFrame, deleteFrame, getAllFrames } = require("../controllers/frame");
-const { isUserLoggedIn } = require("../middleware/frame");
+const { isUserLoggedIn, doesFrameExist, doesMuseumExist } = require("../middleware/index");
 
 /**
  *
@@ -39,9 +39,9 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
  * gets all frames associated with a user museumId
  *
  */
-router.get("/:parentId", [isUserLoggedIn], async (req, res) => {
-  let parentId= req.params.parentId;
-  let allFrames = await getAllFrames(parentId);
+router.get("/:museumId", [isUserLoggedIn, doesMuseumExist], async (req, res) => {
+  let museumId= req.params.museumId;
+  let allFrames = await getAllFrames(museumId);
   if (allFrames) {
     res.send(allFrames);
   } else {
@@ -55,7 +55,7 @@ router.get("/:parentId", [isUserLoggedIn], async (req, res) => {
  * edits a specific frame 's property with a frameId
  *
  */
-router.patch("/:frameId", async (req, res) => {
+router.patch("/:frameId", [isUserLoggedIn, doesFrameExist],async (req, res) => {
 
   let frameId = req.params.frameId;
   let data  = req.body;
@@ -74,7 +74,7 @@ router.patch("/:frameId", async (req, res) => {
  * deletes a specific frame with frameId
  *
  */
-router.delete("/:frameId", async (req, res) => {
+router.delete("/:frameId",[isUserLoggedIn, doesFrameExist],async (req, res) => {
   let frameId = req.params.frameId;
   let response = await deleteFrame(frameId);
   if (response) {

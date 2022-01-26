@@ -93,7 +93,7 @@ const MuseumForm = ({ dispatch, close }) => {
         <TextField
           error={isNameError}
           onChange={(e) => {
-            if (e.target.value.length<=40){
+            if (e.target.value.length<=25){
               setName(e.target.value);
               setCharacterLength(e.target.value.length);
               setNameError(false)
@@ -107,7 +107,7 @@ const MuseumForm = ({ dispatch, close }) => {
           label="Name"
           variant="standard"
           className="Museum-textField"
-          helperText={nameCharacterLength + " / 40"}
+          helperText={nameCharacterLength + " /25"}
         />
       </div>
       <div className="MuseumForm-group">
@@ -121,9 +121,9 @@ const MuseumForm = ({ dispatch, close }) => {
           placeholder="Tell us more"
           variant="standard"
           className="Card-field"
-          helperText={descriptionCharacterLength + " /400"}
+          helperText={descriptionCharacterLength + " /100"}
           onChange={(e) => {
-            if (e.target.value.length<=400){
+            if (e.target.value.length<=100){
               setDescription(e.target.value)
               setDescriptionCharacterLength(e.target.value.length);
               setDescriptionError(false)

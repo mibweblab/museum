@@ -35,13 +35,21 @@ export default class FrameAPI {
 
   static async getAllFrames(parentId) {
     try {
-      // console.log("firing api")
       let frames = await axios.get("/api/frame/"+parentId);
       return frames;
     } catch (error) {
       return false;
     }
   }
+  static async deleteFrame(id) {
+    try {
+      let frame = await axios.delete("/api/frame/" + id);
+      return frame;
+    } catch (error) {
+      return false;
+    }
+  }
+
   static async editFrameProperty(id,data) {
     console.log("what am I sending", data)
     try {

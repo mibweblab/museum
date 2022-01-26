@@ -59,7 +59,7 @@ const Frame = ({
         onPointerOver={(e) => (e.stopPropagation(), hover(true))}
         onPointerOut={() => hover(false)}
         ref={collective}
-        userData={{ isEditable: frameToTransform === _id, mode: mode, name: name,text:props.text,frameMesh: frameMesh , frameImage: image}}
+        userData={{ isEditable: frameToTransform === _id, id: _id,mode: mode, name: name,text:props.text,frameMesh: frameMesh , frameImage: image}}
         scale={props.scale}
         position={props.position}       
         onClick={(e) => {

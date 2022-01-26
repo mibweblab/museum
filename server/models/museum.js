@@ -45,6 +45,7 @@ const MuseumSchema = new mongoose.Schema({
     default: 0,
     type: Number,
   },
+  dateModified: Date
 });
 
 // compile model from schema

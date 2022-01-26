@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
 import { get } from "../../../utilities";
 // import "./Navbar.css";
@@ -60,15 +60,13 @@ const NavBar = (props) => {
     <nav className="NavBar">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
       <div className="NavBar-links">
-        {location != "/" ? (
-          <Link to="/" className={linkClassName}>
-            Home
-          </Link>
-        ) : (
-          <Link to="/profile" className={linkClassName}>
-            My Wander
-          </Link>
-        )}
+        <Link to="/" className={linkClassName}>
+          Home
+        </Link>
+
+        <Link to="/profile" className={linkClassName}>
+          My Wander
+        </Link>
 
         <Link to="/explore" className={linkClassName}>
           Explore

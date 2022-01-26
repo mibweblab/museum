@@ -153,7 +153,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   const [lastNameCharacterLength, setLastNameCharacterLength] = useState(0);
   const [figureDescriptionCharacterLength, setFigureDescriptionCharacterLength] = useState(0);
   const [descriptionCharacterLength, setDescriptionCharacterLength] = useState(0);
-  const [frameTextCharacterLength, setFrameTextCharacterLength] = useState(9)
+  const [frameTextCharacterLength, setFrameTextCharacterLength] = useState(0);
 
   // text field errors
   const [isFrameTextError, setFrameTextError] = useState(false);
@@ -162,6 +162,20 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
   const [isLastNameError, setLastNameError] = useState(false);
   const [isFigureDescriptionError, setFigureDescriptionError] = useState(false);
   const [isDescriptionError, setDescriptionError] = useState(false);
+
+
+  //snack bar alerts
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
 
   const handleUpload = () => {
     const storageRef = ref(storage, `images/${image.name}`);
@@ -185,6 +199,11 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
 
   return (
     <div className="FrameCustomizer">
+      <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
       <div className="FrameCustomizer-title">ADD FRAME</div>
       <div className="FrameCustomizer-wrapper">
         <div className="FrameCustomizer-canvas">
@@ -247,30 +266,29 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
               helperText={nameCharacterLength + " / 40"}
             />
           </div>
-          
-          <div className="FrameCustomizer-group">
-          <TextField
-                error={isFrameTextError}
-                id="standard-multiline-static"
-                label="Frame Description"
-                multiline
-                rows={4}
-                fullWidth
-                placeholder="A brief description about the frame"
-                variant="standard"
-                className="Card-field"
-                helperText={frameTextCharacterLength + " /400"}
-                onChange={(e) => {
-                  if (e.target.value.length <= 400) {
-                    setFrameText(e.target.value);
-                    setFrameTextCharacterLength(e.target.value.length);
-                    setFrameTextError(false);
-                  } else {
-                    setFrameTextError(true);
-                  }
-                }}
-              />
 
+          <div className="FrameCustomizer-group">
+            <TextField
+              error={isFrameTextError}
+              id="standard-multiline-static"
+              label="Frame Description"
+              multiline
+              rows={4}
+              fullWidth
+              placeholder="A brief description about the frame"
+              variant="standard"
+              className="Card-field"
+              helperText={frameTextCharacterLength + " /400"}
+              onChange={(e) => {
+                if (e.target.value.length <= 400) {
+                  setFrameText(e.target.value);
+                  setFrameTextCharacterLength(e.target.value.length);
+                  setFrameTextError(false);
+                } else {
+                  setFrameTextError(true);
+                }
+              }}
+            />
           </div>
           <div className="FrameCustomizer-group">
             <Dropdown
@@ -282,7 +300,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
               options={options}
             />
           </div>
-          {(type == "premade_conversation" || type == "conversation") && ( // if it's true return the actual JSX
+          {(type === "premade_conversation" || type === "conversation") && ( // if it's true return the actual JSX
             <div className="FrameCustomizer-group  FrameCustomizer-figureGroup">
               <Dropdown
                 placeholder="Select Figure"
@@ -372,7 +390,10 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
             <input type="file" className="MuseumForm-inputFile" onChange={handleChange} />
             <button className="MuseumForm-uploadButton" onClick={handleUpload}>
               Image
-              <img className="MuseumForm-uploadImage"src="https://img.icons8.com/external-bearicons-blue-bearicons/64/000000/external-upload-call-to-action-bearicons-blue-bearicons.png"/>
+              <img
+                className="MuseumForm-uploadImage"
+                src="https://img.icons8.com/external-bearicons-blue-bearicons/64/000000/external-upload-call-to-action-bearicons-blue-bearicons.png"
+              />
             </button>
           </div>
 
@@ -380,36 +401,73 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
             <button
               className="FrameCustomizer-button"
               onClick={() => {
-                if (
-                  type == "conversation" &&
-                  (firstName == "" || lastName == "" || description == "")
-                ) {
-                  setShowErrorMessage(true);
-                } else {
+                if (firstNameCharacterLength === 0 && type === "conversation") {
+                  setFirstNameError(true);
+                } 
+                // else {
+                //   setFirstNameError(false);
+                // }
+
+                if (type === "conversation" && lastNameCharacterLength === 0) {
+                  setLastNameError(true);
+                } 
+                // else {
+                //   setLastNameError(false);
+                // }
+
+                if (type === "conversation" && descriptionCharacterLength === 0) {
+                  setDescriptionError(true);
+                } 
+                
+                // else {
+                //   setDescriptionError(false);
+                // }
+
+                if (nameCharacterLength === 0) {
+                  setNameError(true);
+                } 
+                
+                // else {
+                //   setNameError(false);
+                // }
+
+                if (frameTextCharacterLength === 0) {
+                  setFrameTextError(true);
+                } 
+
+                // console.log("this is the length of the frame ",frameTextCharacterLength)
+                
+                // else {
+                //   setFrameTextError(false);
+                // }
+
+                let generalPass = !(nameCharacterLength === 0 || frameTextCharacterLength === 0);
+                let conversationFilterPass = !(
+                  type === "conversation" &&
+                  (firstNameCharacterLength === 0 ||
+                    lastNameCharacterLength === 0 ||
+                    descriptionCharacterLength === 0)
+                );
+
+                if (conversationFilterPass && generalPass) {
                   dispatch(
                     addFrameToQueue({
                       name: name,
                       url: imageUrl,
                       color: shot.color,
                       type: type,
-                      text: "",
+                      text: frameText,
                       figure: figure,
                       firstName: firstName,
                       lastName: lastName,
                       description: description,
                     })
                   );
-                  dispatch(
-                    addFrameToQueue({
-                      name: name,
-                      url: imageUrl,
-                      color: shot.color,
-                      type: type,
-                      text: "",
-                    })
-                  );
                   dispatch(dequeueFrame(true));
-                  close();
+                  setOpenSnackBar(true);
+                  setSnackBarMessage("Click on the plane to add frame");
+                  setTimeout(close,5000);
+                } else {
                 }
               }}
             >

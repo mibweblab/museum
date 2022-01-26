@@ -79,18 +79,19 @@ const reducer = (state = initialState, action) => {
       let { id, name, text } = action.payload;
       let frames = state.frames.filter((f) => f._id === id);
       let isolatedFrames = state.frames.filter((f) => f._id !== id);
-   
+
       if (frames.length > 0) {
         let frame = frames[0];
         frame.name = name;
         frame.text = text;
       }
-
       let combinedFrames = isolatedFrames.concat(frames);
+      return { ...state, frames: combinedFrames };
 
-
-      return { ...state, frames:combinedFrames};
-
+    case "DELETE_CURRENT_FRAME":
+      let frameId = action.payload;
+      let filteredFrames = state.frames.filter((f) => f._id !== frameId);
+      return { ...state, frames: filteredFrames };
     default:
       return state;
   }

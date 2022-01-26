@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isUserLoggedIn } = require("../middleware/frame");
+const { isUserLoggedIn } = require("../middleware/index");
 
 const {
     editUserFunction,

@@ -1,29 +1,51 @@
 .Profile
 {
+  margin-top: 108px;
+
   &-museums
   {
     display: flex;
     flex-wrap: wrap-reverse;
   }
 
+  // &-user
+  // {
+  //   // background-color: blue;
+  //   height:fit-content;
+  //   margin: 4rem 0vw;
+  //   padding: 1vw 5vw;
+  //   border: white;
+  //   background-color: #e9e6e6;
+  //   box-shadow:0 4px 8px 0 rgb(0 0 0 / 1%), 0 6px 20px 0 rgb(0 0 0 / 5%);
+  // }
+
   &-user
   {
     // background-color: blue;
-    height:fit-content;
-    margin: 4rem 0vw;
-    padding: 1vw 5vw;
+    // height:fit-content;
+    // margin: 4rem 0vw;
+    // padding: 1vw 5vw;
+    padding: 32px;
+
     border: white;
     background-color: #e9e6e6;
     box-shadow:0 4px 8px 0 rgb(0 0 0 / 1%), 0 6px 20px 0 rgb(0 0 0 / 5%);
   }
+
   
   &-content {
     padding-left: 15px;
   }
 
-  &-image{
+  &-imageWrapper{
     border: transparent !important;
     background:transparent;
+  }
+
+  &-image {
+    border-radius: 100%;
+    width: 160px;
+    height: 160px;
   }
 
   &-tab{

@@ -24,25 +24,18 @@ const MuseumCard = ({
   // <img src="https://img.icons8.com/ios/50/000000/visible--v1.png"/>
   // <a href="https://icons8.com/icon/986/eye">Eye icon by Icons8</a>
   // <img src="https://img.icons8.com/ios/50/000000/private-lock.png"/>
-
   // <a href="https://icons8.com/icon/99971/delete">Delete icon by Icons8</a>
-
   // <a href="https://icons8.com/icon/-JWlW8fnBxDo/private-lock">Private Lock icon by Icons8</a>
   // <img src="https://img.icons8.com/material-sharp/24/000000/filled-trash.png"/>
-
   // <a href="https://icons8.com/icon/99971/delete">Delete icon by Icons8</a>
 
   // <img src="https://img.icons8.com/plasticine/100/000000/edit.png"/>
-
   // <a href="https://icons8.com/icon/102333/edit">Edit icon by Icons8</a>
 
   // <img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-edit-interface-kiranshastry-lineal-kiranshastry-1.png"/>
- 
   //<a href="https://icons8.com/icon/y2QbtBP7og0m/edit">Edit icon by Icons8</a>
 
   // <img src="https://img.icons8.com/cute-clipart/64/000000/enter-2.png"/>
-
-
   // <a href="https://icons8.com/icon/119065/enter">Enter icon by Icons8</a>
 
 
@@ -66,7 +59,7 @@ const MuseumCard = ({
                   alt=""
                   onClick={() => {
                     if (isCurrentUser) {
-                      navigate(`/profile/`);
+                      navigate(`/profile`);
                     } else {
                       navigate(`/profile/` + userObject._id);
                     }
@@ -125,37 +118,5 @@ const MuseumCard = ({
     </>
   );
 };
-
-// const MuseumCard = ({  imageUrl, name, description, _id, isPrivate, userImageUrl, userObject, navigate, isCurrentUser }) => {
-//     return (
-//       <>
-//         <div className="card Profile-shadow Card">
-//           {/* {(isCurrentUser) && <Button id="card__button_cta" onClick={() => navigate(`/museum/`+ _id)}>Edit </Button>}
-//           <Button id="card__button" >Visit</Button> */}
-//           <img src={imageUrl} className="card__image"/>
-//             <div className="card__overlay">
-//               <div className="card__header">
-//                 <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-//                 <img className="card__thumb" src={userObject.imageUrl} alt="" onClick={
-//                   () => {
-//                     if (isCurrentUser) {
-//                       navigate(`/profile/`)
-//                     } else {
-//                       navigate(`/profile/`+ userObject._id)
-//                     }
-//                   }}
-//                   />
-//                 <div className="card__header-text">
-//                   <h3 className="card__title">{name}</h3>
-//                 <span className="card__status">1 hour ago</span><br/>
-//                 {isPrivate && <span className="card__status">Private</span>}
-//               </div>
-//             </div>
-//             <p class="card__description">{description}</p>
-//         </div>
-//         </div>
-//       </>
-//     )
-//   }
 
 export { MuseumCard };

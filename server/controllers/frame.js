@@ -1,3 +1,4 @@
+const Conversation = require("../models/conversation");
 const Frame = require("../models/frame");
 
 async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, scale, imageZoomRatio,parentId) {
@@ -51,7 +52,6 @@ async function editFrame(frameId,data){
 async function getAllFrames(parentId){
     try {
         let framesFound = await Frame.find({parentId: parentId})
-        // console.log("ive found",framesFound)
         return framesFound;
     } catch (error) {
         return false;
@@ -66,7 +66,13 @@ async function getAllFrames(parentId){
  */
 async function deleteFrame(frameId){
   try {
-      await Frame.deleteOne({_id: frameId});
+      let frame = await Frame.findOne({_id:frameId});
+      if (frame){
+        if (frame.type==="conversation" || frame.type==="premade_conversation"){
+          await Conversation.deleteOne({frameId: frameId});
+        }
+        await Frame.deleteOne({_id: frameId});
+      }
       return true;
   } catch (error) {
       return false;

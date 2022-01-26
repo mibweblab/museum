@@ -21,7 +21,7 @@ const UserProfile = ({user, isCurrentUser, museumCount, editUserFunction}) => {
     {isCurrentUser && <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="user" user={user} editUserFunction={editUserFunction}/>}
     <div className="Profile-userCard">
         <div className="d-flex align-items-center">
-            <div className="Profile-image Profile-shadow"> <img src={user.imageUrl} className="rounded" width="155"/> </div>
+            <div className=""> <img src={user.imageUrl} className="Profile-image"/> </div>
             <div className="ml-3 w-100 Profile-content">
                 <h4 className="mb-0 mt-0">
                   {user.firstname} {user.lastname} 
@@ -33,7 +33,6 @@ const UserProfile = ({user, isCurrentUser, museumCount, editUserFunction}) => {
                     <div className="d-flex flex-column"> <span className="articles">Museums</span> <span className="number1">{museumCount}</span> </div>
 
                 </div>
-                {/* <div className="button mt-2 d-flex flex-row align-items-center"> <button className="btn btn-sm btn-outline-primary w-100">Chat</button> <button className="btn btn-sm btn-primary w-100 ml-2">Follow</button> </div> */}
             </div>
         </div>
     </div>

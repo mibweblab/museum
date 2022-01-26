@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isUserLoggedIn } = require("../middleware/frame");
+const { isUserLoggedIn, doesMuseumExist } = require("../middleware/index");
 
 const {
   addMuseum,
@@ -48,11 +48,9 @@ router.get("/", [isUserLoggedIn], async (req, res) => {
  * 
  * edits a meta property for a museum
  */
-router.patch("/:museumId", [isUserLoggedIn], async (req, res) => {
+router.patch("/:museumId", [isUserLoggedIn, doesMuseumExist], async (req, res) => {
   let museumId = req.params.museumId;
   let data = req.body;
-  // console.log(req.body)
-  // console.log(data);
   let response = await editMuseumProperty(museumId, data);
   if (response){
     res.status(200).send("Sucessfully edited museum")
@@ -67,7 +65,7 @@ router.patch("/:museumId", [isUserLoggedIn], async (req, res) => {
  * deletes a museum
  * 
  */
-router.delete("/:museumId", [isUserLoggedIn], async (req, res) => {
+router.delete("/:museumId", [isUserLoggedIn, doesMuseumExist], async (req, res) => {
   let museumId = req.params.museumId;
   let response = await deleteMuseum(museumId);
   if (response){
@@ -103,7 +101,7 @@ router.get("/profile/:userId", [], async (req, res) => {
  * gets a museum
  * 
  */
- router.get("/:museumId", [isUserLoggedIn], async (req, res) => {
+ router.get("/:museumId", [isUserLoggedIn, doesMuseumExist], async (req, res) => {
   let museumId = req.params.museumId;
   let response = await getMuseum(museumId);
 

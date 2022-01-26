@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addFrame, editFrame, deleteFrame, getAllFrames } = require("../controllers/frame");
-const {isUserLoggedIn} = require("../middleware/frame");
+const {isUserLoggedIn} = require("../middleware/index");
 
 router.post("/", [isUserLoggedIn],async (req, res) => {
 

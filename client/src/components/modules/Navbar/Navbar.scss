@@ -54,56 +54,66 @@
   left:0;
   z-index:999;
   margin-top: 32px;
+  width: 100%;
 
   &-link
   {
-    @include link;
-  }
-
- /**
-  *https://tobiasahlin.com/blog/css-trick-animating-link-underlines/
-  *
-  **/
-  &-link::before
-  {
-      @include linkBefore;
-  }
-
-  &-link:hover::before
-  {
-    transform: scaleX(1);
+    @include navButton;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-color: white;
+    color: black;
   }
 
   &-link:hover
   {
-    color: variables.$primary-color;
+    @include navButton--hover;
+    color: black;
   }
+ /**
+  *https://tobiasahlin.com/blog/css-trick-animating-link-underlines/
+  *
+  **/
+  // &-link::before
+  // {
+  //     @include linkBefore;
+  // }
+
+  // &-link:hover::before
+  // {
+  //   transform: scaleX(1);
+  // }
+
+  // &-link:hover
+  // {
+  //   color: variables.$primary-color;
+  // }
 
 
-  &-link--dark
-  {
-    @include link;
+  // &-link--dark
+  // {
+  //   @include link;
 
-    color: variables.$primary-color;
-  }
+  //   color: variables.$primary-color;
+  // }
 
-  &-link--dark:hover{
-    color: variables.$white;
-  }
+  // &-link--dark:hover{
+  //   color: variables.$white;
+  // }
 
-  &-link--dark::before
-  {
-      @include linkBefore;
+  // &-link--dark::before
+  // {
+  //     @include linkBefore;
 
-      color: variables.$white;
-  }
+  //     color: variables.$white;
+  // }
 
-  &-link--dark:hover::before
-  {
-    background-color: variables.$white;
+  // &-link--dark:hover::before
+  // {
+  //   background-color: variables.$white;
 
-    transform: scaleX(1);
-  }
+  //   transform: scaleX(1);
+  // }
 
   &-links
   {

@@ -78,6 +78,10 @@ app.use("/api/frame", frameapi);
 app.use("/api/museum", museumapi);
 app.use("/api/conversation", conversationapi);
 app.use("/api/user", userapi);
+app.all("*", (req, res) => {
+  console.log(`API route not found: ${req.method} ${req.url}`);
+  res.status(404).send({ msg: "API route not found" });
+});
 
 
 // load the compiled react files, which will serve /index.html and /bundle.js

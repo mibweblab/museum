@@ -5,11 +5,15 @@ import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
 import { connect } from "react-redux";
 import { addMuseum } from "../action";
 import TextField from "@mui/material/TextField";
-import Snackbar from '@mui/material/Snackbar';
+import Snackbar from "@mui/material/Snackbar";
 
 import MuseumAPI from "../../api/museum";
 
+import MuiAlert from "@mui/material/Alert";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const addRandomImageUrl = () => {
   const imgUrls = [
@@ -25,8 +29,7 @@ const addRandomImageUrl = () => {
   const randomIndex = Math.floor(Math.random() * 8);
   return imgUrls[randomIndex];
 };
-const MuseumForm = ({ dispatch, close, currentMuseum}) => {
-
+const MuseumForm = ({ dispatch, close, currentMuseum }) => {
   // console.log("currentMuseum", currentMuseum);
 
   const textRef = useRef();
@@ -43,12 +46,16 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
   const [isDescriptionError, setDescriptionError] = useState(false);
   const [snackBarColor, setSnackBarColor] = useState(false);
 
+
   //internalText
   const [internalName, setInternalName] = useState("");
   const [internalText, setInternalText] = useState("");
   const [internalImageUrl, setInternalImageUrl] = useState("");
   const [internalPrivacy, setInternalPrivacy] = useState("");
 
+  useEffect(()=>{
+    setPrivate(currentMuseum?.isPrivate);
+  })
 
   const options = [
     { key: "form-pr-1", value: true, text: "Private" },
@@ -72,7 +79,7 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
         });
       })
       .catch(() => {
-        setIsImageUploaded(false)
+        setIsImageUploaded(false);
       });
   };
 
@@ -80,7 +87,7 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
   const [snackBarMessage, setSnackBarMessage] = useState("");
 
   const handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpenSnackBar(false);
@@ -89,7 +96,7 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
   return (
     <div className="MuseumForm">
       <Snackbar open={openSnackBar} autoHideDuration={6000} onClose={handleCloseSnackBar}>
-        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
+        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: "100%" }}>
           {snackBarMessage}
         </Alert>
       </Snackbar>
@@ -98,22 +105,22 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
         <TextField
           error={isNameError}
           onChange={(e) => {
-            if (e.target.value.length<=40){
+            if (e.target.value.length <= 25) {
               setName(e.target.value);
               setCharacterLength(e.target.value.length);
-              setNameError(false)
-            } else{
-              setNameError(true)
-            } 
+              setNameError(false);
+            } else {
+              setNameError(true);
+            }
           }}
           fullWidth
-          sx={{height: 20}}
+          sx={{ height: 20 }}
           id="fullWidth"
           placeholder={currentMuseum ? currentMuseum.name : "Name"}
           label="Name"
           variant="standard"
           className="Museum-textField"
-          helperText={nameCharacterLength + " / 40"}
+          helperText={nameCharacterLength + " / 25"}
         />
       </div>
       <div className="MuseumForm-group">
@@ -128,15 +135,15 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
           // placeholder="Tell us more"
           variant="standard"
           className="Card-field"
-          helperText={descriptionCharacterLength + " /400"}
+          helperText={descriptionCharacterLength + " /100"}
           onChange={(e) => {
-            if (e.target.value.length<=400){
-              setDescription(e.target.value)
+            if (e.target.value.length <= 100) {
+              setDescription(e.target.value);
               setDescriptionCharacterLength(e.target.value.length);
-              setDescriptionError(false)
-            } else{
-              setDescriptionError(true)
-            } 
+              setDescriptionError(false);
+            } else {
+              setDescriptionError(true);
+            }
           }}
           inputRef={textRef}
         />
@@ -155,32 +162,29 @@ const MuseumForm = ({ dispatch, close, currentMuseum}) => {
         <input type="file" className="MuseumForm-inputFile" onChange={handleChange} />
         <button className="MuseumForm-uploadButton" onClick={handleUpload}>
           Image
-          <img className="MuseumForm-uploadImage"src="https://img.icons8.com/external-bearicons-blue-bearicons/64/000000/external-upload-call-to-action-bearicons-blue-bearicons.png"/>
+          <img
+            className="MuseumForm-uploadImage"
+            src="https://img.icons8.com/external-bearicons-blue-bearicons/64/000000/external-upload-call-to-action-bearicons-blue-bearicons.png"
+          />
         </button>
       </div>
       <div className="MuseumForm-col-group MuseumForm-group">
         <Button
           className={"w-30 MuseumForm-action-btn "}
           onClick={async () => {
-            if (name && description) {
-              console.log(imageUrl);
-              let imageUrlQuickCopy = imageUrl;
-              if (imageUrlQuickCopy == "") {
-                const randomImage = addRandomImageUrl();
-                setImageUrl(randomImage);
-                imageUrlQuickCopy = randomImage;
-              }
-              // let museum = await MuseumAPI.addMuseum(
-              //   name,
-              //   description,
-              //   isPrivate,
-              //   imageUrlQuickCopy
-              // );
-              // if (museum) {
-              //   dispatch(addMuseum(museum.data));
-              // }
+            if (currentMuseum?._id) {
+                let museum = await MuseumAPI.editMuseumProperty(currentMuseum?._id, {
+                  name: nameCharacterLength > 0 ? name : currentMuseum?.name,
+                  description: descriptionCharacterLength > 0 ? description : currentMuseum?.description ,
+                  isPrivate,
+                  imageUrl: imageUrl.length > 0 ? imageUrl : currentMuseum?.imageUrl,
+                });
+                if (museum) {
+                  setOpenSnackBar(true);
+                  setSnackBarMessage("Successfully updated museum data");
+                  setTimeout(close, 5000);
+                }
             }
-            close();
           }}
         >
           Edit

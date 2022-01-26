@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Router } from "@reach/router";
+import { Router, navigate } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 
 import Conversation from "./Conversations/Conversation.js";
@@ -53,7 +53,6 @@ class App extends React.Component {
   async getAllMuseums() {
     let allMuseums = await MuseumInterface.getAllMuseums();
     if (allMuseums) {
-      console.log("these are my museums", allMuseums);
       this.setState({ museums: allMuseums.data });
       this.props.dispatch(addInitialMuseums(allMuseums.data));
     }
@@ -65,6 +64,8 @@ class App extends React.Component {
         // they are registed in the database, and currently logged in.
         this.setState({ user: user, firstName: user.firstname, userId: user._id });
         await this.getAllMuseums();
+      }else{
+        navigate("/")
       }
     });
   }
