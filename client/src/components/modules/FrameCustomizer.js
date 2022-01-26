@@ -42,7 +42,7 @@ const options = [
 const figureOptions = [
   { key: 0, text: "Shakespeare", value: Shakespeare },
   { key: 1, text: "Einstein", value: Einstein },
-  { key: 2, text: "Scene", value: Musk },
+  { key: 2, text: "Musk", value: Musk },
   { key: 3, text: "Create your own figure", value: UserUpload },
 ];
 

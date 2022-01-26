@@ -45,7 +45,8 @@ class App extends React.Component {
     this.state = {
       user: null,
       userId: null,
-      firstName: "",
+      FirstName: undefined,
+      LastName: undefined,
       museums: [],
     };
   }
@@ -62,7 +63,7 @@ class App extends React.Component {
     get("/api/whoami").then(async (user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
-        this.setState({ user: user, firstName: user.firstname, userId: user._id });
+        this.setState({ user: user, FirstName: user.firstname, LastName:user.lastname,  userId: user._id },  ()=> {console.log(this.state.FirstName)});
         await this.getAllMuseums();
       }else{
         navigate("/")
@@ -77,7 +78,8 @@ class App extends React.Component {
     post("/api/login", { token: userToken }).then(async (user) => {
       this.setState({ 
         user: user, 
-        firstName: user.firstname,
+        FirstName: user.firstname,
+        LastName: user.lastname,
         userId: user._id
       });
 
@@ -89,7 +91,7 @@ class App extends React.Component {
 
   handleLogout = () => {
     // setUserId(undefined);
-    this.setState({ user: null, firstName:null });
+    this.setState({ user: null, FirstName:null, LastName:null });
     post("/api/logout");
   };
 
@@ -97,7 +99,8 @@ class App extends React.Component {
     let userEdited = await UserApi.updateUser(this.state.user._id, data);
     this.setState({ 
       user: data, 
-      firstName: data.firstname
+      FirstName: data.firstname,
+      LastName: data.lastname,
   });
 
 }
@@ -125,15 +128,19 @@ class App extends React.Component {
         </Route>
 
         <Route path="/room_0">
-          <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />} 
+          {!this.state.user && <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />}
         </Route>
 
         <Route path="/room_1">
-          <Rooms FirstName={this.state.firstname} HumanModel={Einstein} />
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Einstein} />}
+          {!this.state.user && <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Einstein} />}
         </Route>
 
         <Route path="/room_2">
-          <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Musk} />}
+          {!this.state.user && <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Musk} />} 
+
         </Route>
 
         <Route exact path="/museum/edit/:id">

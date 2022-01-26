@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 // import { World} from "../modules/RoomScenes/RoomScenes.js" ;  
 import GPT3_Integrated from "./GPT3_Integrated.js";
 import { Shakespeare, Einstein, Musk, UserUpload } from "../../HumanModel.js";
@@ -6,89 +6,111 @@ import { getIntro} from '../../LangModel.js'
 import "./RoomScenes.css"
 import Conversation from "./Conversation.js"
 import ConversationAPI from  "../../api/conversation";
-export default class Rooms extends Component{
-  constructor(props) {
-    super(props); 
-    this.state = {
-      isTextBoxVisible: "visible",
-      conversation: [],
-      question:[],
-      imgUrl:undefined,
-      modelFirstName: undefined,
-      modelLastName: undefined,
-      modelDescription: undefined,
-    };
-    this.getConversation()
-  } 
 
-  getConversation = async () => {
-    const conversation = await ConversationAPI.getConversation(this.props.FrameId)
+const Rooms = ({HumanModel, FirstName, LastName, FrameId }) => {
+  const [conversation, setConversation] = useState([]);
+  const [question, setQuestion] = useState([]);
+  const [imgUrl, setImgUrl] = useState(undefined);
+  const [modelFirstName, setModelFirstName] = useState(undefined);
+  const [modelLastName, setModelLastName] = useState(undefined);
+  const [modelDescription, setModelDescription] = useState(undefined);
+
+
+
+
+  const getConversation = async () => {
+    const conversation = await ConversationAPI.getConversation(FrameId)
     const data = conversation.data
-    this.setState({
-      modelFirstName: data.firstName,
-      modelLastName: data.lastName,
-      modelDescription: data.description,
-      imgUrl: data.frameUrl,
-    }, ()=> { console.log(data); console.log(this.state)} )
-
+    setModelFirstName(data.firstName)
+    setModelLastName(data.lastName)
+    setModelDescription(data.description)
+    setImgUrl(data.frameUrl)
   } 
 
-  intro() {
-    return getIntro(this.props.HumanModel)
+  if (HumanModel == UserUpload) {
+    getConversation()
+} 
+
+  const intro = () => {
+    return getIntro(HumanModel)
   }
 
-  onPrompt = async(promptText) => {
-    const reactElArray = this.newlineText(promptText)
-    this.setState({ question: reactElArray})
-
+  const onPrompt = async(promptText) => {
+    const reactElArray = newlineText(promptText, true)
+    setQuestion(reactElArray)
   }
 
-  onResponse = async(responseText) => {
-    const reactElArray = this.newlineText(responseText)
-
-    this.setState((state) => 
-    {
-        // fix me
-
-        const temp = state.conversation.concat(state.question)
-        return { 
-            conversation: temp.concat( reactElArray),
-            question: "" 
-        }
-    })
-  }
-
-  newlineText = (res) => {
-    const newText = res.split('\n').map(str => <p className='conversation-label'>{str}</p>);
-    return newText;
-  }
-  
-  render(){
-      return(
-        <div className='room-main'>
-          {/* <div id="scene-container" ></div> */}
-         <div className = 'main' id="scene-container">
-          <Conversation HumanModel={this.props.HumanModel} FrameId={this.props.FrameId} FrameUrl={this.state.imgUrl}/>
-         </div>
-         <div id="sidebar"> 
-          <div id='item1'>
-            <p className='conversation-label'>{this.intro()} </p>
-            {this.state.conversation}
-            {this.state.question}
-            <p></p>
-          </div>
-           {( (this.props.HumanModel != UserUpload) || (this.state.modelFirstName != undefined)) ?
-           (<GPT3_Integrated FirstName={this.props.FirstName} HumanModel={this.props.HumanModel} visibility={this.state.isTextBoxVisible} onPrompt={this.onPrompt} onResponse={this.onResponse} modelFirstName={this.state.modelFirstName} modelLastName={this.state.modelLastName} modelDescription={this.state.modelDescription}/>)
-           :  null}
-         </div>
-        
-        </div>
-      )
+  const onResponse = async(responseText, clearRequest) => {
+    if (clearRequest) {
+      setConversation([])
+      setQuestion([])
+    } else {
+      const reactElArray = newlineText(responseText, false)
+      const temp = conversation.concat(question)
+      setConversation(temp.concat(reactElArray))
+      setQuestion("")
     }
   }
 
+  const getName = (isUser) => {
+    if (isUser) {
+      const firstName = (FirstName) ? FirstName : ""
+      const lastName = (LastName) ? LastName : ""
+      return firstName + " " + lastName
+    } else {
+      switch(HumanModel) {
+          case Shakespeare:
+              return "William Shakespeare"
+          case Einstein:
+              return "Albert Einstein"
+          case Musk:
+              return "Elon Musk"
+          case UserUpload:
+              return this.modelFirstName + " " + this.modelLastName // todo: receive upload info and replace
+      }
+    }
+}
+
+  const newlineText = (res, isPrompt) => {
+    const className = isPrompt ? '-prompt' : '-response'
+    const name = getName(isPrompt)
+    const newText = res.split('\n').map(str => <p className={'conversation-label'}>{str}</p>);
+    const paddedNewText = (
+      <div className={'conversation' + className}>
+        <label className={'Conversation-message-identifier'}>{name}</label>
+        <div className={'conversation-container conversation-container'+className}>
+          {newText}
+        </div>
+      </div>)
+    return paddedNewText;
+  }
   
+
+  return(
+    <div className='room-main'>
+      {/* <div id="scene-container" ></div> */}
+      <div className = 'main' id="scene-container">
+      <Conversation HumanModel={HumanModel} FrameId={FrameId} FrameUrl={imgUrl}/>
+      </div>
+      <div id="sidebar"> 
+      <div id='item1'>
+        <h5 className='mt-0 conversation-label conversation-title'>{intro()} </h5>
+        {conversation}
+        {question}
+        <p></p>
+      </div>
+        {( (HumanModel != UserUpload) || (modelFirstName != undefined)) ?
+        (<GPT3_Integrated FirstName={FirstName} HumanModel={HumanModel} onPrompt={onPrompt} onResponse={onResponse} modelFirstName={modelFirstName} modelLastName={modelLastName} modelDescription={modelDescription}/>)
+        :  null}
+      </div>
+    
+    </div>
+  )
+    
+  }
+
   
+  export default Rooms;
   
   
   
