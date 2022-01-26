@@ -1,10 +1,11 @@
 import React from "react";
 
-const NotFound = () => {
+const NotFound = ({ }) => {
+
+
   return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>The page you requested couldn't be found.</p>
+    <div className="NotFound" style={{margin: "100px 30px"}}>
+        <h1 className="mb-0 mt-0 Profile-tab"> 404: No page found here. </h1>
     </div>
   );
 };

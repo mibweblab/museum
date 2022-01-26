@@ -153,6 +153,7 @@ class App extends React.Component {
         <Route exact path="/explore">
           <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
+        <NotFound default />
       </>
     );
   }
