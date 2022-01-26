@@ -71,7 +71,7 @@ export default class GPT3_playground extends Component {
 
     onClickFun = (promptVal) => {
         this.setState({
-            prompt:  this.languageModel.polishedInput(promptVal),
+            prompt:  this.languageModel.polishedInputForGPT3(promptVal),
             response: undefined,
             
         });

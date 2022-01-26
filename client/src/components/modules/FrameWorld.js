@@ -627,6 +627,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                       rotation,
                       scale,
                       imageZoomRatio,
+                      figure,
                     } = queuedFrame;
                     let frameRes = await APIInterface.addFrame(
                       type,
@@ -638,9 +639,10 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                       rotation,
                       scale,
                       imageZoomRatio,
-                      id
+                      id,
+                      figure,
                     );
-                    if (type==='conversation'){
+                    if (type=='conversation'){
                         await ConversationAPI.addConversation(firstName, lastName, description, response.data._id, url) 
                     }
                     if (frameRes) {

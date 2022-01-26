@@ -34,7 +34,7 @@ const options = [
 const figureOptions = [
   { key: 0, text: "Shakespeare", value: Shakespeare },
   { key: 1, text: "Einstein", value: Einstein },
-  { key: 2, text: "Scene", value: Musk },
+  { key: 2, text: "Musk", value: Musk },
   { key: 3, text: "Create your own figure", value: UserUpload },
   
 ];
@@ -278,15 +278,15 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
                 setShowErrorMessage(true)
               } else {
               dispatch(addFrameToQueue({ name: name, url: imageUrl, color: shot.color, type: type, text: "", figure: figure, firstName: firstName, lastName: lastName, description:description }));
-              dispatch(
-                addFrameToQueue({
-                  name: name,
-                  url: imageUrl,
-                  color: shot.color,
-                  type: type,
-                  text: "",
-                })
-              );
+              // dispatch(
+              //   addFrameToQueue({
+              //     name: name,
+              //     url: imageUrl,
+              //     color: shot.color,
+              //     type: type,
+              //     text: "",
+              //   })
+              // );
               dispatch(dequeueFrame(true));
               // URL.revokeObjectURL(targetObjectUrl); // free memory
               // setTargetObjectUrl("");

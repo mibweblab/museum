@@ -1,6 +1,6 @@
 const Frame = require("../models/frame");
 
-async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, scale, imageZoomRatio,parentId) {
+async function addFrame(type, name, imageUrl, text, frameColor, position, rotation, scale, imageZoomRatio,parentId, figure) {
   try {
     let frame = Frame({
       type: type,
@@ -13,6 +13,7 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
       scale: scale,
       imageZoomRatio: imageZoomRatio,
       parentId: parentId,
+      figure: figure
     });
     return await frame.save();
   } catch (error) {

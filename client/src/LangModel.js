@@ -4,11 +4,11 @@ import { Shakespeare, Einstein, Musk, UserUpload } from './HumanModel.js';
 const getIntro = (humanModel) => {
     switch(humanModel) {
         case Shakespeare:
-            return "Please tell me a topic, and I shall read you something from my works."
+            return "Please provide Shakespeare a topic, and he will read you something from his works."
         case Einstein:
-            return "Welcome to Einstein's room. Feel free to start a conversation"
+            return "Welcome to Einstein's room. Feel free to start a conversation."
         case Musk:
-            return "Welcome to Musk's room. Feel free to start a conversation"
+            return "Welcome to Musk's room. Feel free to start a conversation."
         case UserUpload:
             return "Welcome to your uploaded room. Feel free to start a conversation" // todo: receive upload info and replace
     }
@@ -17,11 +17,11 @@ const getIntro = (humanModel) => {
 const getTextAreaDescription = (humanModel) => {
     switch(humanModel) {
         case Shakespeare:
-            return "Receive Shakespeare&#x27;s writings on any topic."
+            return "Receive Shakespeare's writings on any topic."
         case Einstein:
             return "Converse with Einstein"
         case Musk:
-            return "Chat with Elon."
+            return "Chat with Musk."
         case UserUpload:
             return "Chat with your uploaded figure." // todo: receive upload info and replace
     }
@@ -46,10 +46,23 @@ class LangModelAttributes {
             case Musk:
                 return "Elon Musk"
             case UserUpload:
-                return "User Uploaded Person" // todo: receive upload info and replace
+                return this.modelFirstName + " " + this.modelLastName // todo: receive upload info and replace
         }
     }
 
+
+    nameStringArr = () => {
+        switch(this.humanModel) {
+            case Shakespeare:
+                return ["W:", "William:", "Shakespeare:", "William Shakespeare:"]
+            case Einstein:
+                return ["A:", "Albert:", "Einstein:", "Albert Einstein:"]
+            case Musk:
+                return ["E:", "Elon:", "Musk:", "Elon Musk:"]
+            case UserUpload:
+                return [this.modelFirstName.charAt(0)+':', this.modelFirstName+':', this.modelLastName+':', this.modelFirstName + ' ' + this.modelLastName + ':']
+        }
+    }
 
 
     defaultFirstName = (humanModel, firstName) => {
@@ -84,7 +97,7 @@ class LangModelAttributes {
         }
     }
 
-    polishedInput = (inputVal) => {
+    polishedInputForGPT3 = (inputVal) => {
         switch(this.humanModel) {
             case Shakespeare:
                 return inputVal
