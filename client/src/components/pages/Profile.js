@@ -71,7 +71,7 @@ const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunc
       {userProfile && <div className="Profile-museums cards">
         {(userMuseums.length) > 0 ? (userMuseums.map(
           (props,index) => <MuseumCard key={props._id} {...props} userImageUrl = {userProfile.imageUrl} userObject={userProfile} navigate={navigate} isCurrentUser={isCurrentUser}/> /* prettier-ignore */
-        )) : (<h4 className="mb-0 mt-0 Profile-tab"> No {isCurrentUser && "public"} museums to show. </h4> )}
+        )) : (<h4 className="mb-0 mt-0 Profile-tab"> No {!isCurrentUser && "public"} museums to show. </h4> )}
       </div>}
     </div>
   );

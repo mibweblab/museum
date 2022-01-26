@@ -110,6 +110,10 @@ async function deleteMuseum(museumId) {
       '$unwind': {
         'path': '$userObject'
       }
+    }, {
+      '$match': {
+        'isPrivate': false
+      }
     }
   ]
   try {
