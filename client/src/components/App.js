@@ -47,6 +47,7 @@ class App extends React.Component {
       userId: null,
       firstName: "",
       museums: [],
+      path: "",
     };
   }
 
@@ -116,12 +117,12 @@ class App extends React.Component {
         </Route>
 
         <Route path="/profile">
-          {this.state.user && <Profile museums={this.props.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
+          {this.state.user && <Profile museums={this.state.museums} currentUserProfile={this.state.user} editUserFunction={this.editUserFunction}/>}
 
           {!this.state.user && <div>Sign In to View</div>}
         </Route>
         <Route path="/profile/:id">
-          { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
+          { ((params) => (<Profile museums={this.state.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
         </Route>
 
         {/* <Route path="/room_0">
@@ -153,6 +154,10 @@ class App extends React.Component {
         <Route exact path="/explore">
           <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
+        <Route component={NotFound}>
+          <NotFound default />
+        </Route>
+       
       </>
     );
   }

@@ -1,9 +1,41 @@
+@use "../../variables.scss" as variables;
+
+
 .FrameCard
 {
   position: absolute;
   right: 32px;
-  bottom: 32px;
+  bottom: 240px;
   z-index: 999;
+  display: flex;
+  background-color: white;
+  padding: 16px;
+  flex-direction: column;
+  width: 345px;
+  border-radius: 6px;
+
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
+  &:hover{
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  }
+
+  &-title
+  {
+    font-size: 24px;
+    font-weight: variables.$font-weight-semibold;
+    color: variables.$gray-1;
+  }
+
+  &-description
+  {
+    width: 100%;
+    font-size: 16px;
+    font-weight: variables.$font-weight-light;
+    margin-top: 12px;
+    margin-left: 2px;
+  }
 }
 
 

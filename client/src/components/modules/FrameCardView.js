@@ -36,15 +36,13 @@ export default function FrameCard({ name, text, frameToTransform, dispatch, pare
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-      <Card className="FrameCard" sx={{ width: 345 }}>
-        <CardHeader
-          title={internalName}
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {internalText}
-          </Typography>
-        </CardContent>
-      </Card>
+      <div className="FrameCard">
+        <div className="FrameCard-title">
+          {internalName}
+        </div>
+        <div className="FrameCard-description">
+          {internalText}
+        </div>
+      </div>
   );
 }

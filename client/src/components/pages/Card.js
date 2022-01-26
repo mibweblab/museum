@@ -82,7 +82,7 @@ const MuseumCard = ({
           </div>
       
           <div className="Card-icons">
-            {isPrivate && 
+            {!isPrivate && 
             <span className="Card-status">
               <img
               src="https://img.icons8.com/ios/50/000000/visible--v1.png"
@@ -90,7 +90,7 @@ const MuseumCard = ({
               />
               </span>
             }{
-              !isPrivate && 
+              isPrivate && 
               <span className="Card-statusPrivate">
                 <img
                 src="https://img.icons8.com/ios/50/000000/private-lock.png"
