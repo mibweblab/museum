@@ -4,6 +4,9 @@ import "./Profile.scss";
 import "./Card.css";
 import "./Card.scss";
 
+import MuseumAPI from "../../api/museum";
+import { deleteMuseum } from "../action";
+
 const MuseumCard = ({
   imageUrl,
   name,
@@ -14,6 +17,8 @@ const MuseumCard = ({
   userObject,
   navigate,
   isCurrentUser,
+  dispatch,
+  filterMuseums
 }) => {
 
 
@@ -93,8 +98,14 @@ const MuseumCard = ({
                 />
                 </span>
             } 
-            {  (isCurrentUser) && 
-            <div className="Card-delete" >
+            {(isCurrentUser) && 
+            <div className="Card-delete" onClick={async ()=>{
+                let res = await MuseumAPI.deleteMuseum(_id);
+                if (res){
+                  dispatch(deleteMuseum(_id))
+                  filterMuseums(_id);
+                }
+            }} >
               <img src="https://img.icons8.com/material-sharp/24/000000/filled-trash.png"
                 className="Card-statusImage"
                 />

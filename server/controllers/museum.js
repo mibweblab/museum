@@ -1,8 +1,9 @@
+const Frame = require("../models/frame");
+const Conversation = require("../models/conversation");
 const Museum = require("../models/museum");
 
 // I am not sure if the shorthand is still valid, but I dnt care at this point
 //
-
 /**
  *
  * Given the following params, creates a museum hall
@@ -78,6 +79,7 @@ async function getAllMuseums(userId, publicMuseumsOnly) {
 async function deleteMuseum(museumId) {
   try {
     await Museum.deleteOne({ _id: museumId });
+    await Frame.deleteMany({ parentId: museumId });
     return true;
   } catch (error) {
     return false;

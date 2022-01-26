@@ -52,4 +52,9 @@ router.delete("/:frameId", async (req,res)=>{
     res.send({})
 })
 
+// router.all("*", (req, res) => {
+//   console.log(`API route not found: ${req.method} ${req.url}`);
+//   res.status(404).send({ msg: "API route not found" });
+// });
+
 module.exports = router;

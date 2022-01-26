@@ -112,4 +112,10 @@ router.get("/profile/:userId", [], async (req, res) => {
     res.status(304).send({"error": `Failed to get museum with id ${museumId}`})
   }
 });
+
+// router.all("*", (req, res) => {
+//   console.log(`API route not found: ${req.method} ${req.url}`);
+//   res.status(404).send({ msg: "API route not found" });
+// });
+
 module.exports = router;

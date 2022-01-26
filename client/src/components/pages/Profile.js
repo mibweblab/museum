@@ -9,6 +9,7 @@ import { useModal } from "react-hooks-use-modal";
 import MuseumInterface from "../../api/museum";
 import { useParams } from "react-router-dom";
 import { MuseumCard } from "./Card";
+import { connect } from "react-redux";
 
 const UserProfile = ({user, isCurrentUser, museumCount, editUserFunction}) => {
   const [Modal, open, close, isOpen] = useModal("root", {
@@ -41,7 +42,7 @@ const UserProfile = ({user, isCurrentUser, museumCount, editUserFunction}) => {
 
 
 
-const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunction}) => {
+const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunction, dispatch}) => {
 
   const [userMuseums, setUserMuseums] = useState([]);
   const [userProfile, setUserProfile] = useState(undefined);
@@ -63,6 +64,9 @@ const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunc
     }
   }, []);
 
+  const filterMuseums = (id)=>{
+    setUserMuseums(userMuseums.filter((m)=>m._id!==id))
+  }
   return (
     <div className="Profile">
       <div className="Profile-user">
@@ -70,11 +74,11 @@ const Profile = ({ museums, otherUserProfileId, currentUserProfile, editUserFunc
       </div>
       {userProfile && <div className="Profile-museums cards">
         {(userMuseums.length) > 0 ? (userMuseums.map(
-          (props,index) => <MuseumCard key={props._id} {...props} userImageUrl = {userProfile.imageUrl} userObject={userProfile} navigate={navigate} isCurrentUser={isCurrentUser}/> /* prettier-ignore */
+          (props,index) => <MuseumCard dispatch={dispatch} filterMuseums={filterMuseums} key={props._id} {...props} userImageUrl = {userProfile.imageUrl} userObject={userProfile} navigate={navigate} isCurrentUser={isCurrentUser}/> /* prettier-ignore */
         )) : (<h4 className="mb-0 mt-0 Profile-tab"> No {isCurrentUser && "public"} museums to show. </h4> )}
       </div>}
     </div>
   );
 };
 
-export { Profile} ;
+export default connect()(Profile) ;

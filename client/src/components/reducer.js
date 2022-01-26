@@ -92,6 +92,11 @@ const reducer = (state = initialState, action) => {
       let frameId = action.payload;
       let filteredFrames = state.frames.filter((f) => f._id !== frameId);
       return { ...state, frames: filteredFrames };
+    
+    case "DELETE_MUSEUM": 
+       let museumId = action.payload;
+       let filteredMuseums = state.museums.filter((m)=> m._id !== museumId);
+       return {...state, museums: filteredMuseums}
     default:
       return state;
   }

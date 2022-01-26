@@ -19,9 +19,7 @@ export default class ConversationAPI {
 
   static async getConversation(frameId) {
     try {
-      // console.log("firing api")
       let converation = await axios.get("/api/conversation/"+frameId);
-      console.log(converation)
       return converation;
     } catch (error) {
       return false;

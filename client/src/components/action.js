@@ -65,6 +65,11 @@ const deleteCurrentFrame = (payload)=>({
   payload: payload,
 })
 
+const deleteMuseum = (payload)=>({
+  type: "DELETE_MUSEUM",
+  payload: payload,
+})
+
 export {
   addFrame,
   addFrameToQueue,
@@ -79,4 +84,5 @@ export {
   addCurrentImage,
   editCurrentFrame,
   deleteCurrentFrame,
+  deleteMuseum
 };

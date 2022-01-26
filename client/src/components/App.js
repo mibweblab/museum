@@ -21,7 +21,7 @@ import { get, post } from "../utilities";
 import "./App.scss";
 import { useLocation, Switch, Route } from "wouter";
 import MuseumInterface from "../api/museum";
-import {Profile} from "./pages/Profile";
+import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Landing from "./pages/Landing";
 import UserApi from "../api/user";
@@ -124,7 +124,7 @@ class App extends React.Component {
           { ((params) => (<Profile museums={this.props.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
         </Route>
 
-        <Route path="/room_0">
+        {/* <Route path="/room_0">
           <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
         </Route>
 
@@ -134,7 +134,7 @@ class App extends React.Component {
 
         <Route path="/room_2">
           <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
-        </Route>
+        </Route> */}
 
         <Route exact path="/museum/edit/:id">
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}

@@ -45,6 +45,12 @@ router.get("/user", (req, res) => {
   });
 });
 
+// router.all("*", (req, res) => {
+//   console.log(`API route not found: ${req.method} ${req.url}`);
+//   res.status(404).send({ msg: "API route not found" });
+// });
+
+
 // anything else falls to this "not found" case
 
 module.exports = router;

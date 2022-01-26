@@ -4,12 +4,12 @@ import {Link, navigate} from "@reach/router"
 import {Card} from "react-bootstrap"
 import './Explore.scss';
 import { MuseumCard } from "./Card";
-
 import MuseumInterface from "../../api/museum";
+import { connect } from "react-redux";
 // import { allSettled } from "core-js/fn/promise";
 
 
-const Explore = ({currentUserId }) => {
+const Explore = ({currentUserId, dispatch }) => {
     const [allPublicMuseums, setAllPublicMuseums] = useState([]);
 
     const retrievePublicMuseums = async () => {
@@ -20,18 +20,20 @@ const Explore = ({currentUserId }) => {
     useEffect(()=>{
         retrievePublicMuseums()
     }, []);
-
-    console.log("here are the public",allPublicMuseums)
+  
+  const filterMuseums = (id) =>{
+      setAllPublicMuseums(allPublicMuseums.filter((m)=>m._id!==id))
+  }
 
   return (
     <div className="Explore">
       <div className="Explore-cards">
         {allPublicMuseums.map(
-          (props,index) => <MuseumCard key={props._id} {...props} navigate={navigate} isCurrentUser={props.userId== currentUserId} /> /* prettier-ignore */
+          (props,index) => <MuseumCard dispatch={dispatch} filterMuseums={filterMuseums} key={props._id} {...props} navigate={navigate} isCurrentUser={props.userId== currentUserId} /> /* prettier-ignore */
         )}
       </div>
     </div>
   );
 };
 
-export default Explore;
+export default connect()(Explore);
