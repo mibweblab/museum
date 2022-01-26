@@ -36,6 +36,13 @@ export default class GPT3_Integrated extends Component {
         return this.languageModel.modelPayload(maxTokens, combinedPrompts)
     }
 
+    userFacingResponse = (response) => {
+        const arr = this.languageModel.nameStringArr()
+        const reducer = (previousValue, currentValue) => previousValue.replace(currentValue, '');
+        const newResponse = (arr.reduce(reducer, response)).trim()
+        return newResponse
+    }
+
     fireRequest = async() => {
         const payload = this.generatePayload()
         const response = await APIInterface.sendGPT3Request(payload)
@@ -45,7 +52,8 @@ export default class GPT3_Integrated extends Component {
             response: response_text,
             previous_prompts: this.state.previous_prompts.concat([[this.tokenCount(entry), entry]]),
         }, () => { 
-            this.props.onResponse(this.state.response)
+            const refinedResponse = this.userFacingResponse(this.state.response)
+            this.props.onResponse( refinedResponse, false)
         } );
     }
 
@@ -72,11 +80,14 @@ export default class GPT3_Integrated extends Component {
         return finalPrompt;
     }
 
-    onClickFun = (promptVal) => {
+    onClickFun = (e) => {
+        e.preventDefault();
+        const promptVal = (document.getElementById("promptinput").value).trim();
+        document.getElementById("promptinput").value = '';
         this.setState({
-            prompt:  this.languageModel.polishedInput(promptVal),
+            prompt:  this.languageModel.polishedInputForGPT3(promptVal),
         }, () => {
-            this.props.onPrompt(this.state.prompt);
+            this.props.onPrompt(promptVal);
             this.fireRequest()
         });
     }
@@ -90,12 +101,29 @@ export default class GPT3_Integrated extends Component {
     labelName = () => {
         return getTextAreaDescription(this.props.HumanModel)
     }
+
+    clearConvo = (e) => {
+        e.preventDefault();
+        document.getElementById("promptinput").value = '';
+        this.setState({
+            response: '',
+            previous_prompts: [],
+            prompt: '',
+        }, ()=> this.props.onResponse(null, true))
+    }
+
     render () {
         return (
             <div id='item2'>
-                <label className='field-label'>{this.labelName()}</label><br></br>
-                <textarea type='text' className='text-field w-input row' cols="35" rows="3" maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
-                <button onClick={() => this.onClickFun(document.getElementById("promptinput").value)} className='converse-btn'>Enter</button>
+                <div className='conversation-field-label' >
+                    <label className=' h6 field-label pt-10'>{this.labelName()}</label>
+                    <button onClick={(e) => this.clearConvo(e)}  className='converse-btn ' id='refresh'>Refresh</button>
+                </div>
+               
+                <div className='conversation-textarea-div'>
+                    <textarea onKeyPress={(e)=> { if (e.key === 'Enter') { this.onClickFun(e)} }} type='text' className=' text-field w-input row no-highlight' maxLength={256} name='name' id='promptinput' placeholder='Enter a topic.'/>
+                    <button onClick={(e) => this.onClickFun(e)}  className='converse-btn'>Enter</button>
+                </div>
           </div>
     );
     };

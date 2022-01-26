@@ -10,10 +10,10 @@ const HumanModels = [Shakespeare, Einstein, Musk, UserUpload]
 const getCameraPosition = (humanModel, trialNum) => {
     switch(humanModel) {
         case Einstein:
-            return (new Vector3(-20, 35, 80));
+            return (new Vector3(-20, 35, 50));
         case Shakespeare:
         case Musk:
-            return (new Vector3(20, 35, 80));
+            return (new Vector3(20, 35, 40));
         case UserUpload:
             return (new Vector3(10, 35, -80));
             
