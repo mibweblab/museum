@@ -10,6 +10,8 @@ import Rooms from "./Conversations/Rooms.js";
 import GPT3_playground from "./pages/GPT3_playground.js";
 import { Shakespeare, Einstein, Musk, UserUpload } from "../HumanModel";
 
+import { makeStyles, Grid } from '@material-ui/core';
+
 import World from "../components/modules/World";
 // import GPT3_playground from "./pages/GPT3_playground.js";
 // import { Shakespeare, Einstein, Musk } from "../LangModel.js";
@@ -31,6 +33,19 @@ import Landing from "./pages/Landing";
 import UserApi from "../api/user";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
+import { withStyles } from "@material-ui/styles";
+
+// Material-ui styles
+const useStyles =  makeStyles(() => ({
+  container: {
+      border: '3px solid purple',
+      padding: '10px',
+  },
+  item: {
+      padding: '10px',
+      border: '1px solid lightblue',
+  },
+}));
 
 
 
@@ -44,6 +59,7 @@ const mapStateToProps = (state) => {
 };
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -52,6 +68,7 @@ class App extends React.Component {
       museums: [],
     };
   }
+
 
   async getAllMuseums() {
     let allMuseums = await MuseumInterface.getAllMuseums();
@@ -108,8 +125,11 @@ class App extends React.Component {
 
 
   render() {
+    const { classes } = this.props;
     return (
       <>
+      
+      {/* <Grid container className={classes.container}> */}
         <NavBar
           handleLogin={this.handleLogin.bind(this)}
           handleLogout={this.handleLogout.bind(this)}
@@ -149,7 +169,9 @@ class App extends React.Component {
         </Route>
         {/* {this.props.frames && <FrameWorld images={this.props.frames} />} */}
         {/* <Route path="/scene/:id">{<World />}</Route> */}
+      {/* </Grid> */}
       </>
+
     );
   }
 }
@@ -244,3 +266,5 @@ class App extends React.Component {
 // };
 
 export default connect(mapStateToProps)(App);
+
+// export default connect(mapStateToProps)(withStyles(useStyles)(App));

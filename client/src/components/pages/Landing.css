@@ -1,6 +1,8 @@
 @import "./../../utilities.css";
 .Landing-container {
     display: flex;
+    flex: 1;
+    flex-direction: column;
     justify-content: center;
     
 }
@@ -35,3 +37,14 @@ p.Landing-text
 .Landing-second-div {
     border-top: solid 2px;
 }
+
+@media screen and (min-width: 415px){
+    .Landing-container {
+      flex-direction: row;
+    }
+  }
+  .Landing-container > * {
+    -webkit-flex: 1 1 0;
+    -ms-flex: 1 1 0;
+    flex: 1 1 0;
+  }
