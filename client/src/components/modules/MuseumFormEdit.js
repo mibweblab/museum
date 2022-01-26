@@ -9,11 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 
 import MuseumAPI from "../../api/museum";
 
-import MuiAlert from '@mui/material/Alert';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const addRandomImageUrl = () => {
   const imgUrls = [
@@ -29,7 +25,9 @@ const addRandomImageUrl = () => {
   const randomIndex = Math.floor(Math.random() * 8);
   return imgUrls[randomIndex];
 };
-const MuseumForm = ({ dispatch, close}) => {
+const MuseumForm = ({ dispatch, close, currentMuseum}) => {
+
+  // console.log("currentMuseum", currentMuseum);
 
   const textRef = useRef();
 
@@ -44,6 +42,13 @@ const MuseumForm = ({ dispatch, close}) => {
   const [isNameError, setNameError] = useState(false);
   const [isDescriptionError, setDescriptionError] = useState(false);
   const [snackBarColor, setSnackBarColor] = useState(false);
+
+  //internalText
+  const [internalName, setInternalName] = useState("");
+  const [internalText, setInternalText] = useState("");
+  const [internalImageUrl, setInternalImageUrl] = useState("");
+  const [internalPrivacy, setInternalPrivacy] = useState("");
+
 
   const options = [
     { key: "form-pr-1", value: true, text: "Private" },
@@ -104,6 +109,7 @@ const MuseumForm = ({ dispatch, close}) => {
           fullWidth
           sx={{height: 20}}
           id="fullWidth"
+          placeholder={currentMuseum ? currentMuseum.name : "Name"}
           label="Name"
           variant="standard"
           className="Museum-textField"
@@ -118,7 +124,8 @@ const MuseumForm = ({ dispatch, close}) => {
           multiline
           rows={4}
           fullWidth
-          placeholder="Tell us more"
+          placeholder={currentMuseum ? currentMuseum.description : "Name"}
+          // placeholder="Tell us more"
           variant="standard"
           className="Card-field"
           helperText={descriptionCharacterLength + " /400"}
@@ -163,15 +170,15 @@ const MuseumForm = ({ dispatch, close}) => {
                 setImageUrl(randomImage);
                 imageUrlQuickCopy = randomImage;
               }
-              let museum = await MuseumAPI.addMuseum(
-                name,
-                description,
-                isPrivate,
-                imageUrlQuickCopy
-              );
-              if (museum) {
-                dispatch(addMuseum(museum.data));
-              }
+              // let museum = await MuseumAPI.addMuseum(
+              //   name,
+              //   description,
+              //   isPrivate,
+              //   imageUrlQuickCopy
+              // );
+              // if (museum) {
+              //   dispatch(addMuseum(museum.data));
+              // }
             }
             close();
           }}

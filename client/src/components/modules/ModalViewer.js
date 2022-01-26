@@ -5,7 +5,7 @@ import MuseumForm from "./MuseumForm";
 import MuseumFormEdit from "./MuseumFormEdit";
 import UserForm from "./UserForm";
 
-const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap, user, editUserFunction }) => {
+const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap, user, editUserFunction, currentMuseum }) => {
 
     return (
       <Modal>
@@ -14,7 +14,7 @@ const ModalViewer = ({ Modal, open, close, isOpen, modalType, snap, user, editUs
           <div className="ModalViewer-body">
             {modalType === "frame" && <FrameCustomizer close={close} snap={snap} />}
             {modalType === "museum" && <MuseumForm close={close} snap={snap} />}
-            {modalType === "museum-edit" && <MuseumFormEdit close={close} snap={snap} />}
+            {modalType === "museum-edit" && <MuseumFormEdit close={close} currentMuseum={currentMuseum} snap={snap} />}
             {modalType === "user" && <UserForm close={close} snap={snap} user={user} editUserFunction={editUserFunction} />}
           </div>
         </div>

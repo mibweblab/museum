@@ -36,6 +36,8 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function FrameCard({ name, text, frameToTransform, dispatch, parentId, currentFrame }) {
+
+
   const [internalName, setInternalName] = useState("");
   const [internalText, setInternalText] = useState("");
 

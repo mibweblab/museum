@@ -581,6 +581,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
         isOpen={isOpen}
         snap={snap}
         modalType={modalType}
+        currentMuseum={currentMuseum}
       />
 
       <FrameCard
