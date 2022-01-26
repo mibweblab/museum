@@ -1,26 +1,27 @@
 import * as THREE from "three";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import "./MuseumView.scss";
-import { useModal } from "react-hooks-use-modal";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import {
   Environment,
   OrbitControls,
   PerspectiveCamera,
-  TransformControls,
 } from "@react-three/drei";
 import { proxy, snapshot, useSnapshot } from "valtio";
 import { connect, useSelector, useDispatch } from "react-redux";
 import {
-  addFrame,
-  dequeueFrame,
   addInitialFrames,
-  changeTransformMode,
   addCurrentMuseum,
 } from "../action";
 
-import { useControls } from "leva";
 import FrameCard from "./FrameCardView";
+import Model from "./Ploid";
+import Frame from "./FrameView";
+import APIInterface from "../../api/api";
+import MuseumAPI from "../../api/museum";
+
+import Controls from "./Controls";
+
 
 const mapStateToProps = (state) => {
   return {
@@ -33,15 +34,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-import Model from "./Ploid";
-import Frame from "./FrameView";
-import Controls from "./Controls";
-import ModalViewer from "./ModalViewer";
-import { addFrameToQueue } from "../action";
-import APIInterface from "../../api/api";
-import MuseumAPI from "../../api/museum";
 
-const GOLDENRATIO = 1.61803398875;
 
 // Using a Valtio state model to bridge reactivity between
 // the canvas and the dom, both can write to it and/or react to it.
@@ -52,17 +45,10 @@ const state = proxy({
   frameExists: false,
 });
 
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
-};
-
 function Frames({ frames, frameToTransform, mode, dispatch }) {
   const ref = useRef();
-
-  // console.log("these are the frames", frames);
   useEffect(() => {}, [frameToTransform, mode]);
-  useFrame((state, dt) => {});
+  // useFrame((state, dt) => {});
 
   const snap = useSnapshot(state);
   return (
@@ -81,8 +67,10 @@ const Plane = ({ planeLength, planeWidth, planeColor, planeStrength, textureInde
   const texture0 = useLoader(THREE.TextureLoader, "/assets/images/wood.png");
   const texture1 = useLoader(THREE.TextureLoader, "/assets/images/water.jpg");
   const texture2 = useLoader(THREE.TextureLoader, "/assets/images/grass.jpg");
-
-  let textures = [texture0, texture1, texture2];
+  const texture3 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/floor1.png");
+  const texture4 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/musk_floor.png");
+  const texture5 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/shakespeare_floor.png");
+  let textures = [texture0, texture1, texture2, texture3, texture4, texture5];
   return (
     <group>
       <mesh>
@@ -100,7 +88,7 @@ const Plane = ({ planeLength, planeWidth, planeColor, planeStrength, textureInde
   );
 };
 
-const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
+const FrameWorld = ({ id}) => {
   const dispatch = useDispatch();
 
   const getAllFrames = async () => {
@@ -121,10 +109,7 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   const currentMuseum = useSelector((state) => state.currentMuseum);
   const currentFrame = useSelector((state) => state.currentFrame);
   const frames = useSelector((state) => state.frames);
-  // let currentFramesList = frames.filter((frame)=>frame._id===frameToTransform);
-  // let currentFrameData = frame.filter
 
-  // console.log("this is the current frame", currentFrame);
   let [currentFrameData, setFrameData] = useState({
     name: "Click on a Frame",
     text: "You will see frame details when you click on a frame",
@@ -169,14 +154,14 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
   }, [frameToTransform]);
 
 
+  const [rightClick, clickRight] = useState(false);
+  const [leftClick, clickLeft] = useState(false);
+  const [upClick, clickUp] = useState(false);
+  const [downClick, clickDown] = useState(false);
 
-  // console.log("Let's see what this bad boy has",currentMuseum)
-  console.log("I find this backgroundColor",backgroundColor, currentMuseum,currentMuseum?.backgroundColor)
-
-
-  // useEffect
   return (
     <>
+      <Controls clickDown={clickDown} clickUp={clickUp} clickRight={clickRight} clickLeft={clickLeft}/>
       <FrameCard
         dispatch={dispatch}
         currentFrame={currentFrame}
@@ -196,6 +181,10 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
               // body={snap.items.body}
               // chest={snap.items.chest}
               // eyes={snap.items.eyes}
+              upClick={upClick}
+              downClick={downClick}
+              leftClick={leftClick}
+              rightClick={rightClick}
               scale={0.21}
               // position={[0, 0, 0]}
               controls={control}
@@ -223,10 +212,6 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
           <OrbitControls
             makeDefault
             ref={control}
-            // autoRotate
-            // autoRotateSpeed={0.3}
-            // maxPolarAngle={Math.PI / 2 - 0.05}
-            // minPolarAngle={Math.PI / 2.3}
             enableZoom={true}
             enablePan={true}
             minDistance={0}

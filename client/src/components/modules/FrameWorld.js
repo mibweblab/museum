@@ -166,6 +166,21 @@ const TextureSelector = ({ setTextureType }) => {
       text: "Grass",
       path: "/assets/images/grass.jpg",
     },
+    {
+      key: "text04",
+      text: "Stone",
+      path: "/conversation_assets/floors/floor1.png",
+    },
+    {
+      key: "text05",
+      text: "Hex",
+      path: "/conversation_assets/floors/musk_floor.png",
+    },
+    {
+      key: "text06",
+      text: "Marble",
+      path: "/conversation_assets/floors/shakespeare_floor.png",
+    },
   ];
 
   let [hovered, setHovered] = useState(false);
@@ -191,8 +206,11 @@ const Plane = ({ planeLength, planeWidth, planeColor, planeStrength, textureInde
   const texture0 = useLoader(THREE.TextureLoader, "/assets/images/wood.png");
   const texture1 = useLoader(THREE.TextureLoader, "/assets/images/water.jpg");
   const texture2 = useLoader(THREE.TextureLoader, "/assets/images/grass.jpg");
+  const texture3 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/floor1.png");
+  const texture4 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/musk_floor.png");
+  const texture5 = useLoader(THREE.TextureLoader, "/conversation_assets/floors/shakespeare_floor.png");
 
-  let textures = [texture0, texture1, texture2];
+  let textures = [texture0, texture1, texture2, texture3, texture4, texture5];
   return (
     <group>
       <mesh>

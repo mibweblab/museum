@@ -24,20 +24,15 @@ const NavBar = (props) => {
     }
   }, [props.userId]);
 
-
-  const [linkClassName,setLinkClassName] = useState("NavBar-link");
-
-
+  const [linkClassName, setLinkClassName] = useState("NavBar-link");
 
   useEffect(() => {
-
     const onScroll = () => {
-      if (window.scrollY > 0.8*window.innerHeight) {
+      if (window.scrollY > 0.8 * window.innerHeight) {
         setLinkClassName("NavBar-link--dark");
-      }else{
+      } else {
         setLinkClassName("NavBar-link");
       }
-
       // if (window.scrollY > 1.3 * window.innerHeight) {
       //   setSecondClassName("Landing-subtitle--large2");
       //   setLandingTextSecondClassName("Landing-text--large");
@@ -52,7 +47,6 @@ const NavBar = (props) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: false,
@@ -62,30 +56,30 @@ const NavBar = (props) => {
     setLocation("./profile");
   };
 
-
-
   return (
     <nav className="NavBar">
       <ModalViewer Modal={Modal} open={open} close={close} isOpen={isOpen} modalType="museum" />
       <div className="NavBar-links">
-          { 
-          location != "/" ? (
-              <Link to="/" className={linkClassName}>
-                Home
-              </Link>
-
-          ) : (
-            <Link to="/profile" className={linkClassName}>
-              My Wander
-            </Link>
-            ) 
-          }
-
-          <Link to="/explore" className={linkClassName}>
-            Explore
+        {location != "/" ? (
+          <Link to="/" className={linkClassName}>
+            Home
           </Link>
+        ) : (
+          <Link to="/profile" className={linkClassName}>
+            My Wander
+          </Link>
+        )}
 
-          {props.userId ? (
+        <Link to="/explore" className={linkClassName}>
+          Explore
+        </Link>
+
+        {props.userId && (
+          <button className="NavBar-create" onClick={open}>
+            +Create Museum
+          </button>
+        )}
+        {props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Logout"
@@ -103,14 +97,6 @@ const NavBar = (props) => {
           />
         )}
       </div>
-
-      {/* <div className="NavBar-title u-inlineBlock Navbar-item">
-        {props.userId && (
-          <label className="u-link" onClick={open}>
-            +Create Museum
-          </label>
-        )}
-      </div> */}
     </nav>
   );
 };

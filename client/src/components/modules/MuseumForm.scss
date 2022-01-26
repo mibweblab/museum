@@ -1,58 +1,121 @@
-.MuseumForm
-{
-    background-color: white;
-    padding: 32px;
-    // width: 600px;
-    border-radius: 6px;
+@use "../../variables.scss" as variables;
 
-    &-group
-    {
-      padding: 16px 0;
-    }
-}.MuseumForm
+
+@mixin uploadButton
 {
-    background-color: white;
-    padding: 32px;
-    // width: 600px;
-    border-radius: 6px;
+  padding: 6px 32px;
+  border: none;
+  border-radius: 24px;
+  outline: none;
+  font-weight: variables.$font-weight-semibold;
+  font-size: 16px;
+  text-transform: uppercase;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin-left: 12px;
+}
+
+@mixin upload-navButton--hover
+{
+  // box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+
+ 
+.MuseumForm {
+  background-color: white;
+  padding: 32px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+
+
+  &-textField
+  {
+    // font-size: 100px !important;
+    // padding: 8px !important;
+  }
+
+  &-inputFile
+  {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    font-weight: variables.$font-weight-semibold;
+    font-size: 16px;
+    text-transform: uppercase;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-left: 12px;
+  }
+
+  &-uploadImage
+  {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    margin-left: 8px;
+  }
+
+  &-uploadButton
+  {
+    @include uploadButton;
+  }
+
+  &-title
+  {
+    font-size: 32px;
+    font-weight: variables.$font-weight-semibold;
+    text-transform: uppercase;
+    text-align: center;
+    color: variables.$clay;
+    margin-bottom: 12px;
+  }
+
+  &-group {
+    padding: 16px 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin: 12px;
+  }
 
-    &-group
-    {
-      padding: 16px 0;
-      display: flex;
-      flex-direction: row;
-    }
+  &-row-group {
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    display: flex;
+  }
 
-    &-row-group {
-      flex-direction: row;
-      justify-content: center;
-      gap: 10px;
-      display: flex;
-    }
+  &-col-group {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+  }
+  &-item {
+    flex-grow: 1;
+  }
 
-    &-col-group {
-      align-items: center;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 10px;
-    }
-    &-item {
-      flex-grow: 1;
-    }
-
-    &-action-btn {
-
-      background-color: #8d999d !important ;
-      color:white;
-    }
-
-   
+  &-action-btn {
+    background-color: #8d999d !important ;
+    color: white;
+  }
 }
 
 .w-30 {
   width: 30%;
 }
 
+
+.css-1x51dt5-MuiInputBase-input-MuiInput-input
+{
+  padding: 8px !important;
+  font-size: 18px !important;
+}
+.css-66dh3a-MuiInputBase-input-MuiInput-input{
+
+  font-size: 16px !important;
+
+}

@@ -4,39 +4,39 @@ import { Input, Button, Dropdown, TextArea } from "semantic-ui-react";
 import { storage, ref, uploadBytes, getDownloadURL } from "../firebase";
 import { connect } from "react-redux";
 import { addMuseum } from "../action";
+import TextField from "@mui/material/TextField";
 
 import MuseumAPI from "../../api/museum";
 
-// const mapStateToProps = (state) => {
-//   return {
-// frames: state.frames,
-// queuedFrame: state.queuedFrame,
-// isThereQueuedFrame: state.isThereQueuedFrame,
-// museums: state.museums
-//   };
-// };
-
 const addRandomImageUrl = () => {
-  
   const imgUrls = [
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext1.png?alt=media&token=d9995372-e3a2-44d8-89af-81530863f9a2', 
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext2.png?alt=media&token=1ba53d18-3749-4ee0-8207-2c52468e2a6d',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext3.png?alt=media&token=72fcf351-5e93-4ff5-8afe-ccc5bce1fd1d',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext5.png?alt=media&token=a6789709-6744-49dc-958e-030f53e201b6',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext6.png?alt=media&token=c4ef2ab3-e713-4c9c-b863-5555c5f52d3d',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext7.png?alt=media&token=3d357dc1-e0e2-46e1-bb3b-fe544970c7c0',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext8.png?alt=media&token=f3f97484-2935-4757-8fbd-d026ee4a932d',
-  'https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext5.png?alt=media&token=80f78d2c-4914-41af-a56a-42f4ed69ccd8']
-  const randomIndex =  Math.floor(Math.random() * 8);
-  return (imgUrls[randomIndex])
-}
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext1.png?alt=media&token=d9995372-e3a2-44d8-89af-81530863f9a2",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext2.png?alt=media&token=1ba53d18-3749-4ee0-8207-2c52468e2a6d",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext3.png?alt=media&token=72fcf351-5e93-4ff5-8afe-ccc5bce1fd1d",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext5.png?alt=media&token=a6789709-6744-49dc-958e-030f53e201b6",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext6.png?alt=media&token=c4ef2ab3-e713-4c9c-b863-5555c5f52d3d",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext7.png?alt=media&token=3d357dc1-e0e2-46e1-bb3b-fe544970c7c0",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext8.png?alt=media&token=f3f97484-2935-4757-8fbd-d026ee4a932d",
+    "https://firebasestorage.googleapis.com/v0/b/weblab-338617.appspot.com/o/images%2Ftext5.png?alt=media&token=80f78d2c-4914-41af-a56a-42f4ed69ccd8",
+  ];
+  const randomIndex = Math.floor(Math.random() * 8);
+  return imgUrls[randomIndex];
+};
 const MuseumForm = ({ dispatch, close }) => {
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isPrivate, setPrivate] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
+
+  const textRef = useRef();
+
+  const [nameCharacterLength, setCharacterLength] = useState(0);
+  const [descriptionCharacterLength, setDescriptionCharacterLength] = useState(0);
+  const [isNameError, setNameError] = useState(false);
+  const [isDescriptionError, setDescriptionError] = useState(false);
 
   const options = [
     { key: "form-pr-1", value: true, text: "Private" },
@@ -66,15 +66,51 @@ const MuseumForm = ({ dispatch, close }) => {
 
   return (
     <div className="MuseumForm">
+      <div className="MuseumForm-title">Create My Museum</div>
       <div className="MuseumForm-group">
-        <Input onChange={(_, data) => setName(data.value)} className={"MuseumForm-item"} placeholder="Museum Name" />
+        <TextField
+          error={isNameError}
+          onChange={(e) => {
+            if (e.target.value.length<=40){
+              setName(e.target.value);
+              setCharacterLength(e.target.value.length);
+              setNameError(false)
+            } else{
+              setNameError(true)
+            } 
+          }}
+          fullWidth
+          sx={{height: 20}}
+          id="fullWidth"
+          label="Name"
+          variant="standard"
+          className="Museum-textField"
+          helperText={nameCharacterLength + " / 40"}
+        />
       </div>
       <div className="MuseumForm-group">
-        <TextArea
-          onChange={(_, data) => setDescription(data.value)}
+        <TextField
+          error={isDescriptionError}
+          id="standard-multiline-static"
+          label="Description"
+          multiline
+          rows={4}
+          fullWidth
           placeholder="Tell us more"
-          style={{ minHeight: 100 }}
-          className={"flex-grow-1"}
+          variant="standard"
+          className="Card-field"
+          helperText={descriptionCharacterLength + " /400"}
+
+          onChange={(e) => {
+            if (e.target.value.length<=400){
+              setDescription(e.target.value)
+              setDescriptionCharacterLength(e.target.value.length);
+              setDescriptionError(false)
+            } else{
+              setDescriptionError(true)
+            } 
+          }}
+          inputRef={textRef}
         />
       </div>
       <div className="MuseumForm-row-group">
@@ -88,34 +124,40 @@ const MuseumForm = ({ dispatch, close }) => {
         />
       </div>
       <div className="MuseumForm-group">
-        <input type="file" onChange={handleChange} />
-        <Button onClick={handleUpload}>Upload Image</Button>
+        <input type="file" className="MuseumForm-inputFile" onChange={handleChange} />
+        <button className="MuseumForm-uploadButton" onClick={handleUpload}>
+          Upload Image
+          <img className="MuseumForm-uploadImage"src="https://img.icons8.com/external-bearicons-blue-bearicons/64/000000/external-upload-call-to-action-bearicons-blue-bearicons.png"/>
+        </button>
       </div>
       <div className="MuseumForm-col-group">
         <Button
           className={"w-30 MuseumForm-action-btn "}
           onClick={async () => {
             if (name && description) {
-              console.log(imageUrl)
-              let imageUrlQuickCopy = imageUrl
+              console.log(imageUrl);
+              let imageUrlQuickCopy = imageUrl;
               if (imageUrlQuickCopy == "") {
-                const randomImage = addRandomImageUrl()
-                setImageUrl(randomImage)
-                imageUrlQuickCopy = randomImage
+                const randomImage = addRandomImageUrl();
+                setImageUrl(randomImage);
+                imageUrlQuickCopy = randomImage;
               }
-              let museum = await MuseumAPI.addMuseum(name, description, isPrivate, imageUrlQuickCopy);
+              let museum = await MuseumAPI.addMuseum(
+                name,
+                description,
+                isPrivate,
+                imageUrlQuickCopy
+              );
               if (museum) {
                 dispatch(addMuseum(museum.data));
               }
             }
-            close()
+            close();
           }}
         >
           Create
         </Button>
-        <Button className={"w-30"}
-          onClick={close}
-        >
+        <Button className={"w-30"} onClick={close}>
           Close
         </Button>
       </div>

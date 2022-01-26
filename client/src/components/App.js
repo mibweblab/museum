@@ -25,15 +25,11 @@ import {Profile} from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Landing from "./pages/Landing";
 import UserApi from "../api/user";
-import ExternalPage from "./pages/External";
 
 import { addInitialFrames, addInitialMuseums } from "./action";
 import MuseumView from "./modules/MuseumView.js";
 
 
-
-
-import View from "./modules/View.js";
 const mapStateToProps = (state) => {
   return {
     frames: state.frames,

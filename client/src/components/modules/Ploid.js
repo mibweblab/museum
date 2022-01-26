@@ -11,19 +11,6 @@ import { useBox } from "@react-three/cannon";
 export default function Model(props) {
   const group = useRef();
 
-  // const [group, api] = useBox(
-  //   () => ({
-  //     // mass:10,
-  //     // position:[0,0,0],
-  //     // rotation:[0, 0, 0],
-  //     // args,
-  //     allowSleep: false,
-  //     // onCollide: (e) => console.log("bonk", e.body.userData),
-  //     ...props,
-  //   }),
-  //   group
-  // );
-
   const { nodes, materials, animations } = useGLTF("/assets/new.glb");
 
   const [index, setIndex] = useState(1);
@@ -32,12 +19,11 @@ export default function Model(props) {
 
   // CONTROL KEYS
   let keysPressed = {};
-  let walkVelocity = 2;
   let walkDirection = new Vector3();
   let rotateAngle = new Vector3(0, 1, 0);
   let rotateQuarternion = new Quaternion();
   let cameraTarget = new Vector3();
-  // const keyDisplayQueue = new KeyDisplay();
+
 
   document.addEventListener(
     "keydown",
@@ -87,14 +73,15 @@ export default function Model(props) {
     //   setIndex(play);
     // }
 
-    if (keysPressed["w"] || keysPressed["a"] || keysPressed["d"] || keysPressed["s"]) {
+    if (keysPressed["w"] || keysPressed["a"] || keysPressed["d"] || keysPressed["s"] || props.leftClick || props.rightClick || props.upClick || props.downClick) {
+
       var angleYCameraDirection = Math.atan2(
         -camera.position.x + ref.current.position.x,
         -camera.position.z + ref.current.position.z
       );
 
       // diagonal movement angle offset
-      var directionOffset = getDirectionOffset(keysPressed);
+      var directionOffset = getDirectionOffset(keysPressed,props.leftClick, props.rightClick, props.downClick, props.upClick);
 
       // rotate model
       rotateQuarternion.setFromAxisAngle(rotateAngle, angleYCameraDirection + directionOffset);
@@ -198,26 +185,27 @@ export default function Model(props) {
   );
 }
 
-function getDirectionOffset(keysPressed) {
+function getDirectionOffset(keysPressed, leftClick, rightClick, downClick, upClick) {
+
   var directionOffset = 0; // w
 
-  if (keysPressed["w"]) {
-    if (keysPressed["a"]) {
+  if (keysPressed["w"] || upClick) {
+    if (keysPressed["a"] || leftClick) {
       directionOffset = Math.PI / 4; // w+a
-    } else if (keysPressed["d"]) {
+    } else if (keysPressed["d"] || rightClick) {
       directionOffset = -Math.PI / 4; // w+d
     }
-  } else if (keysPressed["s"]) {
-    if (keysPressed["a"]) {
+  } else if (keysPressed["s"] || downClick) {
+    if (keysPressed["a"] || leftClick) {
       directionOffset = Math.PI / 4 + Math.PI / 2; // s+a
-    } else if (keysPressed["d"]) {
+    } else if (keysPressed["d"] || rightClick) {
       directionOffset = -Math.PI / 4 - Math.PI / 2; // s+d
     } else {
       directionOffset = Math.PI; // s
     }
-  } else if (keysPressed["a"]) {
+  } else if (keysPressed["a"] || leftClick) {
     directionOffset = Math.PI / 2; // a
-  } else if (keysPressed["d"]) {
+  } else if (keysPressed["d"] || rightClick) {
     directionOffset = -Math.PI / 2; // d
   }
 

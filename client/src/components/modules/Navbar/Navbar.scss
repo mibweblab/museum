@@ -1,6 +1,24 @@
 // @import url('../../../variables.scss');
 @use "../../../variables.scss" as variables;
 
+@mixin navButton
+{
+  padding: 6px 32px;
+  border: none;
+  border-radius: 24px;
+  outline: none;
+  font-weight: variables.$font-weight-semibold;
+  font-size: 16px;
+  text-transform: uppercase;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin-left: 12px;
+}
+
+@mixin navButton--hover
+{
+  // box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
 
 
 @mixin link{
@@ -89,9 +107,23 @@
 
   &-links
   {
-    margin-left: 8px;
+    margin: 0 24px;
   }
 
 
+  &-login
+  {
+    margin: 0 24px;
+  }
+
+
+  &-create
+  {
+    @include navButton;
+  }
+  &-create:hover
+  {
+    @include navButton--hover;
+  }
 
 }
