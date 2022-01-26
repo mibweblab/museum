@@ -88,3 +88,30 @@ body {
   background-color: #8d999d !important;
 }
 
+.Landing
+{
+  &-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 40%;
+    gap: 20px;
+    justify-content: center;
+    opacity: 90%;
+  }
+  &-gifright {
+    border: solid 10px #D3A625;
+  }
+  &-gifleft {
+    border: solid 10px #740001;
+  }
+  &-gif {
+    // flex-shrink: 1;
+    align-self: flex-end;
+    height: 80%;
+  }
+  &-logo {
+    align-self: flex-start;
+    height: 30%;
+    opacity: 50%;
+  }
+}
