@@ -29,7 +29,7 @@ const addRandomImageUrl = () => {
   const randomIndex = Math.floor(Math.random() * 8);
   return imgUrls[randomIndex];
 };
-const MuseumForm = ({ dispatch, close }) => {
+const MuseumForm = ({ dispatch, close}) => {
 
   const textRef = useRef();
 
@@ -88,7 +88,7 @@ const MuseumForm = ({ dispatch, close }) => {
           {snackBarMessage}
         </Alert>
       </Snackbar>
-      <div className="MuseumForm-title">Create My Museum</div>
+      <div className="MuseumForm-title">Edit Museum</div>
       <div className="MuseumForm-group">
         <TextField
           error={isNameError}
@@ -176,7 +176,7 @@ const MuseumForm = ({ dispatch, close }) => {
             close();
           }}
         >
-          Create
+          Edit
         </Button>
         <Button className={"w-30"} onClick={close}>
           Close

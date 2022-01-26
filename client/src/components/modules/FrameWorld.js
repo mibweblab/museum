@@ -510,11 +510,9 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
         </Alert>
       </Snackbar>
       <div className="FrameWorld-topNav">
-          <button onClick={open} className="FrameWorld-framer">Add Frame</button>
           <button
             className="FrameWorld-save"
             onClick={async () => {
-
               let response = await MuseumAPI.editMuseumProperty(id, {
                 intensity: intensity,
                 backgroundColor: backgroundColor,
@@ -525,12 +523,10 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                 planeStrength: planeStrength,
                 textureIndex: textureIndex,
               });
-
               if (response) {
                 setOpenSnackBar(true);
                 setSnackBarMessage("Successfully updated frame property");
               }
-
               let obj = {
                 position: [
                   transformRef.current ? transformRef.current.object.position.x : 0,
@@ -574,8 +570,9 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
             {" "}
             Save{" "}
           </button>
+          <button onClick={()=>{setModalType("museum-edit"); open();}} className="FrameWorld-save">Edit Detail</button>
+          <button onClick={()=>{setModalType("frame"); open();}} className="FrameWorld-framer">Add Frame</button>
       </div>
-
 
       <ModalViewer
         Modal={Modal}

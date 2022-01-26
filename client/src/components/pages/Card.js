@@ -80,7 +80,7 @@ const MuseumCard = ({
           </div>
 
           <div className="Card-descriptionWrapper">
-            <span class="Card-description">{description}</span>
+            <span className="Card-description">{description}</span>
           </div>
       
           <div className="Card-icons">
