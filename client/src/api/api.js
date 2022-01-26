@@ -52,7 +52,7 @@ export default class FrameAPI {
   }
 
   static async editFrameProperty(id,data) {
-    console.log("what am I sending", data)
+    // console.log("what am I sending", data)
     try {
       let frame = await axios.patch("/api/frame/" + id,data);
       return frame;

@@ -18,7 +18,7 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
     });
     return await frame.save();
   } catch (error) {
-    console.log("error saving", error)
+    // console.log("error saving", error)
     return false;
   }
 }
@@ -33,7 +33,7 @@ async function addFrame(type, name, imageUrl, text, frameColor, position, rotati
 
 async function editFrame(frameId,data){
 
-    console.log("trying to update",frameId,data);
+    // console.log("trying to update",frameId,data);
     try {
 
         

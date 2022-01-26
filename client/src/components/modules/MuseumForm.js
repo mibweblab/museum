@@ -156,7 +156,7 @@ const MuseumForm = ({ dispatch, close }) => {
           className={"w-30 MuseumForm-action-btn "}
           onClick={async () => {
             if (name && description) {
-              console.log(imageUrl);
+              // console.log(imageUrl);
               let imageUrlQuickCopy = imageUrl;
               if (imageUrlQuickCopy == "") {
                 const randomImage = addRandomImageUrl();

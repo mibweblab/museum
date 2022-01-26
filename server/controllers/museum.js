@@ -28,7 +28,7 @@ async function addMuseum(name, description, isPrivate, imageUrl, userId) {
     return await museum.save();
     // return true
   } catch (error) {
-    console.log("error saving", error);
+    // console.log("error saving", error);
     return false;
   }
 }
@@ -65,7 +65,7 @@ async function getAllMuseums(userId, publicMuseumsOnly) {
       return await Museum.find({userId: userId});
     }
   } catch (error) {
-    console.log("error getting all museums", error);
+    // console.log("error getting all museums", error);
     return false;
   }
 }

@@ -553,11 +553,11 @@ const FrameWorld = ({ id, queuedFrame, isThereQueuedFrame }) => {
                   : 0,
               };
 
-              console.log(obj);
+              // console.log(obj);
               if (transformRef.current) {
                 if (transformRef.current.object.userData) {
                   if (transformRef.current.object.userData.isEditable) {
-                    console.log("this is the ibject tryna save", obj);
+                    // console.log("this is the ibject tryna save", obj);
                     let frameResponse = await APIInterface.editFrameProperty(
                       transformRef.current.object.name,
                       obj

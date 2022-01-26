@@ -32,7 +32,7 @@ export default class GPT3_Integrated extends Component {
 
     generatePayload = () => {
         let combinedPrompts = (this.props.HumanModel == Shakespeare) ? this.languageModel.staticPrompt(this.state.prompt) : this.combinePrompts();
-        console.log(`Full Prompt:\n${combinedPrompts}`)
+        // console.log(`Full Prompt:\n${combinedPrompts}`)
         return this.languageModel.modelPayload(maxTokens, combinedPrompts)
     }
 

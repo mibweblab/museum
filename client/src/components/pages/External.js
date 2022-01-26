@@ -30,7 +30,7 @@ export default function App() {
     className="container"
     gap={5}
     onRequestAppend={(e) => {
-      console.log(e.groupKey)
+      // console.log(e.groupKey)
       const nextGroupKey = (e.groupKey || 0) + 1;
 
       setItems([

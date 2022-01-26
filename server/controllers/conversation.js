@@ -11,7 +11,7 @@ async function addConversation(firstName, lastName, description, frameId, frameU
     });
     return await conversation.save();
   } catch (error) {
-    console.log("error saving", error)
+    // console.log("error saving", error)
     return false;
   }
 }

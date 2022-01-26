@@ -182,9 +182,9 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
     const uploadTask = uploadBytes(storageRef, image);
     uploadTask
       .then((snapshot) => {
-        console.log(snapshot);
+        // console.log(snapshot);
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        // console.log("Upload is " + progress + "% done");
         getDownloadURL(snapshot.ref).then((downloadURL) => {
           setImageUrl(downloadURL);
           // if (downloadURL){
@@ -193,7 +193,7 @@ const FrameCustomizer = ({ snap, dispatch, close }) => {
         });
       })
       .catch((err) => {
-        console.log("err", err);
+        // console.log("err", err);
       });
   };
 
