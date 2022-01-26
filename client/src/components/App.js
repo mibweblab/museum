@@ -45,7 +45,8 @@ class App extends React.Component {
     this.state = {
       user: null,
       userId: null,
-      firstName: "",
+      FirstName: undefined,
+      LastName: undefined,
       museums: [],
       path: "",
     };
@@ -63,10 +64,8 @@ class App extends React.Component {
     get("/api/whoami").then(async (user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
-        this.setState({ user: user, firstName: user.firstname, userId: user._id });
+        this.setState({ user: user, FirstName: user.firstname, LastName:user.lastname,  userId: user._id },  ()=> {console.log(this.state.FirstName)});
         await this.getAllMuseums();
-      }else{
-        navigate("/")
       }
     });
   }
@@ -78,7 +77,8 @@ class App extends React.Component {
     post("/api/login", { token: userToken }).then(async (user) => {
       this.setState({ 
         user: user, 
-        firstName: user.firstname,
+        FirstName: user.firstname,
+        LastName: user.lastname,
         userId: user._id
       });
 
@@ -90,7 +90,7 @@ class App extends React.Component {
 
   handleLogout = () => {
     // setUserId(undefined);
-    this.setState({ user: null, firstName:null });
+    this.setState({ user: null, FirstName:null, LastName:null });
     post("/api/logout");
   };
 
@@ -98,7 +98,8 @@ class App extends React.Component {
     let userEdited = await UserApi.updateUser(this.state.user._id, data);
     this.setState({ 
       user: data, 
-      firstName: data.firstname
+      FirstName: data.firstname,
+      LastName: data.lastname,
   });
 
 }
@@ -112,6 +113,7 @@ class App extends React.Component {
           handleLogout={this.handleLogout.bind(this)}
           userId={(this.state.user) ? this.state.user._id : null}
         />
+        <Switch>
         <Route path="/">
           <Landing />
         </Route>
@@ -125,17 +127,22 @@ class App extends React.Component {
           { ((params) => (<Profile museums={this.state.museums} otherUserProfileId={params.id} editUserFunction={this.editUserFunction}/>))}
         </Route>
 
-        {/* <Route path="/room_0">
-          <Rooms FirstName={this.state.firstName} HumanModel={Shakespeare} />
+        <Route path="/room_0">
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />} 
+          
+          {!this.state.user && <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />}
         </Route>
 
         <Route path="/room_1">
-          <Rooms FirstName={this.state.firstname} HumanModel={Einstein} />
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Einstein} />}
+          {!this.state.user && <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Einstein} />}
         </Route>
 
         <Route path="/room_2">
-          <Rooms FirstName={this.state.firstname} HumanModel={Musk} />
-        </Route> */}
+          {this.state.user &&  <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Musk} />}
+          {!this.state.user && <Rooms FirstName={this.state.FirstName}  LastName={this.state.LastName} HumanModel={Musk} />} 
+
+        </Route>
 
         <Route exact path="/museum/edit/:id">
           {this.state.userId && ((params) => <FrameWorld id={params.id} />)}
@@ -143,6 +150,7 @@ class App extends React.Component {
 
         <Route exact path="/museum/view/:id">
           {this.state.userId && ((params) => <MuseumView id={params.id} />)}
+          {!this.state.userId && ((params) => <MuseumView id={params.id} />)}
         </Route>
         
         <Route path="/room_user_upload">
@@ -154,10 +162,11 @@ class App extends React.Component {
         <Route exact path="/explore">
           <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
-        <Route component={NotFound}>
+        <Route>
           <NotFound default />
         </Route>
-       
+        
+        </Switch>
       </>
     );
   }

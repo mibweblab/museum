@@ -11,7 +11,7 @@ const { isUserLoggedIn, doesFrameExist, doesMuseumExist } = require("../middlewa
  */
 
 router.post("/", [isUserLoggedIn], async (req, res) => {
-  let { type, name, imageUrl, text, frameColor, position, rotation, scale,imageZoomRatio, parentId } = req.body;
+  let { type, name, imageUrl, text, frameColor, position, rotation, scale,imageZoomRatio, parentId, figure } = req.body;
 
   const frame = await addFrame(
     type,
@@ -23,7 +23,8 @@ router.post("/", [isUserLoggedIn], async (req, res) => {
     rotation,
     scale,
     imageZoomRatio,
-    parentId
+    parentId,
+    figure
   );
 
   if (frame) {
