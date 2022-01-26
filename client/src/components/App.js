@@ -65,8 +65,6 @@ class App extends React.Component {
         // they are registed in the database, and currently logged in.
         this.setState({ user: user, FirstName: user.firstname, LastName:user.lastname,  userId: user._id },  ()=> {console.log(this.state.FirstName)});
         await this.getAllMuseums();
-      }else{
-        navigate("/")
       }
     });
   }
@@ -114,6 +112,7 @@ class App extends React.Component {
           handleLogout={this.handleLogout.bind(this)}
           userId={(this.state.user) ? this.state.user._id : null}
         />
+        <Switch>
         <Route path="/">
           <Landing />
         </Route>
@@ -129,6 +128,7 @@ class App extends React.Component {
 
         <Route path="/room_0">
           {this.state.user &&  <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />} 
+          
           {!this.state.user && <Rooms FirstName={this.state.FirstName} LastName={this.state.LastName} HumanModel={Shakespeare} />}
         </Route>
 
@@ -149,6 +149,7 @@ class App extends React.Component {
 
         <Route exact path="/museum/view/:id">
           {this.state.userId && ((params) => <MuseumView id={params.id} />)}
+          {!this.state.userId && ((params) => <MuseumView id={params.id} />)}
         </Route>
         
         <Route path="/room_user_upload">
@@ -160,7 +161,11 @@ class App extends React.Component {
         <Route exact path="/explore">
           <Explore currentUserId={(this.state.user) ? (this.state.user._id) : (undefined) } />
         </Route>
-        <NotFound default />
+        <Route>
+          <NotFound default />
+        </Route>
+        
+        </Switch>
       </>
     );
   }
