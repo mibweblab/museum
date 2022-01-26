@@ -10,7 +10,7 @@ import "./Skeleton.css";
 import "./../Conversations/RoomScenes.css"
 const maxTokens = 1000;
 const maxResponseLen = 200;
-const apiKey = REACT_APP_OPEN_AI_KEY
+const apiKey = process.env.REACT_APP_OPEN_AI_KEY
 
 
 export default class GPT3_playground extends Component {
